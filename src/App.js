@@ -1,3 +1,4 @@
+import logo from './logo.svg';
 import './App.css';
 
 import React from 'react'
@@ -57,7 +58,10 @@ function App() {
   return (
     <Context.Provider value={{ removeCard }}>
       <div className="App">
-        <header className="p-1 h2 text-center">{testText}</header>
+        <header className="p-1 h2 text-center">
+          <img src={logo} className="App-logo" alt="logo" />
+          <h1 className="d-inline-block h2">{testText}</h1>
+        </header>
         <main className="p-1">
           <AddCard
             onCreate={addCard}
