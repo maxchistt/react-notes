@@ -13,7 +13,6 @@ function CardList(props) {
                             card={card}
                             key={card.id}
                             index={index}
-                            onChange={props.onToggle}
                         />
                     )
                 })}
@@ -26,7 +25,6 @@ function CardList(props) {
 
 CardList.propTypes = {
     cards: PropTypes.arrayOf(PropTypes.object).isRequired,
-    onToggle: PropTypes.func.isRequired
 }
 
 export default CardList

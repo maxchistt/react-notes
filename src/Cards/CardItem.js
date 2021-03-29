@@ -10,7 +10,7 @@ function CardItem(props) {
 
             <div className="card" style={{ color: "white", backgroundColor: props.card.completed ? "green" : "red" }} >
                 <div className="card-body">
-                    <h5 className="card-title">Card Id: {props.card.id}</h5>
+                    <h5 className="card-title">Id: {props.card.id}</h5>
                     <p className="card-text">Name: {props.card.title}</p>
                     <button className="btn btn-light p-0" style={{ width: "1.8em", height: "1.8em", float: "right" }} onClick={() => removeCard(props.card.id)}>&times;</button>
                 </div>
@@ -23,8 +23,7 @@ function CardItem(props) {
 
 CardItem.propTypes = {
     card: PropTypes.object.isRequired,
-    index: PropTypes.number,
-    onChange: PropTypes.func.isRequired
+    index: PropTypes.number
 }
 
 export default CardItem
