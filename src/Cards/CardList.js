@@ -1,12 +1,20 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import CardItem from './CardItem'
+import StackGrid, { transitions } from "react-stack-grid";
 
+const { scaleDown } = transitions;
 
 function CardList(props) {
     return (
-        <div className="container">
-            <div className="row">
+        <div className="container p-0">
+            <StackGrid
+                appear={scaleDown.appear}
+                appeared={scaleDown.appeared}
+                enter={scaleDown.enter}
+                entered={scaleDown.entered}
+                leaved={scaleDown.leaved}
+            >
                 {props.cards.map((card, index) => {
                     return (
                         <CardItem
@@ -16,8 +24,7 @@ function CardList(props) {
                         />
                     )
                 })}
-
-            </div>
+            </StackGrid>
         </div>
 
     )
