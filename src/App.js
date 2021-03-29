@@ -30,7 +30,7 @@ function App() {
   const [cardsArr, setCards] = React.useState(start_cards_arr);
 
   function removeCard(id) {
-    setCards(cardsArr.filter(todo => todo.id !== id))
+    setCards(cardsArr.filter(card => card.id !== id))
   }
 
   function deleteAll() {
@@ -50,8 +50,17 @@ function App() {
     cardCount++
   }
 
+  function changeCardState(id) {
+    cardsArr.forEach(card => {
+      if (card.id === id) {
+        card.completed = !card.completed;
+      }
+    })
+    setCards([...cardsArr]);
+  }
+
   return (
-    <Context.Provider value={{ removeCard }}>
+    <Context.Provider value={{ removeCard, changeCardState }}>
       <div className="App">
         <header className="p-1 h2 text-center">
           <img src={logo} className="App-logo" alt="logo" />
