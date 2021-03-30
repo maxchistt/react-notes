@@ -67,11 +67,14 @@ function App() {
           <h1 className="d-inline-block h2">{testText}</h1>
         </header>
         <main className="p-1">
-          <AddCard
-            onCreate={addCard}
-            onDeleteAll={deleteAll}
-          />
-          <CardList cards={cardsArr} />
+          <AddCard onCreate={addCard} onDeleteAll={deleteAll} />
+          {cardsArr.length ? (
+            <CardList cards={cardsArr} />
+          ) : (
+            <div className="container text-center">
+              <p className="m-3 p-3 h5 text-muted">No cards. You can add a new one!</p>
+            </div>
+          )}
         </main>
       </div>
     </Context.Provider>
