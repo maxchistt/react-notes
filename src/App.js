@@ -10,7 +10,7 @@ import { lorem } from './Content/Lorem'
 
 const testText = "My little cards-app c:";
 
-let cardCount = 0;
+let cardCount = 1;
 const start_cards_arr = fillCards();
 
 function fillCards() {
