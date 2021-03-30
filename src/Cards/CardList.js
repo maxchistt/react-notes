@@ -10,12 +10,16 @@ const { scaleDown } = transitions;
 let gridUpdater = createGridUpdater();
 
 function calcWidth() {
-    const smallMonitorWidth = 576
-    const middleMonitorWidth = 768
+    const small = 576
+    const middle = 768
+    const large = 960
+    const xlarge = 1200
     const winWidth = window.innerWidth
 
-    if (winWidth >= middleMonitorWidth) return '33.33%'
-    else if (winWidth >= smallMonitorWidth) return '50%'
+    if (winWidth >= xlarge) return '20%'
+    else if (winWidth >= large) return '25%'
+    else if (winWidth >= middle) return '33.33%'
+    else if (winWidth >= small) return '50%'
     else return '100%'
 }
 
