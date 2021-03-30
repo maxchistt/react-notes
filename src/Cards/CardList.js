@@ -33,6 +33,8 @@ function CardList(props) {
             entered={scaleDown.entered}
             leaved={scaleDown.leaved}
             columnWidth={calcWidth()}
+            gutterWidth={0}
+            gutterHeight={0}
         >
             {props.cards.map((card, index) => {
                 return (
