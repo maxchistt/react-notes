@@ -7,7 +7,7 @@ import { createGridUpdater } from '../Content/GridLayoutUpdater'
 
 const { scaleDown } = transitions;
 
-let gridUpdater = createGridUpdater();
+const gridUpdater = createGridUpdater();
 
 function calcWidth() {
     const small = 576
