@@ -1,44 +1,39 @@
 import logo from './logo.svg';
 import './App.css';
-
 import React from 'react'
 import CardList from './Cards/CardList'
 import AddCard from './Cards/AddCard'
 import Context from './context'
 import Loader from './Content/Loader'
 import Modal from './Modal/Modal'
-
-import { lorem } from './Content/Lorem'
+import { loadData, saveData } from './DataService'
 
 const testText = "My little cards-app c:";
 
 let cardCount = 1;
-
-function generateCardsArr() {
-  let arr = []
-  for (let index = 0; index < 8; index++) {
-    let len = Math.floor(Math.random() * lorem.length);
-    arr.push({
-      id: Number(cardCount++),
-      completed: Boolean(Math.floor(Math.random() * 2)),
-      text: lorem.slice(0, len)
-    })
-  }
-  return arr
-};
+function calcCount(cardsArr) {
+  let id = cardCount;
+  new Array(...cardsArr).forEach(element => {
+    if (Number(element.id) >= id) id = Number(element.id)
+  });
+  return id
+}
 
 function App() {
   const [cardsArr, setCards] = React.useState([])
   const [editCardId, setEditCardId] = React.useState(null)
   const [loading, setLoading] = React.useState(true)
-  React.useEffect(loadCards, [])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  React.useEffect(() => { setLoading(true); loadData(setLoadedCards); }, [])
+  React.useEffect(() => { saveData(cardsArr) }, [cardsArr])
 
-  function loadCards() {
-    setTimeout(() => {
-      setCards(generateCardsArr())
-      setLoading(false)
-    }, 200)
+  function setLoadedCards(cards) {
+    setCards([...cards])
+    setLoading(false)
+    cardCount = calcCount(cardsArr)
   }
+
+
 
   function removeCard(index) {
     cardsArr.splice(index, 1)
