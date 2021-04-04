@@ -82,8 +82,13 @@ function App() {
     setCards([...cardsArr]);
   }
 
+  function editCardContent(index, text) {
+    if (cardsArr[index]) cardsArr[index].text = text
+    setCards([...cardsArr]);
+  }
+
   return (
-    <Context.Provider value={{ removeCard, changeCardState, setEditCard, unsetEditCard }}>
+    <Context.Provider value={{ removeCard, changeCardState, setEditCard, unsetEditCard, editCardContent }}>
       <div className="App">
         <header className="p-1 h2 text-center">
           <img src={logo} className="App-logo" alt="logo" />
@@ -93,7 +98,7 @@ function App() {
         <main className="p-1">
 
           <AddCard onCreate={addCard} onDeleteAll={deleteAll} />
-          <Modal card={getCardById(editCardId)} />
+          <Modal card={getCardById(editCardId)} index={editCardId} />
           {loading && <Loader />}
           {cardsArr.length ? (
             <CardList cards={cardsArr} />

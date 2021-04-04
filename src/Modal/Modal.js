@@ -2,10 +2,12 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import './Modal.css'
 import Context from '../context'
+import TextareaAutosize from 'react-textarea-autosize'
 
 function Modal(props) {
     const [isOpen, setOpenState] = React.useState(false)
-    const { removeCard, changeCardState, unsetEditCard } = React.useContext(Context)
+    const { removeCard, changeCardState, unsetEditCard, editCardContent } = React.useContext(Context)
+
 
     if (props.card !== null && !isOpen) open()
 
@@ -16,6 +18,10 @@ function Modal(props) {
     function close() {
         unsetEditCard()
         setOpenState(false)
+    }
+
+    function save(text) {
+        editCardContent(props.index, text)
     }
 
     return (
@@ -31,9 +37,16 @@ function Modal(props) {
                         <div className='edit-modal-content'>
                             {props.card ? (
                                 <React.Fragment>
-                                    <h1>Id: {props.card.id}</h1>
-                                    <h5>Completed: {String(props.card.completed)}</h5>
-                                    <p>{props.card.text}</p>
+                                    <h1 className="mb-2">Id: {props.card.id}</h1>
+                                    <h5 className="mb-2">Completed: {String(props.card.completed)}</h5>
+                                    <TextareaAutosize
+                                        className="form-control p-0 mb-2"
+                                        style={{ border: "none", outline: "none", boxShadow: "none", resize: "none" }}
+                                        minRows={3}
+                                        maxRows={17}
+                                        value={props.card.text}
+                                        onChange={(e) => save(e.target.value)}
+                                    />
                                 </React.Fragment>
                             ) : (
                                 <h1>No card</h1>
@@ -41,20 +54,18 @@ function Modal(props) {
                         </div>
 
                         <div className='edit-modal-footer'>
-                            {props.card ? (
-                                <div>
-                                    <button
-                                        className="btn btn-light mx-1"
-                                        onClick={() => changeCardState(props.card.id)}
-                                    >&#10003;</button>
-                                    <button
-                                        className="btn btn-light"
-                                        onClick={() => { close(); removeCard(props.card.id); }}
-                                    >&#10007;</button>
-                                </div>
-                            ) : (
-                                null
-                            )}
+                            <div>
+                                <button
+                                    className="btn btn-light mx-1"
+                                    disabled={!props.card}
+                                    onClick={() => changeCardState(props.card.id)}
+                                >&#10003;</button>
+                                <button
+                                    className="btn btn-light"
+                                    disabled={!props.card}
+                                    onClick={() => { close(); removeCard(props.card.id); }}
+                                >&#10007;</button>
+                            </div>
                             <div>
                                 <button
                                     className="btn btn-light"
@@ -71,7 +82,8 @@ function Modal(props) {
 }
 
 Modal.propTypes = {
-    card: PropTypes.object.isRequired
+    card: PropTypes.object.isRequired,
+    index: PropTypes.number
 }
 
 export default Modal

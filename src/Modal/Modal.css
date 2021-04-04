@@ -21,11 +21,11 @@
 }
 
 .edit-modal-content {
-    display: block;
+  display: block;
 }
 
 .edit-modal-footer {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
 }
