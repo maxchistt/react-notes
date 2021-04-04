@@ -9,15 +9,15 @@ import Modal from './Modal/Modal'
 import $ from "jquery";
 //import { } from './DataService'
 
+
+///////////////////////////////////
+
 const url = 'http://php-server-notes/'
 let user = null
-
-let recuestCount = 1;
-
-function request(target, data, clb) {
-  const rc = recuestCount++
-  console.log(` \nrequest ${rc} - "${target}" started`)
-  console.log(`params - user:"${user}" target:"${target}" data:"${data}"`)
+//let recuestCount = 1;
+function request(target, data) {
+  //const rc = recuestCount++
+  //console.log(` \nrequest ${rc} - "${target}" started \n params - user:"${user}" data:"${trimStr(data)}"`)
   return new Promise((res, rej) => {
     $.ajax({
       url: url,
@@ -29,63 +29,51 @@ function request(target, data, clb) {
         data: data,
       },
     })
-      .always((data) => console.log(`requested - newUser:"${user}" target:"${target}" resolveData:"${trimStr(data)}"`))
-      .done((data) => { if (clb) clb(data); res(data) })
-      .fail((data) => { console.error(data); rej(data) })
-      .always(() => console.log(`request ${rc} - "${target}" ended \n `))
+      .done(data => res(data))
+      .fail(data => rej(data))
+    //.always(() => console.log(`requested - newUser:"${user}" resolveData:"${trimStr(data)}" \n request ${rc} - "${target}" ended \n `))
   })
-
 }
-
 ///////////////////////////////////
 
-function requestUser(clb) {
-  return request('ip', null,
-    clb !== undefined
-      ? clb
-      : (usr) => {
-        user = String(usr)
-        console.log(`[req-clb-done] requestUser: ${usr}`)
-      })
+///////////////////////////////////
+function requestUser() {
+  return request('ip', null)
 }
-
-function requestGetData(clb) {
-  return request('getData', null,
-    clb !== undefined
-      ? clb
-      : (data) => {
-        console.log(`[req-clb-done] requestGetData - data: ${trimStr(data)}`)
-      })
+function requestGetData() {
+  return request('getData', null)
 }
-
-function requestPostData(data = [], clb) {
-  return request('setData', data,
-    clb !== undefined
-      ? clb
-      : (req) => {
-        console.log(`[req-clb-done] requestPostData - req: ${req}`)
-      })
+function requestPostData(data) {
+  return request('setData', data || [])
 }
+///////////////////////////////////
 
-//////////////
+///
 function trimStr(str) {
-  const trimLen = 50;
-  return (str.length > trimLen) ? str.slice(0, trimLen) + "..." : str
+  const trimLen = 50
+  try {
+    return (str.length > trimLen) ? str.slice(0, trimLen) + "..." : str
+  } catch (e) {
+    return str
+  }
 }
-
 function tryParce(str) {
   try {
-    return JSON.parse(str);
+    return JSON.parse(str,reviver);
   } catch (e) {
     return str;
   }
 }
+function reviver(key, value) {
+  if (typeof value == 'string' && (Boolean(value) !== undefined)) {
+    if(value==="false")return false;
+    if(value==="true")return true;
+  }
+  return value;
+}
+///
+
 //////////////
-
-
-
-////////////////////////////
-var cardsLoadedArr = [];
 function loadData() {
   return new Promise((res, rej) => {
     (user === null
@@ -94,25 +82,21 @@ function loadData() {
       .then(() => requestGetData(null))
       .then((d) => {
         let data = tryParce(d)//here we parce json
-        console.log("data from loadData(): ", trimStr(data))
-        cardsLoadedArr = data
-        
+        console.log("[DATA] from loadData(): ", data)
         res(data)
       })
       .catch(rej)
   })
 }
-
 function postData(postData) {
   (user === null
     ? loadData(null)
     : Promise.resolve(null))
     .then((data) => {
-      let pDat = cardsLoadedArr == null ? postData.concat(data) : postData
+      let pDat = postData == null ? postData.concat(data) : postData
       requestPostData(pDat)
     })
 }
-
 //////////////////
 
 
@@ -121,7 +105,7 @@ const testText = "My little cards-app c:";
 let cardCount = 1;
 function calcCount(cardsArr) {
   let id = cardCount;
-  new Array(...cardsArr).forEach(element => {
+  [...cardsArr].forEach(element => {
     if (Number(element.id) >= id) id = Number(element.id)
   });
   return id
@@ -131,35 +115,28 @@ function App() {
   const [cardsArr, setCards] = React.useState([])
   const [editCardId, setEditCardId] = React.useState(null)
   const [loading, setLoading] = React.useState(true)
-
-  React.useEffect(() => { console.log("hook-cardsArr"); console.log(trimStr(cardsArr)) }, [cardsArr])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   React.useEffect(loadDataFromServer, [])
+  React.useEffect(loadDataToServer, [cardsArr])
 
+  function loadDataToServer() {
+    //console.log("***\n[HOOK] - loadDataToServer (onCardsArr)\n***")
+    postData(cardsArr)
+  }
 
   function loadDataFromServer() {
-    console.log("hook - loadDataFromServer")
+    //console.log("[HOOK]  - loadDataFromServer")
     loadData().then(setLoadedCards)
   }
 
-
-
-  function setLoadedCards(cardsLoadedArr) {
-    console.log("hook's then - set loaded cards")
-    console.log(trimStr(cardsLoadedArr))
-
-    console.log("\n \n ***  \n ")
-    let valToSet = tryParce(cardsLoadedArr)
-    console.log("let valToSet = tryParce(cardsLoadedArr) :")
-    console.log(valToSet)
-    console.log("\n *** \n \n")
-
-    setCards(valToSet)
-    cardCount = calcCount(cardsArr)
+  function setLoadedCards(cards) {
+    cards = tryParce(cards)
+    setCards([...cards])
+    cardCount = calcCount(tryParce(cards))
     setLoading(false)
   }
 
-
-
+  ///////////
   function removeCard(index) {
     cardsArr.splice(index, 1)
     setCards([...cardsArr])
@@ -182,18 +159,6 @@ function App() {
     cardCount++
   }
 
-  function getCardById(index) {
-    return index !== null ? cardsArr[index] : null
-  }
-
-  function setEditCard(index) {
-    setEditCardId(index)
-  }
-
-  function unsetEditCard() {
-    setEditCardId(null)
-  }
-
   function changeCardState(index) {
     cardsArr[index].completed = !cardsArr[index].completed
     setCards([...cardsArr])
@@ -203,6 +168,20 @@ function App() {
     if (cardsArr[index]) cardsArr[index].text = text
     setCards([...cardsArr])
   }
+  ///////////
+
+  ///
+  function getCardByIndex(index) {
+    return index !== null ? cardsArr[index] : null
+  }
+  function setEditCard(index) {
+    setEditCardId(index)
+  }
+  function unsetEditCard() {
+    setEditCardId(null)
+  }
+  ///
+
 
   return (
     <Context.Provider value={{ removeCard, changeCardState, setEditCard, unsetEditCard, editCardContent }}>
@@ -215,7 +194,7 @@ function App() {
         <main className="p-1">
 
           <AddCard onCreate={addCard} onDeleteAll={deleteAll} />
-          {getCardById(editCardId) && <Modal card={getCardById(editCardId)} index={editCardId} />}
+          {getCardByIndex(editCardId) && <Modal card={getCardByIndex(editCardId)} index={editCardId} />}
           {loading && <Loader />}
           {cardsArr.length ? (
             <CardList cards={cardsArr} />

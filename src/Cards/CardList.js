@@ -5,7 +5,7 @@ import StackGrid, { transitions } from "react-stack-grid"
 import sizeMe from 'react-sizeme'
 const { scaleDown } = transitions
 
-var grid = null
+
 
 function calcWidth() {
     const small = 576
@@ -21,15 +21,17 @@ function calcWidth() {
     else return '100%'
 }
 
-function gridRedraw(delay = 10) {
-    setTimeout(() => { if (grid) if (grid.updateLayout) grid.updateLayout() }, delay)
-}
+
 
 function CardList(props) {
+    const [grid, setGrid] = React.useState(null)
     gridRedraw()
+    function gridRedraw(delay = 10) {
+        setTimeout(() => { if (grid && grid.updateLayout) grid.updateLayout() }, delay)
+    }
 
     const gridSettings = {
-        gridRef: gridR => grid = gridR,
+        gridRef: setGrid,
         columnWidth: calcWidth(),
         gutterWidth: 0,
         gutterHeight: 0,

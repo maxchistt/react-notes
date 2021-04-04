@@ -20,7 +20,7 @@ function CardItem(props) {
                     <h5 className="card-title">Id: {props.card.id}</h5>
                     <p
                         className="card-text"
-                        style={{ overflow: "hidden", display: "-webkit-box", webkitLineClamp: String(lineClip), WebkitBoxOrient: "vertical" }}
+                        style={{ overflow: "hidden", display: "-webkit-box", webKitLineClamp: String(lineClip), WebkitBoxOrient: "vertical" }}
                         dangerouslySetInnerHTML={createHTML(props.card.text)}
                     />
                 </div>
