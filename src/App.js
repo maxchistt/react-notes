@@ -38,7 +38,10 @@ function request(target, data) {
 
 ///////////////////////////////////
 function requestUser() {
-  return request('ip', null)
+  return request('ip', null).then(prom => {
+    user = JSON.stringify(prom)
+    console.log("user ", user)
+  })
 }
 function requestGetData() {
   return request('getData', null)
@@ -59,15 +62,15 @@ function trimStr(str) {
 }
 function tryParce(str) {
   try {
-    return JSON.parse(str,reviver);
+    return JSON.parse(str, reviver);
   } catch (e) {
     return str;
   }
 }
 function reviver(key, value) {
   if (typeof value == 'string' && (Boolean(value) !== undefined)) {
-    if(value==="false")return false;
-    if(value==="true")return true;
+    if (value === "false") return false;
+    if (value === "true") return true;
   }
   return value;
 }
