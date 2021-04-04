@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
-// eslint-disable-next-line no-unused-vars
 import PropTypes from 'prop-types'
+import TextareaAutosize from 'react-textarea-autosize'
+
 function useInputValue(defaultValue) {
     const [value, setValue] = useState(defaultValue)
 
@@ -26,19 +27,18 @@ function AddCard({ onCreate, onDeleteAll }) {
         }
     }
 
-    function onEnter(e) {
-        if (e.keyCode === 13) {
-            submitHandler();
-        }
-    }
-
     return (
 
         <div className="container">
             <div className="row my-2 text-center">
 
                 <div className="col-lg-12 col-md-12 p-1">
-                    <input onKeyDown={onEnter} type="text" className="form-control" placeholder="Card text" id="Text" {...input.bind} />
+                    <TextareaAutosize type="text" className="form-control" placeholder="Card text" id="Text"
+                        {...input.bind}
+                        style={{ resize: "none" }}
+                        minRows={1}
+                        maxRows={7}
+                    />
                 </div>
 
                 <div className="col-lg-8 col-md-6 col-sm-4 p-1">
