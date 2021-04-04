@@ -3,13 +3,14 @@ import PropTypes from 'prop-types'
 import Context from '../context'
 
 function createHTML(text) {
-    let el = document.createElement("div")
+    let el = document.createElement("p")
     el.innerText = el.textContent = text
     return { __html: el.innerHTML }
 }
 
 function CardItem(props) {
     const { removeCard, changeCardState, setEditCard } = useContext(Context)
+    const lineClip = 12
     return (
 
         <div className="p-1" >
@@ -17,7 +18,11 @@ function CardItem(props) {
 
                 <div className="card-body" onClick={() => setEditCard(props.index)} >
                     <h5 className="card-title">Id: {props.card.id}</h5>
-                    <p className="card-text" dangerouslySetInnerHTML={createHTML(props.card.text)} />
+                    <p
+                        className="card-text"
+                        style={{ overflow: "hidden", display: "-webkit-box", webkitLineClamp: String(lineClip), WebkitBoxOrient: "vertical" }}
+                        dangerouslySetInnerHTML={createHTML(props.card.text)}
+                    />
                 </div>
 
                 <div className="card-body pt-0">
