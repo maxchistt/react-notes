@@ -39,7 +39,7 @@ function request(target, data) {
 ///////////////////////////////////
 function requestUser() {
   return request('ip', null).then(prom => {
-    user = String(prom)
+    user = String(prom) || "default"
     console.log("user ", user)
   })
 }
@@ -86,7 +86,7 @@ function loadData() {
       .then((d) => {
         let data = tryParce(d)//here we parce json
         console.log("[DATA] from loadData(): ", data)
-        res(data)
+        res(data || [])
       })
       .catch(rej)
   })
@@ -96,7 +96,7 @@ function postData(postData) {
     ? loadData(null)
     : Promise.resolve(null))
     .then((data) => {
-      let pDat = postData == null ? postData.concat(data) : postData
+      let pDat = postData === null ? (data || []) : postData
       requestPostData(pDat)
     })
 }
@@ -123,7 +123,7 @@ function App() {
   React.useEffect(loadDataToServer, [cardsArr])
 
   function loadDataToServer() {
-    //console.log("***\n[HOOK] - loadDataToServer (onCardsArr)\n***")
+    console.log("***\n[HOOK] - loadDataToServer (onCardsArr)\n***")
     postData(cardsArr)
   }
 
