@@ -4,6 +4,19 @@ import './Modal.css'
 import Context from '../context'
 import TextareaAutosize from 'react-textarea-autosize'
 
+function calcMaxRows() {
+    const small = 576
+    const middle = 768
+    const large = 992
+    const winWidth = window.innerWidth
+    
+
+    if (winWidth < small) return '7'
+    else if (winWidth < middle) return '8'
+    else if (winWidth < large) return '10'
+    else return '17'
+}
+
 function Modal(props) {
     const [isOpen, setOpenState] = React.useState(false)
     const { removeCard, changeCardState, unsetEditCard, editCardContent } = React.useContext(Context)
@@ -51,7 +64,7 @@ function Modal(props) {
                                         className="form-control p-0 mb-2 bg-light"
                                         style={{ border: "none", outline: "none", boxShadow: "none", resize: "none" }}
                                         minRows={3}
-                                        maxRows={17}
+                                        maxRows={calcMaxRows()}
                                         value={props.card.text}
                                         onChange={onInputCange}
                                     />
