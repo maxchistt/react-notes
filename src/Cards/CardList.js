@@ -5,8 +5,6 @@ import StackGrid, { transitions } from "react-stack-grid"
 import sizeMe from 'react-sizeme'
 const { scaleDown } = transitions
 
-
-
 function calcWidth() {
     const small = 576
     const middle = 768
@@ -20,8 +18,6 @@ function calcWidth() {
     else if (winWidth >= small) return '50%'
     else return '100%'
 }
-
-
 
 function CardList(props) {
     const [grid, setGrid] = React.useState(null)
