@@ -18,14 +18,14 @@ function CardItem(props) {
                     <button
                         className="btn btn-light p-0"
                         style={{ width: "1.8em", height: "1.8em", float: "right" }}
-                        onClick={() => removeCard(props.card.id)}
+                        onClick={() => removeCard(props.index)}
                     >
                         &#10007;
                     </button>
                     <button
                         className="btn btn-light p-0 mx-2"
                         style={{ width: "1.8em", height: "1.8em", float: "right" }}
-                        onClick={() => changeCardState(props.card.id)}
+                        onClick={() => changeCardState(props.index)}
                     >
                         &#10003;
                     </button>

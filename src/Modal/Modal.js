@@ -36,9 +36,9 @@ function Modal(props) {
 
             {isOpen && (
                 <div className='edit-modal' onClick={(e) => { if (e.target.className === 'edit-modal') close() }}>
-                    <div className='edit-modal-body'>
+                    <div className='edit-modal-body bg-light'>
 
-                        <div className='edit-modal-content'>
+                        <div className='edit-modal-content bg-light'>
                             {props.card ? (
                                 <React.Fragment>
                                     <h1 className="mb-2">Id: {props.card.id}</h1>
@@ -48,7 +48,7 @@ function Modal(props) {
                                         </span>
                                     </h5>
                                     <TextareaAutosize
-                                        className="form-control p-0 mb-2"
+                                        className="form-control p-0 mb-2 bg-light"
                                         style={{ border: "none", outline: "none", boxShadow: "none", resize: "none" }}
                                         minRows={3}
                                         maxRows={17}
@@ -61,17 +61,17 @@ function Modal(props) {
                             )}
                         </div>
 
-                        <div className='edit-modal-footer'>
+                        <div className='edit-modal-footer bg-light'>
                             <div>
                                 <button
                                     className="btn btn-light mx-1"
                                     disabled={!props.card}
-                                    onClick={() => changeCardState(props.card.id)}
+                                    onClick={() => changeCardState(props.index)}
                                 >&#10003;</button>
                                 <button
                                     className="btn btn-light"
                                     disabled={!props.card}
-                                    onClick={() => { close(); removeCard(props.card.id); }}
+                                    onClick={() => { close(); removeCard(props.index); }}
                                 >&#10007;</button>
                             </div>
                             <div>

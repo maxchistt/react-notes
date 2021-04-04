@@ -15,7 +15,7 @@ const testText = "My little cards-app c:";
 let cardCount = 1;
 
 function generateCardsArr() {
-  let arr = [];
+  let arr = []
   for (let index = 0; index < 8; index++) {
     let len = Math.floor(Math.random() * lorem.length);
     arr.push({
@@ -24,7 +24,7 @@ function generateCardsArr() {
       text: lorem.slice(0, len)
     })
   }
-  return arr;
+  return arr
 };
 
 function App() {
@@ -40,8 +40,9 @@ function App() {
     }, 200)
   }
 
-  function removeCard(id) {
-    setCards(cardsArr.filter(card => card.id !== id))
+  function removeCard(index) {
+    cardsArr.splice(index, 1)
+    setCards([...cardsArr])
   }
 
   function deleteAll() {
@@ -62,7 +63,7 @@ function App() {
   }
 
   function getCardById(index) {
-    return index !== null ? cardsArr[index] : null;
+    return index !== null ? cardsArr[index] : null
   }
 
   function setEditCard(index) {
@@ -73,18 +74,14 @@ function App() {
     setEditCardId(null)
   }
 
-  function changeCardState(id) {
-    cardsArr.forEach(card => {
-      if (card.id === id) {
-        card.completed = !card.completed;
-      }
-    })
-    setCards([...cardsArr]);
+  function changeCardState(index) {
+    cardsArr[index].completed = !cardsArr[index].completed
+    setCards([...cardsArr])
   }
 
   function editCardContent(index, text) {
     if (cardsArr[index]) cardsArr[index].text = text
-    setCards([...cardsArr]);
+    setCards([...cardsArr])
   }
 
   return (
