@@ -45,7 +45,7 @@ function CardList(props) {
         <StackGrid className="container p-0" {...gridSettings}>
             {props.cards.map((card, index) => {
                 return (
-                    <CardItem card={card} key={card.id} index={index} />
+                    <CardItem card={card} key={index} index={index} />
                 )
             })}
         </StackGrid>

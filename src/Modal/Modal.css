@@ -1,0 +1,31 @@
+.edit-modal {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+
+.edit-modal-body {
+  padding: 2rem;
+  width: 100%;
+  max-width: 620px;
+  border-radius: 5px;
+  background: #fff;
+  height: fit-content;
+}
+
+.edit-modal-content {
+    display: block;
+}
+
+.edit-modal-footer {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
