@@ -39,7 +39,7 @@ function request(target, data) {
 ///////////////////////////////////
 function requestUser() {
   return request('ip', null).then(prom => {
-    user = JSON.stringify(prom)
+    user = String(prom)
     console.log("user ", user)
   })
 }
