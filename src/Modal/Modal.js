@@ -38,7 +38,11 @@ function Modal(props) {
                             {props.card ? (
                                 <React.Fragment>
                                     <h1 className="mb-2">Id: {props.card.id}</h1>
-                                    <h5 className="mb-2">Completed: {String(props.card.completed)}</h5>
+                                    <h5 className="mb-2">Completed:
+                                        <span className="px-2 py-1 m-1 d-inline-block text-center" style={{borderRadius:"5px", width:"3em", color: "white", backgroundColor: props.card.completed ? "green" : "red" }}>
+                                            {String(props.card.completed)}
+                                        </span>
+                                    </h5>
                                     <TextareaAutosize
                                         className="form-control p-0 mb-2"
                                         style={{ border: "none", outline: "none", boxShadow: "none", resize: "none" }}
