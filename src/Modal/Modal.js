@@ -24,6 +24,10 @@ function Modal(props) {
         editCardContent(props.index, text)
     }
 
+    function onInputCange(e) {
+        save(e.target.value)
+    }
+
     return (
         <React.Fragment>
             <div className="container p-1 d-none">
@@ -39,7 +43,7 @@ function Modal(props) {
                                 <React.Fragment>
                                     <h1 className="mb-2">Id: {props.card.id}</h1>
                                     <h5 className="mb-2">Completed:
-                                        <span className="px-2 py-1 m-1 d-inline-block text-center" style={{borderRadius:"5px", width:"3em", color: "white", backgroundColor: props.card.completed ? "green" : "red" }}>
+                                        <span className="px-2 py-1 m-1 d-inline-block text-center" style={{ borderRadius: "5px", width: "3em", color: "white", backgroundColor: props.card.completed ? "green" : "red" }}>
                                             {String(props.card.completed)}
                                         </span>
                                     </h5>
@@ -49,7 +53,7 @@ function Modal(props) {
                                         minRows={3}
                                         maxRows={17}
                                         value={props.card.text}
-                                        onChange={(e) => save(e.target.value)}
+                                        onChange={onInputCange}
                                     />
                                 </React.Fragment>
                             ) : (
