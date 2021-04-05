@@ -1,45 +1,46 @@
 import $ from "jquery";
 export default function DataService() {
     ////////////////////////////////////////////////////////////
-    let user = null
+    var user = null
     const deploy = true
     const url = deploy ? 'http://php-server-notes.std-1033.ist.mospolytech.ru/' : 'http://php-server-notes/'
     //let recuestCount = 1;
 
     ////////////////////////////////////////////////////////////
     function login() {
-        let submit = null
-        function tryLogin(username) {
-            new Promise((res, rej) => {
-                checkLogin(prompt("Введите логин", username || "")).then(res, rej)
-            }).then(onLogin, tryLogin)
-        }
-        function onLogin(username) {
-            user = username
-            submit()
-            console.log('Login: ', user)
-            const label = document.getElementsByClassName("show_login")[0]
-            label.textContent = ''
-            label.onclick = () => label.style.opacity = label.style.opacity !== '0' ? '0' : '1'
-        }
-        return new Promise((resolve) => {
-            submit = resolve
-            tryLogin()
+        return new Promise((submit, dismiss) => {
+            function tryLogin(def) {
+                let input = prompt(def ? "Исправьте логин" : "Введите логин", def || "")
+                input === null
+                    ? onDismiss()
+                    : checkLogin(input.trim())
+                        ? onLogin(input.trim())
+                        : tryLogin(input.trim())
+            }
+            function onLogin(username) {
+                user = username
+                submit(username)
+                console.log('Login: ', user)
+                const label = document.getElementsByClassName("show_login")[0]
+                label.textContent = ''
+                label.onclick = () => label.style.opacity = label.style.opacity !== '0' ? '0' : '1'
+            }
+            function onDismiss() {
+                user = null
+                dismiss("Вы не залогинились")
+                console.log('Login dismissed')
+            }
+            $(() => tryLogin())
         })
     }
 
     function checkLogin(str) {
-        return new Promise((res, rej) => {
-            let username
-            try {
-                username = str.replace(/@|;|:|\.|,|\/|\\|\||\$|\?|!|#|%|\*|\^|\+|=|\[|\]| |\\ |«|<|>/gi, "").trim()
-                username && username.length > 3 && username.length < 20 && username === str
-                    ? res(username)
-                    : rej(username)
-            } catch {
-                rej(username)
-            }
-        })
+        try {
+            let filtered = str.replace(/@|;|:|\.|,|\/|\\|\||\$|\?|!|#|%|\*|\^|\+|=|\[|\]| |\\ |«|<|>/gi, "").trim()
+            return (filtered && filtered.length > 3 && filtered.length < 20 && filtered === str)
+        } catch {
+            return false
+        }
     }
     ////////////////////////////////////////////////////////////
 
@@ -99,28 +100,30 @@ export default function DataService() {
     function loadData() {
         return new Promise((res, rej) => {
             (user === null
-                ? login(null)
-                : Promise.resolve(null))
-                .then(() => requestGetData(null))
+                ? rej()
+                : requestGetData())
                 .then((d) => {
                     let data = tryParce(d)//here we parce json
                     //console.log("[DATA] from loadData(): ", data)
                     res(data || [])
-                })
+                }, rej)
                 .catch(rej)
         })
     }
 
-    function postData(postData) {
-        if (user !== null) {
-            loadData()
-                .then((data) => {
-                    let pDat = postData === null ? (data || []) : postData
-                    requestPostData(pDat)
-                })
-        }
+    function postData(data) {
+        return new Promise((res, rej) => {
+            (user === null
+                ? rej()
+                : loadData())
+                .then((d) => {
+                    let pDat = data === null ? (d || []) : data
+                    requestPostData(pDat).then(res, rej)
+                }, rej)
+                .catch(rej)
+        })
     }
     ////////////////////////////////////////////////////////////
 
-    return { loadData, postData, tryParce }
+    return { loadData, postData, login }
 }

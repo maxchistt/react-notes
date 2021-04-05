@@ -8,7 +8,7 @@ import Loader from './Content/Loader'
 import Modal from './Modal/Modal'
 import DataService from './DataService'
 
-const { loadData, postData, tryParce } = DataService()
+const { loadData, postData, login } = DataService()
 
 const testText = "My little cards-app c:";
 
@@ -26,25 +26,35 @@ function App() {
   const [editCardId, setEditCardId] = React.useState(null)
   const [loading, setLoading] = React.useState(true)
   // eslint-disable-next-line react-hooks/exhaustive-deps
+  React.useEffect(tryLogin, [])
   React.useEffect(loadDataFromServer, [])
   React.useEffect(loadDataToServer, [cardsArr])
 
+  ///////////
+  function tryLogin() {
+    login().then(loadDataFromServer, alert)
+  }
+
   function loadDataToServer() {
     //console.log("***\n[HOOK] - loadDataToServer (onCardsArr)\n***")
-    postData(cardsArr)
+    postData(cardsArr).then(console.log, dataError)
   }
 
   function loadDataFromServer() {
     //console.log("[HOOK]  - loadDataFromServer")
-    loadData().then(setLoadedCards)
+    loadData().then(setLoadedCards, dataError)
+  }
+
+  function dataError(msg) {
+    console.log(`Data request error. Response: ${msg}`)
   }
 
   function setLoadedCards(cards) {
-    cards = tryParce(cards)
     setCards([...cards])
-    cardCount = calcCount(tryParce(cards))
+    cardCount = calcCount(cards)
     setLoading(false)
   }
+  ///////////
 
   ///////////
   function removeCard(index) {
@@ -80,7 +90,7 @@ function App() {
   }
   ///////////
 
-  ///
+  ///////////
   function getCardByIndex(index) {
     return index !== null ? cardsArr[index] : null
   }
@@ -90,7 +100,7 @@ function App() {
   function unsetEditCard() {
     setEditCardId(null)
   }
-  ///
+  ///////////
 
 
   return (
