@@ -2,7 +2,8 @@ import $ from "jquery";
 export default function DataService() {
     ////////////////////////////////////////////////////////////
     let user = null
-    const url = 'http://php-server-notes/'
+    const deploy = true
+    const url = deploy ? 'http://php-server-notes.std-1033.ist.mospolytech.ru/' : 'http://php-server-notes/'
     //let recuestCount = 1;
 
     function request(target, data) {
