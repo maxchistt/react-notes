@@ -30,7 +30,7 @@ function App() {
   React.useEffect(loadDataToServer, [cardsArr])
 
   function loadDataToServer() {
-    console.log("***\n[HOOK] - loadDataToServer (onCardsArr)\n***")
+    //console.log("***\n[HOOK] - loadDataToServer (onCardsArr)\n***")
     postData(cardsArr)
   }
 

@@ -73,7 +73,7 @@ export default function DataService() {
                 .then(() => requestGetData(null))
                 .then((d) => {
                     let data = tryParce(d)//here we parce json
-                    console.log("[DATA] from loadData(): ", data)
+                    //console.log("[DATA] from loadData(): ", data)
                     res(data || [])
                 })
                 .catch(rej)
