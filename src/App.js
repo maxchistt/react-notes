@@ -16,7 +16,7 @@ let cardCount = 1;
 function calcCount(cardsArr) {
   let id = cardCount;
   [...cardsArr].forEach(element => {
-    if (Number(element.id) >= id) id = Number(element.id)
+    if (Number(element.id) >= id) id = Number(element.id) + 1
   });
   return id
 }
