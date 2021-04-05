@@ -99,6 +99,7 @@ function App() {
         <header className="p-1 h2 text-center">
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="d-inline-block h2">{testText}</h1>
+          <p className="show_login"></p>
         </header>
 
         <main className="p-1">

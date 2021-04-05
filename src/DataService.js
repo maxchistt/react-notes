@@ -15,7 +15,7 @@ export default function DataService() {
             }).then(() => {
                 submit()
                 console.log('Login: ', user)
-                alert(`Привет, ${user}`)
+                $(".show_login").text(`Login: ${user}`).on("click", (e) => $(e.target).fadeOut(1000))
             }, tryLogin)
         }
         return new Promise((resolve) => {
