@@ -15,6 +15,7 @@ export default function DataService() {
             }).then(() => {
                 submit()
                 console.log('Login: ', user)
+                alert(`Привет, ${user}`)
             }, tryLogin)
         }
         return new Promise((resolve) => {
