@@ -9,14 +9,18 @@ export default function DataService() {
     ////////////////////////////////////////////////////////////
     function login() {
         let submit = null
-        function tryLogin() {
+        function tryLogin(username) {
             new Promise((res, rej) => {
-                checkLogin(prompt("Введите логин", user || "")).then(res, rej)
-            }).then(() => {
-                submit()
-                console.log('Login: ', user)
-                $(".show_login").text(`Login: ${user}`).on("click", (e) => $(e.target).fadeOut(1000))
-            }, tryLogin)
+                checkLogin(prompt("Введите логин", username || "")).then(res, rej)
+            }).then(onLogin, tryLogin)
+        }
+        function onLogin(username) {
+            user = username
+            submit()
+            console.log('Login: ', user)
+            const label = document.getElementsByClassName("show_login")[0]
+            label.textContent = ''
+            label.onclick = () => label.style.opacity = label.style.opacity !== '0' ? '0' : '1'
         }
         return new Promise((resolve) => {
             submit = resolve
@@ -26,13 +30,14 @@ export default function DataService() {
 
     function checkLogin(str) {
         return new Promise((res, rej) => {
+            let username
             try {
-                user = str.replace(/@|;|:|\.|,|\/|\\|\||\$|\?|!|#|%|\*|\^|\+|=|\[|\]| |\\ |«|<|>/gi, "").trim()
-                user && user.length > 3 && user.length < 20 && user === str
-                    ? res()
-                    : rej()
+                username = str.replace(/@|;|:|\.|,|\/|\\|\||\$|\?|!|#|%|\*|\^|\+|=|\[|\]| |\\ |«|<|>/gi, "").trim()
+                username && username.length > 3 && username.length < 20 && username === str
+                    ? res(username)
+                    : rej(username)
             } catch {
-                rej()
+                rej(username)
             }
         })
     }
