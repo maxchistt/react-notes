@@ -6,6 +6,38 @@ export default function DataService() {
     const url = deploy ? 'http://php-server-notes.std-1033.ist.mospolytech.ru/' : 'http://php-server-notes/'
     //let recuestCount = 1;
 
+    ////////////////////////////////////////////////////////////
+    function login() {
+        let submit = null
+        function tryLogin() {
+            new Promise((res, rej) => {
+                checkLogin(prompt("Введите логин", user || "")).then(res, rej)
+            }).then(() => {
+                submit()
+                console.log('Login: ', user)
+            }, tryLogin)
+        }
+        return new Promise((resolve) => {
+            submit = resolve
+            tryLogin()
+        })
+    }
+
+    function checkLogin(str) {
+        return new Promise((res, rej) => {
+            try {
+                user = str.replace(/@|;|:|\.|,|\/|\\|\||\$|\?|!|#|%|\*|\^|\+|=|\[|\]| |\\ |«|<|>/gi, "").trim()
+                user && user.length > 3 && user.length < 20 && user === str
+                    ? res()
+                    : rej()
+            } catch {
+                rej()
+            }
+        })
+    }
+    ////////////////////////////////////////////////////////////
+
+    ////////////////////////////////////////////////////////////
     function request(target, data) {
         //const rc = recuestCount++
         //console.log(` \nrequest ${rc} - "${target}" started \n params - user:"${user}" data:"${data}"`)
@@ -31,13 +63,6 @@ export default function DataService() {
     ////////////////////////////////////////////////////////////
 
     ////////////////////////////////////////////////////////////
-    function requestUser() {
-        return request('ip', null).then(prom => {
-            user = String(prom) || "default"
-            console.log("user ", user)
-        })
-    }
-
     function requestGetData() {
         return request('getData', null)
     }
@@ -68,7 +93,7 @@ export default function DataService() {
     function loadData() {
         return new Promise((res, rej) => {
             (user === null
-                ? requestUser(null)
+                ? login(null)
                 : Promise.resolve(null))
                 .then(() => requestGetData(null))
                 .then((d) => {
@@ -81,13 +106,13 @@ export default function DataService() {
     }
 
     function postData(postData) {
-        (user === null
-            ? loadData(null)
-            : Promise.resolve(null))
-            .then((data) => {
-                let pDat = postData === null ? (data || []) : postData
-                requestPostData(pDat)
-            })
+        if (user !== null) {
+            loadData()
+                .then((data) => {
+                    let pDat = postData === null ? (data || []) : postData
+                    requestPostData(pDat)
+                })
+        }
     }
     ////////////////////////////////////////////////////////////
 
