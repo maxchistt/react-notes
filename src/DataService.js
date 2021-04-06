@@ -20,10 +20,7 @@ export default function DataService() {
             function onLogin(username) {
                 user = username
                 submit(username)
-                console.log('Login: ', user)
-                const label = document.getElementsByClassName("show_login")[0]
-                label.textContent = ''
-                label.onclick = () => label.style.opacity = label.style.opacity !== '0' ? '0' : '1'
+                console.log('Login:', user)
             }
             function onDismiss() {
                 user = null
