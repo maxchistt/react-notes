@@ -20,14 +20,15 @@ function calcWidth() {
 }
 
 function CardList(props) {
-    const [grid, setGrid] = React.useState(null)
-    gridRedraw()
-    function gridRedraw(delay = 10) {
-        setTimeout(() => { if (grid && grid.updateLayout) grid.updateLayout() }, delay)
+    const grid = React.useRef(null)
+    React.useEffect(gridRedraw, [props.size])
+
+    function gridRedraw() {
+        setTimeout(() => { if (grid.current && grid.current.updateLayout) grid.current.updateLayout() }, 10)
     }
 
     const gridSettings = {
-        gridRef: setGrid,
+        ref: grid,
         columnWidth: calcWidth(),
         gutterWidth: 0,
         gutterHeight: 0,
