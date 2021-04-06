@@ -91,7 +91,7 @@ function ModalCardEdit(props) {
 }
 
 ModalCardEdit.propTypes = {
-    card: PropTypes.object.isRequired,
+    card: PropTypes.object,
     index: PropTypes.number
 }
 

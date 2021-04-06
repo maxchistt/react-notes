@@ -8,7 +8,7 @@ const classes = {
 }
 export const ModalContext = React.createContext()
 function Modal(props) {
-    
+
     const [isOpen, setOpenState] = React.useState(false)
     const Component = props.component
     const ComponentProps = props.componentProps
@@ -44,8 +44,8 @@ function Modal(props) {
 }
 
 Modal.propTypes = {
-    componentProps: PropTypes.object,
-    index: PropTypes.number
+    component: PropTypes.func,
+    componentProps: PropTypes.object
 }
 
 export default Modal
