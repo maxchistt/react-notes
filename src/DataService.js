@@ -99,28 +99,38 @@ export default function DataService() {
     ////////////////////////////////////////////////////////////
     function loadData() {
         return new Promise((res, rej) => {
-            (user === null
-                ? rej()
-                : requestGetData())
-                .then((d) => {
-                    let data = tryParce(d)//here we parce json
-                    //console.log("[DATA] from loadData(): ", data)
-                    res(data || [])
-                }, rej)
-                .catch(rej)
+            try {
+                (user === null
+                    ? Promise.reject(rej())
+                    : requestGetData())
+                    .then((d) => {
+                        let data = tryParce(d)//here we parce json
+                        //console.log("[DATA] from loadData(): ", data)
+                        res(data || [])
+                    }, rej)
+                    .catch(rej)
+            } catch (e) {
+                rej(e)
+                console.error(e)
+            }
         })
     }
 
     function postData(data) {
         return new Promise((res, rej) => {
-            (user === null
-                ? rej()
-                : loadData())
-                .then((d) => {
-                    let pDat = data === null ? (d || []) : data
-                    requestPostData(pDat).then(res, rej)
-                }, rej)
-                .catch(rej)
+            try {
+                (user === null
+                    ? Promise.reject(rej())
+                    : loadData())
+                    .then((d) => {
+                        let pDat = data === null ? (d || []) : data
+                        requestPostData(pDat).then(res, rej)
+                    }, rej)
+                    .catch(rej)
+            } catch (e) {
+                rej(e)
+                console.error(e)
+            }
         })
     }
     ////////////////////////////////////////////////////////////
