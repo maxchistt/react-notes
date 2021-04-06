@@ -5,6 +5,7 @@ import CardList from './Cards/CardList'
 import AddCard from './Cards/AddCard'
 import Context from './context'
 import Loader from './Content/Loader'
+import ModalCardEdit from './Modal/ModalCardEdit'
 import Modal from './Modal/Modal'
 import DataService from './DataService'
 
@@ -162,7 +163,7 @@ function App() {
         <main className="p-1">
 
           <AddCard onCreate={addCard} onDeleteAll={deleteAll} />
-          {getCardByIndex(editCardId) && <Modal card={getCardByIndex(editCardId)} index={editCardId} />}
+          <Modal component={ModalCardEdit} componentProps={{ card: getCardByIndex(editCardId), index: editCardId }} />
           {loading && <Loader />}
           {cardsArr.length ? (
             <CardList cards={cardsArr} />

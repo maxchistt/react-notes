@@ -1,4 +1,4 @@
-.edit-modal {
+.modal-window-wrapper {
   position: fixed;
   top: 0;
   right: 0;
@@ -9,9 +9,10 @@
   justify-content: center;
   align-items: center;
   z-index: 10;
+  opacity: 1;
 }
 
-.edit-modal-body {
+.modal-window-body {
   padding: 2rem;
   width: 100%;
   max-width: 620px;
@@ -20,12 +21,3 @@
   height: fit-content;
 }
 
-.edit-modal-content {
-  display: block;
-}
-
-.edit-modal-footer {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-}
