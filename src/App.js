@@ -10,39 +10,86 @@ import DataService from './DataService'
 
 const { loadData, postData, login } = DataService()
 
-const testText = "My little cards-app c:";
+const testText = "My little cards-app c:"
 
-let cardCount = 1;
-function calcCount(cardsArr) {
+var cardCount = 0
+function calcCount(cards) {
   let id = cardCount;
-  [...cardsArr].forEach(element => {
-    if (Number(element.id) >= id) id = Number(element.id) + 1
+  [...cards].forEach(element => {
+    if (Number(element.id) >= id) id = Number(element.id)
   });
   return id
 }
 
+function useCardsArr(defaultValue) {
+  const [value, setValue] = React.useState(defaultValue)
+
+  function trySetValue(cardsArr) {
+    if (checkCardsArr(cardsArr)) setValue(cardsArr)
+    else console.error('Массив cardsArr не прошел проверку \n', cardsArr)
+  }
+
+  return [value, trySetValue]
+}
+
+function checkCardsArr(cardsArr) {
+  if (!Array.isArray(cardsArr)) return false
+  else if (cardsArr.length === 0) return true
+  else {
+    //console.log('check array')
+    cardsArr.forEach((card) => {
+      if (typeof card !== "object") return false
+      else if (!checkCardFields(card)) return false
+    })
+    return true
+  }
+}
+
+function checkCardFields(card) {
+  let res = (
+    !isNaN(card.id) &&
+    typeof card.completed === "boolean" &&
+    typeof card.text === "string"
+  )
+  //console.log('check fields',!isNaN(card.id),typeof card.completed === "boolean", typeof card.text === "string",res)
+  return res
+}
+
 function App() {
-  const [cardsArr, setCards] = React.useState([])
+  const [cardsArr, setCards] = useCardsArr([])
   const [editCardId, setEditCardId] = React.useState(null)
   const [loading, setLoading] = React.useState(true)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  React.useEffect(tryLogin, [])
-  React.useEffect(loadDataFromServer, [])
-  React.useEffect(loadDataToServer, [cardsArr])
+  React.useEffect(tryLogin, []) // eslint-disable-line react-hooks/exhaustive-deps
+  React.useEffect(loadDataFromServer, []) // eslint-disable-line react-hooks/exhaustive-deps
+  React.useEffect(loadDataToServer, [cardsArr]) // eslint-disable-line react-hooks/exhaustive-deps
 
   ///////////
   function tryLogin() {
-    login().then(loadDataFromServer, alert)
+    try {
+      login().then(loadDataFromServer, alert)
+    } catch (e) {
+      console.error(e)
+    }
   }
 
   function loadDataToServer() {
     //console.log("***\n[HOOK] - loadDataToServer (onCardsArr)\n***")
-    postData(cardsArr).then(console.log, dataError)
+    try {
+      postData(cardsArr).then(console.log, dataError)
+    }
+    catch (e) {
+      console.error(e)
+    }
   }
 
   function loadDataFromServer() {
     //console.log("[HOOK]  - loadDataFromServer")
-    loadData().then(setLoadedCards, dataError)
+    try {
+      loadData().then(setLoadedCards, dataError)
+    }
+    catch (e) {
+      console.error(e)
+    }
   }
 
   function dataError(msg) {
@@ -70,13 +117,13 @@ function App() {
     setCards(
       cardsArr.concat([
         {
-          id: Number(cardCount),
+          id: Number(++cardCount),
           completed: Boolean(cardData.sel),
           text: String(cardData.text)
         }
       ])
     )
-    cardCount++
+
   }
 
   function changeCardState(index) {
