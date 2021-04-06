@@ -6,10 +6,11 @@ import AddCard from './Cards/AddCard'
 import Context from './context'
 import Loader from './Content/Loader'
 import ModalCardEdit from './Modal/ModalCardEdit'
+import ModalLogin from './Modal/ModalLogin'
 import Modal from './Modal/Modal'
 import DataService from './DataService'
 
-const { loadData, postData, login } = DataService()
+const { loadData, postData, setLogin } = DataService()
 
 const testText = "My little cards-app c:"
 
@@ -59,18 +60,35 @@ function App() {
   const [editCardId, setEditCardId] = React.useState(null)
   const [loading, setLoading] = React.useState(true)
   const [logged, setLogged] = React.useState(false)
-  React.useEffect(tryLogin, []) // eslint-disable-line react-hooks/exhaustive-deps
+  const [userName, setUserName] = React.useState(null)
+  React.useEffect(clearIfUnlogged, [logged]) // eslint-disable-line react-hooks/exhaustive-deps
   React.useEffect(loadDataFromServer, [logged]) // eslint-disable-line react-hooks/exhaustive-deps
   React.useEffect(loadDataToServer, [cardsArr]) // eslint-disable-line react-hooks/exhaustive-deps
 
-
   ///////////
-  function tryLogin() {
-    try {
-      login().then(setLogged, alert)
-    } catch (e) {
-      console.error(e)
-    }
+  function tryLogin(login) {
+    return new Promise((res, rej) => {
+      try {
+        setLogin(login)
+          .then((r => {
+            setLogged(Boolean(r))
+            setUserName(login)
+          }), console.log)
+          .then(res, rej)
+      } catch (e) {
+        rej(e)
+        console.error(e)
+      }
+    })
+  }
+
+  function dislogin() {
+    if (logged) console.log("Dislogin")
+    setLogged(null)
+  }
+
+  function clearIfUnlogged() {
+    if (logged === null && cardsArr) deleteAll()
   }
   ///////////
 
@@ -157,25 +175,25 @@ function App() {
   }
   ///////////
 
-
   return (
     <Context.Provider value={{ removeCard, changeCardState, setEditCard, unsetEditCard, editCardContent, editCardId }}>
       <div className="App">
         <header className="p-1 h2 text-center">
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="d-inline-block h2">{testText}</h1>
-          <p className="show_login" onClick={(e) => { e.target.style.opacity = e.target.style.opacity !== '0' ? '0' : '1' }}>
-            {logged && `Login: ${logged}`}
+          <p className="show_login btn btn-light py-0" onClick={(e) => { setLogged(logged === false ? 0 : false) }}>
+            {logged ? `Login: ${userName}` : "LOG IN"}
           </p>
         </header>
 
         <main className="p-1">
           <AddCard onCreate={addCard} onDeleteAll={deleteAll} />
+          <Modal component={ModalLogin} componentProps={{ logged: logged, login: tryLogin, dislogin: dislogin, userName: userName }} />
           <Modal component={ModalCardEdit} componentProps={{ card: getCardByIndex(editCardId), index: editCardId }} />
           {loading && <Loader />}
           {cardsArr.length ? (
             <CardList cards={cardsArr} />
-          ) : loading ? null : (
+          ) : loading && !logged ? null : (
             <div className="container text-center">
               <p className="m-3 p-3 h5 text-muted">No cards. You can add a new one!</p>
             </div>

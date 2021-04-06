@@ -7,37 +7,11 @@ export default function DataService() {
     //let recuestCount = 1;
 
     ////////////////////////////////////////////////////////////
-    function login() {
-        return new Promise((submit, dismiss) => {
-            function tryLogin(def) {
-                let input = prompt(def ? "Исправьте логин" : "Введите логин", def || "")
-                input === null
-                    ? onDismiss()
-                    : checkLogin(input.trim())
-                        ? onLogin(input.trim())
-                        : tryLogin(input.trim())
-            }
-            function onLogin(username) {
-                user = username
-                submit(username)
-                console.log('Login:', user)
-            }
-            function onDismiss() {
-                user = null
-                dismiss("Вы не залогинились")
-                console.log('Login dismissed')
-            }
-            $(() => tryLogin())
-        })
-    }
-
-    function checkLogin(str) {
-        try {
-            let filtered = str.replace(/@|;|:|\.|,|\/|\\|\||\$|\?|!|#|%|\*|\^|\+|=|\[|\]| |\\ |«|<|>/gi, "").trim()
-            return (filtered && filtered.length > 3 && filtered.length < 20 && filtered === str)
-        } catch {
-            return false
-        }
+    function setLogin(login) {
+        if (login && typeof login === "string") {
+            user = login
+            return Promise.resolve(user)
+        } else return Promise.reject(login)
     }
     ////////////////////////////////////////////////////////////
 
@@ -132,5 +106,5 @@ export default function DataService() {
     }
     ////////////////////////////////////////////////////////////
 
-    return { loadData, postData, login }
+    return { loadData, postData, setLogin }
 }
