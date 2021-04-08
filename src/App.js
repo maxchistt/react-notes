@@ -199,9 +199,15 @@ function App() {
               <img src={logo} className="App-logo" alt="logo" />
               <h1 className="h2 m-0">{testText}</h1>
             </div>
-            <div className="text-center d-flex p-1 align-items-center ml-auto">
-              <button className="btn btn-light " onClick={() => setOpenLogin(true)}>
-                {logged ? `Login: ${userName}` : "LOG IN"}
+            <div className="text-center d-flex p-0 align-items-center flex-wrap ml-auto">
+              {logged &&
+                <button className="btn btn-light m-1" onClick={loadDataFromServer}>
+                  <i className="bi bi-arrow-clockwise px-1"></i>
+                  <span className='d-lg-inline d-none'>Update data</span>
+                </button>
+              }
+              <button className="btn btn-light m-1" onClick={() => setOpenLogin(true)}>
+                {logged ? `Login: ${userName}` : <span><i className="bi bi-arrow-right-circle"></i> LOG IN</span>}
               </button>
             </div>
           </nav>

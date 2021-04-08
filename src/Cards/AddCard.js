@@ -49,11 +49,11 @@ function AddCard({ onCreate, onDeleteAll }) {
                 </div>
 
                 <div className="col-lg-2 col-md-3 col-sm-4 col-6 p-1">
-                    <button className="btn btn-success btn-block" onClick={submitHandler}>Add card</button>
+                    <button className="btn btn-success btn-block" onClick={submitHandler}><i className="bi bi-clipboard-plus"></i> Add card</button>
                 </div>
 
                 <div className="col-lg-2 col-md-3 col-sm-4 col-6 p-1">
-                    <button className="btn btn-danger btn-block" onClick={onDeleteAll}>Delete All</button>
+                    <button className="btn btn-danger btn-block" onClick={onDeleteAll}><i className="bi bi-x-square"></i> Delete All</button>
                 </div>
 
             </div>
