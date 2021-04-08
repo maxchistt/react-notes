@@ -85,14 +85,12 @@ function ModalLogin(props) {
     return (
         <Modal {...modalProps.bind()}>
             <div className="container p-3 bg-light">
-
                 <div className='bg-light form-group mb-2'>
                     <div className='mb-1'>
-
-                        {userName ? <span>Login: {userName} </span> : ``}
-                        <span className={logged ? `badge badge-success` : `badge badge-danger`}>
+                        <span className={logged ? `badge badge-success` : `badge badge-secondary`}>
                             {logged ? <span><i className="bi bi-key"> </i>AUTORISED</span> : 'UNAUTORISED'}
                         </span>
+                        {userName ? <span> {userName} </span> : ``}
                     </div>
                 </div>
 
@@ -114,10 +112,10 @@ function ModalLogin(props) {
                         <button className="btn btn-primary col" onClick={tryLogin}><i className="bi bi-person-check"></i> Log in</button>
                     </div>
                     <div className="col col-sm-4 col-md-4 p-1">
-                        <button className="btn btn-danger col" onClick={tryLogout}><i className="bi bi-person-x"></i> Logout</button>
+                        <button disabled={!logged} className="btn btn-danger col" onClick={tryLogout}><i className="bi bi-person-x"></i> Logout</button>
                     </div>
-                    <div className="col-5  col-sm-4 col-md-3 p-1">
-                        <button className="btn btn-secondary col" onClick={tryClose}><i className="bi bi-x"></i> Close</button>
+                    <div className="col-4 col-sm-4 col-md-3 p-1">
+                        <button className="btn btn-secondary col" onClick={tryClose}><i className="bi bi-x d-inline d-sm-none"></i><span className="d-none d-sm-inline">Close</span></button>
                     </div>
                 </div>
 

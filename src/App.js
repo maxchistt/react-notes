@@ -207,7 +207,7 @@ function App() {
                 </button>
               }
               <button className="btn btn-light m-1" onClick={() => setOpenLogin(true)}>
-                {logged ? `Login: ${userName}` : <span><i className="bi bi-arrow-right-circle"></i> LOG IN</span>}
+                {logged ? <span><i className="bi bi-person"></i> {userName}</span> : <span><i className="bi bi-arrow-right-circle"></i> LOG IN</span>}
               </button>
             </div>
           </nav>
