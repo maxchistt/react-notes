@@ -192,7 +192,7 @@ function App() {
 
   return (
     <Context.Provider value={{ removeCard, changeCardState, setEditCard, unsetEditCard, editCardContent, editCardId }}>
-      <div className="App">
+      <div className="App pb-3 mb-3">
         <header className="p-1">
           <nav className="d-flex container px-0 flex-wrap-reverse">
             <div className="text-center d-flex p-1 align-items-center justify-content-center flex-wrap">
@@ -214,7 +214,7 @@ function App() {
           <ModalLogin login={tryLogin} logout={tryLogout} logged={logged} userName={userName} isOpen={openLogin} setOpenState={setOpenLogin} />
         </header>
 
-        <main className="p-1">
+        <main className="p-1 pb-3 mb-3">
           <AddCard onCreate={addCard} onDeleteAll={deleteAll} />
           <ModalCardEdit card={getCardByIndex(editCardId)} index={editCardId} />
 
