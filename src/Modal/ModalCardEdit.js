@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import Context from '../context'
 import TextareaAutosize from 'react-textarea-autosize'
-import { ModalContext } from "./Modal"
+import Modal, { ModalProps } from "./Modal"
 
 function calcMaxRows() {
     const small = 576
@@ -19,80 +19,111 @@ function calcMaxRows() {
 
 function ModalCardEdit(props) {
     const { removeCard, changeCardState, unsetEditCard, editCardContent } = React.useContext(Context)
-    const { open, close, isOpen } = React.useContext(ModalContext)
-    useEffect(() => { if (props.card !== null && !isOpen) open() }, [props.card]) // eslint-disable-line react-hooks/exhaustive-deps
+    const { card, index } = props
+
+    React.useEffect(() => { if (card !== null) open() }, [card])
+
+    const [showForm, setShowForm] = React.useState(false)
+
+    const modalProps = new ModalProps()
+    modalProps.isOpen = showForm
+    modalProps.setOpenState = setShowForm
+    modalProps.sideClose = true
+    modalProps.onSideClick = unsetEditCard
 
 
-    function onClose() {
-        unsetEditCard()
-        close()
+    function open() {
+        setShowForm(true)
     }
+
+    function close() {
+        setShowForm(false)
+    }
+
+    /////
+
     function save(text) {
-        editCardContent(props.index, text)
+        editCardContent(index, text)
     }
     function onInputCange(e) {
         save(e.target.value)
     }
-    function onRemove() {
+
+    function tryStateChange() {
+        changeCardState(index)
+    }
+    function tryRemove() {
         unsetEditCard();
         close();
-        removeCard(props.index);
+        removeCard(index);
     }
-    function onStateChange() {
-        changeCardState(props.index)
+    function tryClose() {
+        unsetEditCard()
+        close()
     }
 
     return (
-        <React.Fragment>
-            <div className='bg-light'>
-                {props.card ? (
-                    <React.Fragment>
-                        <h1 className="mb-2">Id: {props.card.id}</h1>
-                        <h5 className="mb-2">Completed:
-                                        <span className="px-2 py-1 m-1 d-inline-block text-center" style={{ borderRadius: "5px", width: "3em", color: "white", backgroundColor: props.card.completed ? "green" : "red" }}>
-                                {String(props.card.completed)}
-                            </span>
-                        </h5>
-                        <TextareaAutosize
-                            className="form-control p-0 mb-2 bg-light"
-                            style={{ border: "none", outline: "none", boxShadow: "none", resize: "none" }}
-                            minRows={3}
-                            maxRows={calcMaxRows()}
-                            value={props.card.text}
-                            onChange={onInputCange}
-                        />
-                    </React.Fragment>
-                ) : (
-                    <h1>No card</h1>
-                )}
-            </div>
-            <div style={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap" }} className='bg-light'>
+        <Modal {...modalProps.bind()}>
+            <div className="container p-2">
+
                 <div>
-                    <button
-                        className="btn btn-light mx-1"
-                        disabled={!props.card}
-                        onClick={onStateChange}
-                    >&#10003;</button>
-                    <button
-                        className="btn btn-light"
-                        disabled={!props.card}
-                        onClick={onRemove}
-                    >&#10007;</button>
+                    {card ? (
+                        <React.Fragment>
+                            <h1 className="mb-2">Id: {card.id}</h1>
+                            <h5 className="mb-2">Completed:
+                            <span
+                                    className={`px-2 py-1 m-1 d-inline-block text-center badge ${card.completed ? "badge-success" : "badge-danger"}`}
+                                    style={{ width: "3em" }}
+                                >
+                                    {String(card.completed)}
+                                </span>
+                            </h5>
+                            <TextareaAutosize
+                                className="form-control p-0 mb-2 bg-light"
+                                style={{ border: "none", outline: "none", boxShadow: "none", resize: "none" }}
+                                minRows={3}
+                                maxRows={calcMaxRows()}
+                                value={card.text}
+                                onChange={onInputCange}
+                            />
+                        </React.Fragment>
+                    ) : (
+                        <h1>No card</h1>
+                    )}
                 </div>
-                <div>
-                    <button
-                        className="btn btn-light"
-                        onClick={onClose}
-                    >Close</button>
+
+                <div style={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap" }}>
+                    <div>
+                        <button
+                            className="btn btn-light mx-1"
+                            disabled={!card}
+                            onClick={tryStateChange}
+                        >&#10003;</button>
+                        <button
+                            className="btn btn-light"
+                            disabled={!card}
+                            onClick={tryRemove}
+                        >&#10007;</button>
+                    </div>
+                    <div>
+                        <button
+                            className="btn btn-light"
+                            onClick={tryClose}
+                        >Close</button>
+                    </div>
                 </div>
+
             </div>
-        </React.Fragment>
+        </Modal>
     )
 }
 
 ModalCardEdit.propTypes = {
     card: PropTypes.object,
-    index: PropTypes.number
+    index: PropTypes.number,
+
+    //isOpen: PropTypes.bool,
+    //setOpenState: PropTypes.func
 }
 
 export default ModalCardEdit

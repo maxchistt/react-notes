@@ -50,13 +50,3 @@
     transform: rotate(360deg);
   }
 }
-
-.show_login {
-  position:absolute;
-  top:1em;
-  right: 1em;
-  font-size:small;
-  color:lightgray;
-  transition: 1s;
-}
-

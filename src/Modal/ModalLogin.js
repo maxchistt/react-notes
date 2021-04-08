@@ -1,89 +1,127 @@
-import React from 'react'
-import { ModalContext } from "./Modal"
+import React from "react"
+import Modal, { ModalProps } from "./Modal"
 import PropTypes from 'prop-types'
+
+function checkUsername(str) {
+    return str && typeof str === 'string' && str.length > 3 && str.length < 20 && str === validateUsername(str)
+}
+
+function validateUsername(str) {
+    return String(str).replace(/@|;|:|\.|,|\/|\\|\||\$|\?|!|#|%|\*|\^|\+|=|\[|\]| |\\ |«|<|>/gi, "").trim()
+}
 
 function useInputValue(defaultValue) {
     const [value, setValue] = React.useState(defaultValue)
 
     return {
         bind: {
-            value,
+            value: value,
             onChange: event => setValue(event.target.value)
         },
-        clear: () => setValue(defaultValue),
-        value: () => value
-    }
-}
-
-function checkLogin(str) {
-    try {
-        if (str === null) {
-            return false
-        }
-        else {
-            let filtered = str.replace(/@|;|:|\.|,|\/|\\|\||\$|\?|!|#|%|\*|\^|\+|=|\[|\]| |\\ |«|<|>/gi, "").trim()
-            return (filtered && filtered.length > 3 && filtered.length < 20 && filtered === str)
-        }
-    } catch {
-        return false
+        clear: () => setValue(""),
+        value: value
     }
 }
 
 function ModalLogin(props) {
-    const input = useInputValue(props.userName || "")
-    const { open, close, isOpen } = React.useContext(ModalContext)
-    const [msg, setMsg] = React.useState("Введите логин")
-    React.useEffect(() => { if (!props.logged && props.logged !== null && !isOpen) open() }, [props.logged]) // eslint-disable-line react-hooks/exhaustive-deps
+    const { login, logout, logged, userName, isOpen, setOpenState } = props
 
-    function onClose() {
-        closeAndClear()
-        onDismiss()
+    const input = useInputValue("")
+
+    const modalProps = new ModalProps()
+    modalProps.isOpen = isOpen
+    modalProps.setOpenState = setOpenState
+    modalProps.sideClose = true
+
+    const [labelAlert, setLabelAlert] = React.useState("");
+
+    // eslint-disable-next-line no-unused-vars
+    function open() {
+        setOpenState(true)
     }
 
-    function closeAndClear() {
+    function close() {
+        clearInput()
+        setOpenState(false)
+    }
+
+    function clearInput() {
         input.clear()
+        setLabelAlert("")
+    }
+
+    function tryLogin() {
+        if (checkUsername(input.value)) {
+            login(input.value.trim())
+                .then((name) => {
+                    close()
+                    console.log('Login:', name)
+                })
+                .catch((err) => {
+                    console.log("Не удалось залогиниться")
+                    console.log(err)
+                    setLabelAlert(<div className="alert alert-danger my-1" role="alert">
+                        Не удалось залогиниться {err && <span className={`badge badge-danger`}>{String(err)}</span>}
+                    </div>)
+                })
+        } else if (input.value) {
+            setLabelAlert(<div className="alert alert-warning my-1" role="alert">Исправьте логин</div>)
+        } else {
+            setLabelAlert(<div className="alert alert-info my-1" role="alert">Поле "Логин" не должно быть пустым</div>)
+        }
+    }
+
+    function tryLogout() {
+        //close()
+        logout()
+        console.log('Logged out')
+    }
+
+    function tryClose() {
+        setLabelAlert("")
         close()
     }
 
-    function onLogin(username) {
-        closeAndClear()
-        console.log('Login:', username)
-    }
-
-    function onDismiss() {
-        props.dislogin()
-        console.log('Login dismissed')
-    }
-
-    function tryLogin(value) {
-        return new Promise((res, rej) => {
-            try {
-                if (checkLogin(value.trim())) props.login(value.trim()).then(res, rej)
-                else rej(value)
-            } catch (e) {
-                rej(e)
-                console.error(e)
-            }
-        })
-    }
-
-    function submitHandler() {
-        if (String(input.value()).trim()) {
-            tryLogin(String(input.value()).trim()).then(onLogin, () => setMsg("Исправьте логин"))
-        } else setMsg("Введите логин")
-    }
-
     return (
-        <React.Fragment>
-            <div className='bg-light form-group'>
-                <label htmlFor="login">{msg}</label>
-                <input type="text" className="form-control" placeholder="Login" id="login" {...input.bind} />
+        <Modal {...modalProps.bind()}>
+            <div className="container p-3 bg-light">
+
+                <div className='bg-light form-group mb-2'>
+                    <div className='mb-1'>
+                        {userName ? `Login: "${userName}" ` : ``}
+                        <span className={logged ? `badge badge-success` : `badge badge-danger`}>
+                            {logged ? 'AUTORISED' : 'UNAUTORISED'}
+                        </span>
+                    </div>
+                </div>
+
+                <div className='bg-light form-group'>
+                    {labelAlert}
+                    <label htmlFor="login">Логин</label>
+                    <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Введите логин"
+                        id="login"
+                        onKeyPress={e => e.key === 'Enter' && tryLogin()}
+                        {...input.bind}
+                    />
+                </div>
+
+                <div className='bg-light form-group form-row'>
+                    <div className="col">
+                        <button className="btn btn-primary col" onClick={tryLogin}>Log in</button>
+                    </div>
+                    <div className="col">
+                        <button className="btn btn-danger col" onClick={tryLogout}>Logout</button>
+                    </div>
+                    <div className="col">
+                        <button className="btn btn-secondary col" onClick={tryClose}>Close</button>
+                    </div>
+                </div>
+
             </div>
-            <div className='bg-light form-group form-row'>
-                <button className="btn btn-primary col m-1" onClick={submitHandler}>Log in</button>
-                <button className="btn btn-danger col m-1" onClick={onClose}>Close</button>
-            </div>
-        </React.Fragment>
+        </Modal>
     )
 }
 
@@ -91,7 +129,10 @@ ModalLogin.propTypes = {
     logged: PropTypes.oneOfType([PropTypes.bool, PropTypes.number]),
     userName: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
     login: PropTypes.func,
-    dislogin: PropTypes.func
+    logout: PropTypes.func,
+
+    isOpen: PropTypes.bool,
+    setOpenState: PropTypes.func
 }
 
 export default ModalLogin

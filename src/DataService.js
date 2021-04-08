@@ -7,11 +7,22 @@ export default function DataService() {
     //let recuestCount = 1;
 
     ////////////////////////////////////////////////////////////
-    function setLogin(login) {
-        if (login && typeof login === "string") {
-            user = login
-            return Promise.resolve(user)
-        } else return Promise.reject(login)
+    function setDataServLogin(login) {
+        return new Promise((res, rej) => {
+            if (login && typeof login === "string") {
+                user = login
+                //console.log("data serv login set")
+                res(user)
+            } else if (login === null) {
+                user = null
+                //console.log("data serv dislogin")
+                res()
+            } else {
+                //console.log("data serv cant set login", login)
+                rej(login)
+            }
+        }).catch(e => { console.log("data serv login not set", e); return e })
+
     }
     ////////////////////////////////////////////////////////////
 
@@ -65,6 +76,30 @@ export default function DataService() {
         }
         return value;
     }
+
+    function checkData(data) {
+        //console.log('start check data')
+        const checkCard = (card) => {
+            return !(
+                (typeof card.id === "number" || typeof card.id === "string") &&
+                !isNaN(card.id) && typeof card.completed === "boolean" &&
+                typeof card.text === "string"
+            )
+        }
+        const checkArr = (arr) => {
+            let res = true
+            arr.forEach(element => {
+                if (checkCard(element)) res = false
+            })
+            return res
+        }
+        try {
+            return data === null || data === [] || checkArr(data)
+        } catch {
+            return false
+        }
+
+    }
     ////////////////////////////////////////////////////////////
 
     ////////////////////////////////////////////////////////////
@@ -77,7 +112,15 @@ export default function DataService() {
                     .then((d) => {
                         let data = tryParce(d)//here we parce json
                         //console.log("[DATA] from loadData(): ", data)
-                        res(data || [])
+                        if (!checkData(data)) {
+                            console.error("[loadData] Bad data format", data)
+                            if (user !== null) {
+                                console.log('clear data')
+                                requestPostData([{ id: 0, completed: false, text: "Данные были очищены из за ошибки" }]).then(() => loadData().then(res, rej), rej)//очистка данных
+                            } else rej("Not format data & unlogged")
+                        } else {
+                            res(data || [])
+                        }
                     }, rej)
                     .catch(rej)
             } catch (e) {
@@ -106,5 +149,5 @@ export default function DataService() {
     }
     ////////////////////////////////////////////////////////////
 
-    return { loadData, postData, setLogin }
+    return { loadData, postData, setDataServLogin }
 }

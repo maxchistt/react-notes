@@ -7,11 +7,9 @@ import Context from './context'
 import Loader from './Content/Loader'
 import ModalCardEdit from './Modal/ModalCardEdit'
 import ModalLogin from './Modal/ModalLogin'
-import Modal from './Modal/Modal'
 import DataService from './DataService'
 
-const { loadData, postData, setLogin } = DataService()
-
+const { loadData, postData, setDataServLogin } = DataService()
 const testText = "My little cards-app c:"
 
 var cardCount = 0
@@ -55,49 +53,69 @@ function checkCardFields(card) {
   return res
 }
 
+var timer
+
 function App() {
   const [cardsArr, setCards] = useCardsArr([])
   const [editCardId, setEditCardId] = React.useState(null)
-  const [loading, setLoading] = React.useState(true)
+  const [loading, setLoading] = React.useState(false)
   const [logged, setLogged] = React.useState(false)
-  const [userName, setUserName] = React.useState(null)
-  React.useEffect(clearIfUnlogged, [logged]) // eslint-disable-line react-hooks/exhaustive-deps
-  React.useEffect(loadDataFromServer, [logged]) // eslint-disable-line react-hooks/exhaustive-deps
+  const [userName, setUserName] = React.useState(undefined)
+
+  const [timerVal, setTimerVal] = React.useState(null)
+  if (timer) clearInterval(timer)
+  timer = setInterval(() => setTimerVal(Date.now()), 60 * 1000) // обновяем через минуту
+  React.useEffect(onLogout, [logged, userName])// eslint-disable-line react-hooks/exhaustive-deps
+  React.useEffect(loadDataFromServer, [logged, userName, timerVal]) // eslint-disable-line react-hooks/exhaustive-deps
   React.useEffect(loadDataToServer, [cardsArr]) // eslint-disable-line react-hooks/exhaustive-deps
+  const [openLogin, setOpenLogin] = React.useState(false)
 
   ///////////
   function tryLogin(login) {
     return new Promise((res, rej) => {
-      try {
-        setLogin(login)
-          .then((r => {
-            setLogged(Boolean(r))
-            setUserName(login)
-          }), console.log)
-          .then(res, rej)
-      } catch (e) {
-        rej(e)
-        console.error(e)
-      }
+      tryLogout()
+        .then(() => {
+          setDataServLogin(login)
+            .then(
+              r => {
+                setLogged(Boolean(r))
+                setUserName(login)
+                res(r)
+              }
+            )
+            .catch(
+              e => {
+                console.log("setDataServLogin in Try login", "catch", e);
+                rej(e)
+              }
+            )
+        })
+        .catch((e) => console.log("logout catch in tryLogin", e))
     })
   }
 
-  function dislogin() {
-    if (logged) console.log("Dislogin")
-    setLogged(null)
+  function tryLogout() {
+    return new Promise((res) => {
+      if (logged) console.log("Dislogin")
+      let result = setDataServLogin(null)
+      setUserName(undefined)
+      setLogged(false)
+      result.then(onLogout, onLogout).then(res, res).then(onLogout).catch(e => console.log("Data service dislogif failed", e))
+    })
   }
 
-  function clearIfUnlogged() {
-    if (logged === null && cardsArr) deleteAll()
+  function onLogout() {
+    if (!logged && !!cardsArr) deleteAll()
   }
   ///////////
 
   ///////////
   function loadDataToServer() {
     try {
-      if (logged) postData(cardsArr).then((res) => {
-        console.log('[onPostData]', res)
-      }, dataError)
+      if (logged && userName) postData(cardsArr)
+        .then((res) => {
+          console.log('[onPostData]', res)
+        }, e => console.log(`Data post request error. Response: ${e}`))
     }
     catch (e) {
       console.error(e)
@@ -106,22 +124,19 @@ function App() {
 
   function loadDataFromServer() {
     try {
-      if (logged) {
+      if (logged && userName) {
         setLoading(true)
-        loadData().then(data => {
-          console.log('[onLoadData]', 'Данные с сервера загружены')
-          setLoadedCards(data)
-          setLoading(false)
-        }, dataError)
+        loadData()
+          .then(data => {
+            console.log('[onLoadData]', 'Данные с сервера загружены')
+            setLoadedCards(data)
+            setLoading(false)
+          }, e => console.log(`Data load request error. Response: ${e}`))
       }
     }
     catch (e) {
       console.error(e)
     }
-  }
-
-  function dataError(msg) {
-    console.log(`Data request error. Response: ${msg}`)
   }
   ///////////
 
@@ -178,26 +193,38 @@ function App() {
   return (
     <Context.Provider value={{ removeCard, changeCardState, setEditCard, unsetEditCard, editCardContent, editCardId }}>
       <div className="App">
-        <header className="p-1 h2 text-center">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="d-inline-block h2">{testText}</h1>
-          <p className="show_login btn btn-light py-0" onClick={(e) => { setLogged(logged === false ? 0 : false) }}>
-            {logged ? `Login: ${userName}` : "LOG IN"}
-          </p>
+        <header className="p-1">
+          <nav className="d-flex container px-0 flex-wrap-reverse">
+            <div className="text-center d-flex p-1 align-items-center justify-content-center flex-wrap">
+              <img src={logo} className="App-logo" alt="logo" />
+              <h1 className="h2 m-0">{testText}</h1>
+            </div>
+            <div className="text-center d-flex p-1 align-items-center ml-auto">
+              <button className="btn btn-light " onClick={() => setOpenLogin(true)}>
+                {logged ? `Login: ${userName}` : "LOG IN"}
+              </button>
+            </div>
+          </nav>
+          <ModalLogin login={tryLogin} logout={tryLogout} logged={logged} userName={userName} isOpen={openLogin} setOpenState={setOpenLogin} />
         </header>
 
         <main className="p-1">
           <AddCard onCreate={addCard} onDeleteAll={deleteAll} />
-          <Modal component={ModalLogin} componentProps={{ logged: logged, login: tryLogin, dislogin: dislogin, userName: userName }} />
-          <Modal component={ModalCardEdit} componentProps={{ card: getCardByIndex(editCardId), index: editCardId }} />
-          {loading && <Loader />}
+          <ModalCardEdit card={getCardByIndex(editCardId)} index={editCardId} />
+
           {cardsArr.length ? (
             <CardList cards={cardsArr} />
-          ) : loading && !logged ? null : (
+          ) : loading ? null : logged ? (
             <div className="container text-center">
               <p className="m-3 p-3 h5 text-muted">No cards. You can add a new one!</p>
             </div>
+          ) : (
+            <div className="container text-center">
+              <p className="m-3 p-3 h5 text-muted">Unlogged</p>
+            </div>
           )}
+
+          {loading && <Loader />}
         </main>
       </div>
     </Context.Provider>

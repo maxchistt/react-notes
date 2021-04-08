@@ -13,11 +13,8 @@
 }
 
 .modal-window-body {
-  padding: 2rem;
   width: 100%;
   max-width: 620px;
-  border-radius: 5px;
-  background: #fff;
   height: fit-content;
 }
 
