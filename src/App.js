@@ -10,7 +10,7 @@ import ModalLogin from './Modal/ModalLogin'
 import DataService from './DataService'
 
 const { loadData, postData, setDataServLogin } = DataService()
-const testText = "My little cards-app c:"
+const testText = "Notes App"
 
 var cardCount = 0
 function calcCount(cards) {
@@ -131,10 +131,14 @@ function App() {
             console.log('[onLoadData]', 'Данные с сервера загружены')
             setLoadedCards(data)
             setLoading(false)
-          }, e => console.log(`Data load request error. Response: ${e}`))
+          }, e => {
+            console.log(`Data load request error. Response: ${e}`)
+            setLoading(false)
+          })
       }
     }
     catch (e) {
+      setLoading(false)
       console.error(e)
     }
   }
@@ -197,7 +201,7 @@ function App() {
           <nav className="d-flex container px-0 flex-wrap-reverse">
             <div className="text-center d-flex p-1 align-items-center justify-content-center flex-wrap">
               <img src={logo} className="App-logo" alt="logo" />
-              <h1 className="h2 m-0">{testText}</h1>
+              <h1 className="h2 m-0 text-dark">{testText}</h1>
             </div>
             <div className="text-center d-flex p-0 align-items-center flex-wrap ml-auto">
               {logged &&
