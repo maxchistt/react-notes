@@ -65,9 +65,9 @@ function ModalLogin(props) {
                     </div>)
                 })
         } else if (input.value) {
-            setLabelAlert(<div className="alert alert-warning my-1" role="alert">Исправьте логин</div>)
+            setLabelAlert(<div className="alert alert-warning my-1" role="alert">{input.value.length > 3 ? "Исправьте логин" : "Слишком короткий логин"}</div>)
         } else {
-            setLabelAlert(<div className="alert alert-info my-1" role="alert">Поле "Логин" не должно быть пустым</div>)
+            setLabelAlert(<div className="alert alert-info my-1" role="alert">Поле "Username" не должно быть пустым</div>)
         }
     }
 
@@ -96,7 +96,7 @@ function ModalLogin(props) {
 
                 <div className='bg-light form-group'>
                     {labelAlert}
-                    <label htmlFor="login">Логин</label>
+                    <label htmlFor="login">Username</label>
                     <input
                         type="text"
                         className="form-control"

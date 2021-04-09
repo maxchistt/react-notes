@@ -27,15 +27,15 @@ function CardItem(props) {
 
                 <div className="card-body pt-0">
                     <button
-                        className="btn btn-light p-0"
-                        style={{ width: "1.8em", height: "1.8em", float: "right" }}
+                        className={`btn btn-${props.card.completed ? "success" : "danger"} p-0`}
+                        style={{ width: "1.8em", height: "1.8em", float: "right", borderColor: "transparent" }}
                         onClick={() => removeCard(props.index)}
                     >
                         &#10007;
                     </button>
                     <button
-                        className="btn btn-light p-0 mx-2"
-                        style={{ width: "1.8em", height: "1.8em", float: "right" }}
+                        className={`btn btn-${props.card.completed ? "success" : "danger"} p-0 mx-2`}
+                        style={{ width: "1.8em", height: "1.8em", float: "right", borderColor: "transparent" }}
                         onClick={() => changeCardState(props.index)}
                     >
                         &#10003;
