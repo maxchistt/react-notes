@@ -4,10 +4,9 @@ export default function DataService() {
     var user = null
     const deploy = true
     const url = deploy ? 'http://php-server-notes.std-1033.ist.mospolytech.ru/' : 'http://php-server-notes/'
-    //let recuestCount = 1;
 
     ////////////////////////////////////////////////////////////
-    function setDataServLogin(login) {
+    function updDataServLogin(login) {
         return new Promise((res, rej) => {
             if (login && typeof login === "string") {
                 user = login
@@ -15,18 +14,18 @@ export default function DataService() {
                 res(user)
             } else if (login === null) {
                 user = null
-                //console.log("data serv dislogin")
+                //console.log("data serv login unset")
                 res()
             } else {
                 //console.log("data serv cant set login", login)
                 rej(login)
             }
-        }).catch(e => { console.log("data serv login not set", e); return e })
-
+        })
     }
     ////////////////////////////////////////////////////////////
 
     ////////////////////////////////////////////////////////////
+    //let recuestCount = 1;
     function request(target, data) {
         //const rc = recuestCount++
         //console.log(` \nrequest ${rc} - "${target}" started \n params - user:"${user}" data:"${data}"`)
@@ -121,7 +120,7 @@ export default function DataService() {
                         } else {
                             res(data || [])
                         }
-                    }, rej)
+                    })
                     .catch(rej)
             } catch (e) {
                 rej(e)
@@ -139,7 +138,7 @@ export default function DataService() {
                     .then((d) => {
                         let pDat = data === null ? (d || []) : data
                         requestPostData(pDat).then(res, rej)
-                    }, rej)
+                    })
                     .catch(rej)
             } catch (e) {
                 rej(e)
@@ -149,5 +148,5 @@ export default function DataService() {
     }
     ////////////////////////////////////////////////////////////
 
-    return { loadData, postData, setDataServLogin }
+    return { loadData, postData, updDataServLogin }
 }

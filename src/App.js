@@ -9,7 +9,8 @@ import ModalCardEdit from './Cards/ModalCardEdit'
 import ModalLogin from './Login/ModalLogin'
 import DataService from './Services/DataService'
 
-const { loadData, postData, setDataServLogin } = DataService()
+const { loadData, postData, updDataServLogin } = DataService()
+
 const testText = "Notes App"
 
 var cardCount = 0
@@ -58,7 +59,10 @@ function useUpdater() {
   const [updaterVal, setUpdaterVal] = React.useState(null)
   const timer = React.useRef()
   if (timer.current) clearTimeout(timer.current)
-  timer.current = setTimeout(() => setUpdaterVal(Date.now()), 60 * 1000) // обновяем через минуту
+  timer.current = setTimeout(() => {
+    console.log("Timed update")
+    setUpdaterVal(Date.now())
+  }, 60 * 1000) // обновяем через минуту
   return [updaterVal]
 }
 
@@ -73,45 +77,53 @@ function App() {
 
   const [updaterVal] = useUpdater()
 
-  React.useEffect(onLogout, [logged, userName])// eslint-disable-line react-hooks/exhaustive-deps
   React.useEffect(loadDataFromServer, [logged, userName, updaterVal]) // eslint-disable-line react-hooks/exhaustive-deps
   React.useEffect(loadDataToServer, [cardsArr]) // eslint-disable-line react-hooks/exhaustive-deps
+  React.useEffect(clearOldData, [logged]) // eslint-disable-line react-hooks/exhaustive-deps
 
   ///////////
-  function tryLogin(login) {
+  function onLogin(login) {
+    //console.log("onLogin", login)
     return new Promise((res, rej) => {
-      tryLogout()
+      onLogout()
         .then(() => {
-          setDataServLogin(login)
-            .then(
-              r => {
-                setLogged(Boolean(r))
-                setUserName(login)
-                res(r)
-              }
-            )
-            .catch(
-              e => {
-                console.log("setDataServLogin catch in Try login", e)
-                rej(e)
-              }
-            )
+          //console.log("onLogin", login, "onLogout.then")
+          updDataServLogin(login)
+            .then(r => {
+              //console.log("onLogin", login, "onLogout.then", "updDataServLogin.then")
+              setLogged(Boolean(r))
+              setUserName(login)
+              res(r)
+            })
+            .catch(e => {
+              //console.log("onLogin", login, "onLogout.then", "updDataServLogin.catch", e)
+              rej(e)
+            })
         })
-        .catch((e) => console.log("logout catch in tryLogin", e))
-    })
-  }
-
-  function tryLogout() {
-    return new Promise((res) => {
-      if (logged) console.log("Dislogin")
-      let result = setDataServLogin(null)
-      setUserName(undefined)
-      setLogged(false)
-      result.then(onLogout, onLogout).then(res, res).then(onLogout).catch(e => console.log("Data service dislogif failed", e))
+        .catch(e => console.log("logout catch in onLogin", e))
     })
   }
 
   function onLogout() {
+    //console.log("onLogout")
+    return new Promise((res) => {
+      updDataServLogin(null)
+        .finally(() => {
+          if (logged) {
+            //console.log("onLogout - was logged, dislogin")
+            setUserName(undefined)
+            setLogged(false)
+          } else {
+            //console.log("onLogout - also not logged")
+          }
+        })
+        .finally(res)
+        .catch(e => console.log("Data service dislogin failed", e))
+    })
+  }
+
+  function clearOldData() {
+    //console.log("clearOldData, logged:", logged)
     if (!logged && !!cardsArr) deleteAll()
   }
   ///////////
@@ -120,9 +132,10 @@ function App() {
   function loadDataToServer() {
     try {
       if (logged && userName) postData(cardsArr)
-        .then((res) => {
+        .then(res => {
           console.log('[onPostData]', res)
-        }, e => console.log(`Data post request error. Response: ${e}`))
+        })
+        .catch(e => console.log(`Data post request error. Response: ${e}`))
     }
     catch (e) {
       console.error(e)
@@ -138,7 +151,8 @@ function App() {
             console.log('[onLoadData]', 'Данные с сервера загружены')
             setLoadedCards(data)
             setLoading(false)
-          }, e => {
+          })
+          .catch(e => {
             console.log(`Data load request error. Response: ${e}`)
             setLoading(false)
           })
@@ -222,7 +236,7 @@ function App() {
               </button>
             </div>
           </nav>
-          <ModalLogin login={tryLogin} logout={tryLogout} logged={logged} userName={userName} isOpen={openLogin} setOpenState={setOpenLogin} />
+          <ModalLogin onLogin={onLogin} onLogout={onLogout} logged={logged} userName={userName} isOpen={openLogin} setOpenState={setOpenLogin} />
         </header>
 
         <main className="p-1 pb-3 mb-3">

@@ -1,6 +1,8 @@
 import React from "react"
 import Modal, { ModalProps } from "../Modal/Modal"
 import PropTypes from 'prop-types'
+import LoginService from '../Services/LoginService'
+const { logIn, logOut } = LoginService()
 
 function checkUsername(str) {
     return str && typeof str === 'string' && str.length > 3 && str.length < 20 && str === validateUsername(str)
@@ -24,7 +26,7 @@ function useInputValue(defaultValue) {
 }
 
 function ModalLogin(props) {
-    const { login, logout, logged, userName, isOpen, setOpenState } = props
+    const { onLogin, onLogout, logged, userName, isOpen, setOpenState } = props
 
     const input = useInputValue("")
 
@@ -42,18 +44,19 @@ function ModalLogin(props) {
 
     function close() {
         clearInput()
+        setLabelAlert("")
         setOpenState(false)
     }
 
     function clearInput() {
         input.clear()
-        setLabelAlert("")
     }
 
     function tryLogin() {
         if (checkUsername(input.value)) {
-            login(input.value.trim())
+            logIn(input.value.trim())
                 .then((name) => {
+                    onLogin(name)
                     close()
                     console.log('Login:', name)
                 })
@@ -72,14 +75,19 @@ function ModalLogin(props) {
     }
 
     function tryLogout() {
+        logOut()
+            .then((name) => {
+                onLogout(name)
+                console.log('Logged out')
+            })
+            .catch((err) => {
+                console.log("Не удалось разлогиниться")
+                console.log(err)
+                setLabelAlert(<div className="alert alert-danger my-1" role="alert">
+                    Не удалось разлогиниться {err && <span className={`badge badge-danger`}>{String(err)}</span>}
+                </div>)
+            })
         //close()
-        logout()
-        console.log('Logged out')
-    }
-
-    function tryClose() {
-        setLabelAlert("")
-        close()
     }
 
     return (
@@ -115,7 +123,7 @@ function ModalLogin(props) {
                         <button disabled={!logged} className="btn btn-danger col" onClick={tryLogout}><i className="bi bi-person-x"></i> Logout</button>
                     </div>
                     <div className="col-4 col-sm-4 col-md-3 p-1">
-                        <button className="btn btn-secondary col" onClick={tryClose}><i className="bi bi-x d-inline d-sm-none"></i><span className="d-none d-sm-inline">Close</span></button>
+                        <button className="btn btn-secondary col" onClick={close}><i className="bi bi-x d-inline d-sm-none"></i><span className="d-none d-sm-inline">Close</span></button>
                     </div>
                 </div>
 
