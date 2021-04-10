@@ -1,5 +1,5 @@
 import React from "react"
-import Modal, { ModalProps } from "./Modal"
+import Modal, { ModalProps } from "../Modal/Modal"
 import PropTypes from 'prop-types'
 
 function checkUsername(str) {

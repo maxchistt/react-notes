@@ -10,33 +10,35 @@ function createHTML(text) {
 
 function CardItem(props) {
     const { removeCard, changeCardState, setEditCard } = useContext(Context)
+    const { card, index } = props
     const lineClip = 12
+    const [color, btcolor] = card && card.completed ? ["green", "success"] : ["red", "danger"]
     return (
 
         <div className="p-1" >
-            <div className="card" style={{ color: "white", backgroundColor: props.card.completed ? "green" : "red" }} >
+            <div className="card" style={{ color: "white", backgroundColor: color }} >
 
-                <div className="card-body" onClick={() => setEditCard(props.index)} >
-                    <h5 className="card-title">Id: {props.card.id}</h5>
+                <div className="card-body" onClick={() => setEditCard(index)} >
+                    <h5 className="card-title">Id: {card.id}</h5>
                     <p
                         className="card-text"
                         style={{ overflow: "hidden", display: "-webkit-box", WebkitLineClamp: String(lineClip), WebkitBoxOrient: "vertical" }}
-                        dangerouslySetInnerHTML={createHTML(props.card.text)}
+                        dangerouslySetInnerHTML={createHTML(card.text)}
                     />
                 </div>
 
                 <div className="card-body pt-0">
                     <button
-                        className={`btn btn-${props.card.completed ? "success" : "danger"} p-0`}
+                        className={`btn btn-${btcolor} p-0`}
                         style={{ width: "1.8em", height: "1.8em", float: "right", borderColor: "transparent", backgroundColor: "transparent" }}
-                        onClick={() => removeCard(props.index)}
+                        onClick={() => removeCard(index)}
                     >
                         &#10007;
                     </button>
                     <button
-                        className={`btn btn-${props.card.completed ? "success" : "danger"} p-0 mx-2`}
+                        className={`btn btn-${btcolor} p-0 mx-2`}
                         style={{ width: "1.8em", height: "1.8em", float: "right", borderColor: "transparent", backgroundColor: "transparent" }}
-                        onClick={() => changeCardState(props.index)}
+                        onClick={() => changeCardState(index)}
                     >
                         &#10003;
                     </button>

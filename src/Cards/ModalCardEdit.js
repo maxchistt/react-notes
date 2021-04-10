@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Context from '../context'
 import TextareaAutosize from 'react-textarea-autosize'
-import Modal, { ModalProps } from "./Modal"
+import Modal, { ModalProps } from "../Modal/Modal"
 
 function calcMaxRows() {
     const small = 576
@@ -62,6 +62,9 @@ function ModalCardEdit(props) {
         close()
     }
 
+    // eslint-disable-next-line no-unused-vars
+    const [color, btcolor] = card&&card.completed ? ["green", "success"] : ["red", "danger"]
+
     return (
         <Modal {...modalProps.bind()}>
             <div className="container p-2">
@@ -72,7 +75,7 @@ function ModalCardEdit(props) {
                             <h1 className="mb-2">Id: {card.id}</h1>
                             <h5 className="mb-2">Completed:
                             <span
-                                    className={`px-2 py-1 m-1 d-inline-block text-center badge ${card.completed ? "badge-success" : "badge-danger"}`}
+                                    className={`px-2 py-1 m-1 d-inline-block text-center badge bage-${btcolor}`}
                                     style={{ width: "3em" }}
                                 >
                                     {String(card.completed)}

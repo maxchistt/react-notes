@@ -5,14 +5,15 @@ import CardList from './Cards/CardList'
 import AddCard from './Cards/AddCard'
 import Context from './context'
 import Loader from './Content/Loader'
-import ModalCardEdit from './Modal/ModalCardEdit'
-import ModalLogin from './Modal/ModalLogin'
-import DataService from './DataService'
+import ModalCardEdit from './Cards/ModalCardEdit'
+import ModalLogin from './Login/ModalLogin'
+import DataService from './Services/DataService'
 
 const { loadData, postData, setDataServLogin } = DataService()
 const testText = "Notes App"
 
 var cardCount = 0
+
 function calcCount(cards) {
   let id = cardCount;
   [...cards].forEach(element => {
@@ -53,22 +54,28 @@ function checkCardFields(card) {
   return res
 }
 
-var timer
+function useUpdater() {
+  const [updaterVal, setUpdaterVal] = React.useState(null)
+  const timer = React.useRef()
+  if (timer.current) clearTimeout(timer.current)
+  timer.current = setTimeout(() => setUpdaterVal(Date.now()), 60 * 1000) // обновяем через минуту
+  return [updaterVal]
+}
 
 function App() {
   const [cardsArr, setCards] = useCardsArr([])
   const [editCardId, setEditCardId] = React.useState(null)
   const [loading, setLoading] = React.useState(false)
+
+  const [openLogin, setOpenLogin] = React.useState(false)
   const [logged, setLogged] = React.useState(false)
   const [userName, setUserName] = React.useState(undefined)
 
-  const [timerVal, setTimerVal] = React.useState(null)
-  if (timer) clearInterval(timer)
-  timer = setInterval(() => setTimerVal(Date.now()), 60 * 1000) // обновяем через минуту
+  const [updaterVal] = useUpdater()
+
   React.useEffect(onLogout, [logged, userName])// eslint-disable-line react-hooks/exhaustive-deps
-  React.useEffect(loadDataFromServer, [logged, userName, timerVal]) // eslint-disable-line react-hooks/exhaustive-deps
+  React.useEffect(loadDataFromServer, [logged, userName, updaterVal]) // eslint-disable-line react-hooks/exhaustive-deps
   React.useEffect(loadDataToServer, [cardsArr]) // eslint-disable-line react-hooks/exhaustive-deps
-  const [openLogin, setOpenLogin] = React.useState(false)
 
   ///////////
   function tryLogin(login) {
@@ -85,7 +92,7 @@ function App() {
             )
             .catch(
               e => {
-                console.log("setDataServLogin in Try login", "catch", e);
+                console.log("setDataServLogin catch in Try login", e)
                 rej(e)
               }
             )
