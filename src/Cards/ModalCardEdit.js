@@ -75,7 +75,7 @@ function ModalCardEdit(props) {
                             <h1 className="mb-2">Id: {card.id}</h1>
                             <h5 className="mb-2">Completed:
                             <span
-                                    className={`px-2 py-1 m-1 d-inline-block text-center badge bage-${btcolor}`}
+                                    className={`p-1 m-1 d-inline-block text-center badge badge-${btcolor}`}
                                     style={{ width: "3em" }}
                                 >
                                     {String(card.completed)}

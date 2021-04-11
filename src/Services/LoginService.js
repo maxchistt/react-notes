@@ -1,5 +1,5 @@
 export default function DataService() {
-
+    // ПОКА ЭТО ТУПО ЗАГЛУШКА
     var user = null
 
     ////////////////////////////////////////////////////////////

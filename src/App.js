@@ -219,16 +219,16 @@ function App() {
     <Context.Provider value={{ removeCard, changeCardState, setEditCard, unsetEditCard, editCardContent, editCardId }}>
       <div className="App pb-3 mb-3">
         <header className="p-1">
-          <nav className="d-flex container px-0 flex-wrap-reverse">
+          <nav className="d-flex container px-0 flex-wrap-reverse justify-content-around">
             <div className="text-center d-flex p-1 align-items-center justify-content-center flex-wrap">
               <img src={logo} className="App-logo" alt="logo" />
-              <h1 className="h2 m-0 text-dark">{testText}</h1>
+              <h1 className="h2 m-0 text-dark pr-3">{testText}</h1>
             </div>
             <div className="text-center d-flex p-0 align-items-center flex-wrap ml-auto">
               {logged &&
                 <button className="btn btn-light m-1" onClick={loadDataFromServer}>
                   <i className="bi bi-arrow-clockwise px-1"></i>
-                  <span className='d-lg-inline d-none'>Update data</span>
+                  <span className='d-xl-inline d-none'>Update data</span>
                 </button>
               }
               <button className="btn btn-light m-1" onClick={() => setOpenLogin(true)}>
