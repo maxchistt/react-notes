@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import Context from '../context'
 import TextareaAutosize from 'react-textarea-autosize'
 import Modal, { ModalProps } from "../Modal/Modal"
+import debounce from '../Shared/debounce'
 
 function calcMaxRows() {
     const small = 576
@@ -42,11 +43,16 @@ function ModalCardEdit(props) {
 
     /////
 
-    function save(text) {
-        editCardContent(index, text)
+    function save(name, text) {
+        editCardContent(index, name, text)
     }
+
     function onInputCange(e) {
-        save(e.target.value)
+        let name = card.name
+        let text = card.text
+        if (e.target.id === "modal-edit-name") name = e.target.value
+        if (e.target.id === "modal-edit-text") text = e.target.value
+        save(name, text)
     }
 
     function tryStateChange() {
@@ -63,7 +69,7 @@ function ModalCardEdit(props) {
     }
 
     // eslint-disable-next-line no-unused-vars
-    const [color, btcolor] = card&&card.completed ? ["green", "success"] : ["red", "danger"]
+    const [color, btcolor] = card && card.completed ? ["green", "success"] : ["red", "danger"]
 
     return (
         <Modal {...modalProps.bind()}>
@@ -72,22 +78,32 @@ function ModalCardEdit(props) {
                 <div>
                     {card ? (
                         <React.Fragment>
-                            <h1 className="mb-2">Id: {card.id}</h1>
-                            <h5 className="mb-2">Completed:
-                            <span
-                                    className={`p-1 m-1 d-inline-block text-center badge badge-${btcolor}`}
-                                    style={{ width: "3em" }}
-                                >
+                            <TextareaAutosize
+                                className="form-control form-control-lg p-0 mb-2 bg-light text-dark"
+                                id="modal-edit-name"
+                                style={{ color: "black", fontWeight: "600", fontSize: 'x-large', border: "none", outline: "none", boxShadow: "none", resize: "none" }}
+                                minRows={1}
+                                maxRows={3}
+                                maxLength="100"
+                                value={card.name}
+                                onChange={debounce(onInputCange, 700)}
+                            />
+
+                            <p style={{ fontWeight: "500" }} className="mb-2 text-dark">
+                                Completed:
+                                <span className={`m-1 d-inline-block text-center badge badge-${btcolor}`} style={{ width: "3em" }}>
                                     {String(card.completed)}
                                 </span>
-                            </h5>
+                            </p>
+
                             <TextareaAutosize
                                 className="form-control p-0 mb-2 bg-light"
+                                id="modal-edit-text"
                                 style={{ border: "none", outline: "none", boxShadow: "none", resize: "none" }}
                                 minRows={3}
                                 maxRows={calcMaxRows()}
                                 value={card.text}
-                                onChange={onInputCange}
+                                onChange={debounce(onInputCange, 1000)}
                             />
                         </React.Fragment>
                     ) : (
@@ -95,7 +111,7 @@ function ModalCardEdit(props) {
                     )}
                 </div>
 
-                <div style={{ display: "flex", justifyContent: "space-between", flexWrap: "wrap" }}>
+                <div style={{ display: "flex", justifyContent: "space-around", alignItems: "center", flexWrap: "wrap" }}>
                     <div>
                         <button
                             className="btn btn-light mx-1"
@@ -108,6 +124,11 @@ function ModalCardEdit(props) {
                             onClick={tryRemove}
                         >&#10007;</button>
                     </div>
+
+                    <div className="mx-auto">
+                        <span style={{ color: "lightgray", fontWeight: "400" }}>Id: {card && card.id}</span>
+                    </div>
+
                     <div>
                         <button
                             className="btn btn-light"

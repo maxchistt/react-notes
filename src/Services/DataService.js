@@ -1,4 +1,6 @@
-import $ from "jquery";
+import $ from "jquery"
+import checkCardsArr from '../Shared/Card'
+
 export default function DataService() {
     ////////////////////////////////////////////////////////////
     var user = null
@@ -78,22 +80,8 @@ export default function DataService() {
 
     function checkData(data) {
         //console.log('start check data')
-        const checkCard = (card) => {
-            return !(
-                (typeof card.id === "number" || typeof card.id === "string") &&
-                !isNaN(card.id) && typeof card.completed === "boolean" &&
-                typeof card.text === "string"
-            )
-        }
-        const checkArr = (arr) => {
-            let res = true
-            arr.forEach(element => {
-                if (checkCard(element)) res = false
-            })
-            return res
-        }
         try {
-            return data === null || data === [] || checkArr(data)
+            return data === null || data === [] || checkCardsArr(data)
         } catch {
             return false
         }
@@ -112,7 +100,8 @@ export default function DataService() {
                         let data = tryParce(d)//here we parce json
                         //console.log("[DATA] from loadData(): ", data)
                         if (!checkData(data)) {
-                            console.error("[loadData] Bad data format", data)
+                            console.error("[loadData] Bad data format")
+                            console.log(data)
                             if (user !== null) {
                                 console.log('clear data')
                                 requestPostData([{ id: 0, completed: false, text: "Данные были очищены из за ошибки" }]).then(() => loadData().then(res, rej), rej)//очистка данных

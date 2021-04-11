@@ -19,7 +19,7 @@ function CardItem(props) {
             <div className="card" style={{ color: "white", backgroundColor: color }} >
 
                 <div className="card-body" onClick={() => setEditCard(index)} >
-                    <h5 className="card-title">Id: {card.id}</h5>
+                    <h5 className="card-title">{card.name}</h5>
                     <p
                         className="card-text"
                         style={{ overflow: "hidden", display: "-webkit-box", WebkitLineClamp: String(lineClip), WebkitBoxOrient: "vertical" }}

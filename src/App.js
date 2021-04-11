@@ -8,6 +8,7 @@ import Loader from './Content/Loader'
 import ModalCardEdit from './Cards/ModalCardEdit'
 import ModalLogin from './Login/ModalLogin'
 import DataService from './Services/DataService'
+import checkCardsArr from './Shared/Card'
 
 const { loadData, postData, updDataServLogin } = DataService()
 
@@ -32,27 +33,6 @@ function useCardsArr(defaultValue) {
   }
 
   return [value, trySetValue]
-}
-
-function checkCardsArr(cardsArr) {
-  if (!Array.isArray(cardsArr)) return false
-  else if (cardsArr.length === 0) return true
-  else {
-    cardsArr.forEach((card) => {
-      if (typeof card !== "object") return false
-      else if (!checkCardFields(card)) return false
-    })
-    return true
-  }
-}
-
-function checkCardFields(card) {
-  let res = (
-    !isNaN(card.id) &&
-    typeof card.completed === "boolean" &&
-    typeof card.text === "string"
-  )
-  return res
 }
 
 function useUpdater() {
@@ -185,8 +165,9 @@ function App() {
       cardsArr.concat([
         {
           id: Number(++cardCount),
+          name: String(cardData.name),
           completed: Boolean(cardData.sel),
-          text: String(cardData.text)
+          text: String(cardData.text),
         }
       ])
     )
@@ -197,8 +178,11 @@ function App() {
     setCards([...cardsArr])
   }
 
-  function editCardContent(index, text) {
-    if (cardsArr[index]) cardsArr[index].text = text
+  function editCardContent(index, name, text) {
+    if (cardsArr[index]) {
+      cardsArr[index].name = name
+      cardsArr[index].text = text
+    }
     setCards([...cardsArr])
   }
   ///////////

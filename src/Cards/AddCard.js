@@ -22,7 +22,7 @@ function AddCard({ onCreate, onDeleteAll }) {
 
     function submitHandler() {
         if (String(input.value()).trim() && String(select.value()).trim()) {
-            onCreate({ text: String(input.value()).trim(), sel: Boolean(Number(select.value())) })
+            onCreate({ name: String(input.value()).trim(), text: "", sel: Boolean(Number(select.value())) })
             input.clear()
         }
     }
@@ -33,11 +33,12 @@ function AddCard({ onCreate, onDeleteAll }) {
             <div className="row my-2 text-center">
 
                 <div className="col-lg-12 col-md-12 p-1">
-                    <TextareaAutosize type="text" className="form-control" placeholder="Card text" id="Text"
+                    <TextareaAutosize type="text" className="form-control" placeholder="Card name" id="Text"
                         {...input.bind}
                         style={{ resize: "none" }}
                         minRows={1}
-                        maxRows={7}
+                        maxRows={3}
+                        maxLength="100"
                     />
                 </div>
 
