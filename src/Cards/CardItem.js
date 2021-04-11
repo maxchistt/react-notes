@@ -1,6 +1,7 @@
 import React, { useContext } from 'react'
 import PropTypes from 'prop-types'
 import Context from '../context'
+import Card from '../Shared/Card'
 
 function createHTML(text) {
     let el = document.createElement("p")
@@ -11,19 +12,20 @@ function createHTML(text) {
 function CardItem(props) {
     const { removeCard, changeCardState, setEditCard } = useContext(Context)
     const { card, index } = props
+    const cardItem = card && new Card(card)
     const lineClip = 12
-    const [color, btcolor] = card && card.completed ? ["green", "success"] : ["red", "danger"]
+    const [color, btcolor] = cardItem && cardItem.completed ? ["green", "success"] : ["red", "danger"]
     return (
 
         <div className="p-1" >
             <div className="card" style={{ color: "white", backgroundColor: color }} >
 
                 <div className="card-body" onClick={() => setEditCard(index)} >
-                    <h5 className="card-title">{card.name}</h5>
+                    <h5 className="card-title">{cardItem.name}</h5>
                     <p
                         className="card-text"
                         style={{ overflow: "hidden", display: "-webkit-box", WebkitLineClamp: String(lineClip), WebkitBoxOrient: "vertical" }}
-                        dangerouslySetInnerHTML={createHTML(card.text)}
+                        dangerouslySetInnerHTML={createHTML(cardItem.text)}
                     />
                 </div>
 

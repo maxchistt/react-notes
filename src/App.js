@@ -4,11 +4,11 @@ import './App.css';
 import CardList from './Cards/CardList'
 import AddCard from './Cards/AddCard'
 import Context from './context'
-import Loader from './Content/Loader'
+import Loader from './Shared/Loader'
 import ModalCardEdit from './Cards/ModalCardEdit'
 import ModalLogin from './Login/ModalLogin'
 import DataService from './Services/DataService'
-import checkCardsArr from './Shared/Card'
+import Card, { checkCardsArr } from './Shared/Card'
 
 const { loadData, postData, updDataServLogin } = DataService()
 
@@ -162,14 +162,7 @@ function App() {
 
   function addCard(cardData = {}) {
     setCards(
-      cardsArr.concat([
-        {
-          id: Number(++cardCount),
-          name: String(cardData.name),
-          completed: Boolean(cardData.sel),
-          text: String(cardData.text),
-        }
-      ])
+      cardsArr.concat([new Card({ id: ++cardCount, name: cardData.name, completed: cardData.sel, text: cardData.text })])
     )
   }
 
@@ -179,9 +172,13 @@ function App() {
   }
 
   function editCardContent(index, name, text) {
+    
     if (cardsArr[index]) {
-      cardsArr[index].name = name
-      cardsArr[index].text = text
+      let card
+      card = new Card(cardsArr[index])
+      card.name = name
+      card.text = text
+      cardsArr[index]=card
     }
     setCards([...cardsArr])
   }

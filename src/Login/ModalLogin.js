@@ -1,5 +1,5 @@
 import React from "react"
-import Modal, { ModalProps } from "../Modal/Modal"
+import Modal, { ModalProps } from "../Shared/Modal/Modal"
 import PropTypes from 'prop-types'
 import LoginService from '../Services/LoginService'
 const { logIn, logOut } = LoginService()
