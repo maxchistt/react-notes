@@ -95,6 +95,7 @@ function App() {
             setLogged(false)
           } else {
             //console.log("onLogout - also not logged")
+            clearOldData()
           }
         })
         .finally(res)
