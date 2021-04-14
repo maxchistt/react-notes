@@ -5,7 +5,7 @@ import StackGrid from "../StackGrid/StackGrid"
 
 function CardList(props) {
     return (
-        <div className="container p-0" style={{ width: "100%"}}>
+        <div className="container p-0">
             <StackGrid>
                 {props.cards.map ? (props.cards.map((card, index) => {
                     return (
