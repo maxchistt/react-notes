@@ -82,20 +82,21 @@ function StackGrid({ children }) {
                 }
                 const [x, y] = calcPos(index)
                 return (
-                    <span
+
+                    <StackGridItem
+                        key={item.key}
+                        updItemHeight={updItemHeight}
+                        className="p-0 m-0 d-block"
                         style={{
                             transition: "transform 480ms cubic-bezier(0.165, 0.84, 0.44, 1) 0s",
                             transform: `translate(${x * 100}%,${y}px)`,
                             position: 'absolute', top: "0", left: "0",
                             width: calcWidth()
                         }}
-                        className="p-0 m-0 d-block"
-                        key={index}
                     >
-                        <StackGridItem updItemHeight={updItemHeight} key={index} >
-                            {item}
-                        </StackGridItem>
-                    </span>
+                        {item}
+                    </StackGridItem>
+
                 )
             })) : null}
 

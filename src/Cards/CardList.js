@@ -9,7 +9,7 @@ function CardList(props) {
             <StackGrid>
                 {props.cards.map ? (props.cards.map((card, index) => {
                     return (
-                        <CardItem card={card} key={index} index={index} />
+                        <CardItem card={card} key={card.id} index={index} />
                     )
                 })) : null}
             </StackGrid>
