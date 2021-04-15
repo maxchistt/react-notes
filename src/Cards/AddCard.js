@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import TextareaAutosize from 'react-textarea-autosize'
+import Palette, { colors } from './palette'
 
 function useInputValue(defaultValue) {
   const [value, setValue] = useState(defaultValue)
@@ -16,12 +17,15 @@ function useInputValue(defaultValue) {
 
 function AddCard({ onCreate, onDeleteAll }) {
   const input = useInputValue('')
-  const select = useInputValue(0)
+
+  const defColor = colors[0]
+  const [color, setColor] = React.useState(defColor)
 
   function submitHandler() {
-    if (String(input.value()).trim() && String(select.value()).trim()) {
-      onCreate({ name: String(input.value()).trim(), text: "", sel: Boolean(Number(select.value())) })
+    if (String(input.value()).trim() && String(color).trim()) {
+      onCreate({ name: String(input.value()).trim(), text: "", color: String(color) })
       input.clear()
+      setColor(defColor)
     }
   }
 
@@ -40,10 +44,7 @@ function AddCard({ onCreate, onDeleteAll }) {
         </div>
 
         <div className="col-lg-8 col-md-6 col-sm-4 p-1">
-          <select className="custom-select" id="Status" {...select.bind}>
-            <option value="1">Done</option>
-            <option value="0">Not done</option>
-          </select>
+          <Palette setColor={setColor} className="btn btn-outline-secondary" style={{ width: "100%" }}></Palette>
         </div>
 
         <div className="col-lg-2 col-md-3 col-sm-4 col-6 p-1">

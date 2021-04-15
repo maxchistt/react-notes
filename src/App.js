@@ -163,23 +163,22 @@ function App() {
 
   function addCard(cardData = {}) {
     setCards(
-      cardsArr.concat([new Card({ id: ++cardCount, name: cardData.name, completed: cardData.sel, text: cardData.text })])
+      cardsArr.concat([new Card({ id: ++cardCount, name: cardData.name, color: cardData.color, text: cardData.text })])
     )
   }
 
-  function changeCardState(index) {
-    cardsArr[index].completed = !cardsArr[index].completed
+  function changeCardColor(index, color) {
+    cardsArr[index].color = color
     setCards([...cardsArr])
   }
 
   function editCardContent(index, name, text) {
-    
     if (cardsArr[index]) {
       let card
       card = new Card(cardsArr[index])
       card.name = name
       card.text = text
-      cardsArr[index]=card
+      cardsArr[index] = card
     }
     setCards([...cardsArr])
   }
@@ -198,7 +197,7 @@ function App() {
   ///////////
 
   return (
-    <Context.Provider value={{ removeCard, changeCardState, setEditCard, unsetEditCard, editCardContent, editCardId }}>
+    <Context.Provider value={{ removeCard, changeCardColor, setEditCard, unsetEditCard, editCardContent, editCardId }}>
       <div className="App pb-3 mb-3">
         <header className="p-1">
           <nav className="d-flex container px-0 flex-wrap-reverse justify-content-around">
