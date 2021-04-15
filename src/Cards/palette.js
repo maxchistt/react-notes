@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from 'prop-types'
 
-export const colorItems = [
+export const colors = [
   "#F38181",
   "#FCE38A",
   "#EAFFD0",
@@ -33,7 +33,7 @@ function Palette({ setColor, style, className, disabled }) {
       <div className="dropdown-menu tab-content mt-1" aria-labelledby="dropdownMenuButton">
         <form>
           <div className="d-flex flex-row flex-wrap justify-content-center">
-            {colorItems.map((color, key) => (
+            {colors.map((color, key) => (
               <button
                 style={{
                   borderRadius: "100%",
