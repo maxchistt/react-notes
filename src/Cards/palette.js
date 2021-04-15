@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from 'prop-types'
 
 export const colors = [
+  "#f8f9fa",
   "#F38181",
   "#FCE38A",
   "#EAFFD0",
