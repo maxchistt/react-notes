@@ -14,17 +14,17 @@ const checkCard = (card) => {
     return (
         (typeof card.id === "number" || typeof card.id === "string") && !isNaN(card.id) &&
         typeof card.name === "string" &&
-        typeof card.completed === "boolean" &&
+        typeof card.color === "string" &&
         typeof card.text === "string" &&
         card instanceof Card
     )
 }
 
 export class Card {
-    constructor({ id, name, completed, text }) {
+    constructor({ id, name, color, text }) {
         this.id = Number(id)
         this.name = String(name)
-        this.completed = Boolean(completed)
+        this.color = String(color)
         this.text = String(text)
     }
 }
