@@ -90,7 +90,7 @@ function ModalCardEdit(props) {
 
                             <p style={{ fontWeight: "500" }} className="mb-2 text-dark">
                                 Color:
-                                <span className={`m-1 d-inline-block text-center badge`} style={{ width: "3em", backgroundColor: cardEdit.color }}>
+                                <span className={`m-1 d-inline-block text-center badge border border-secondary`} style={{ width: "3em", backgroundColor: cardEdit.color }}>
                                     &nbsp;
                                 </span>
                             </p>
