@@ -11,7 +11,8 @@ function useInputValue(defaultValue) {
       onChange: event => setValue(event.target.value)
     },
     clear: () => setValue(defaultValue),
-    value: () => value
+    value: () => value,
+    addBreak: () => setValue(value + "\n")
   }
 }
 
@@ -58,7 +59,10 @@ function AddCard({ onCreate, onDeleteAll }) {
             minRows={1}
             maxRows={3}
             maxLength="100"
-            onKeyPress={e => e.key === 'Enter' && onEnter(e)}
+            onKeyPress={e => {
+              e.key === "\n" && input.addBreak()
+              e.key === 'Enter' && onEnter(e)
+            }}
           />
         </div>
 

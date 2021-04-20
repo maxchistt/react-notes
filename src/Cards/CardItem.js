@@ -25,7 +25,11 @@ function CardItem(props) {
             <div className="card" style={{ backgroundColor: bgColor }} >
 
                 <div className="card-body" onClick={() => setEditCard(index)} >
-                    <h5 className="card-title">{cardItem.name}</h5>
+                    <h5
+                        className="card-title"
+                        style={{ overflow: "hidden", display: "-webkit-box", WebkitLineClamp: String(lineClip / 2), WebkitBoxOrient: "vertical" }}
+                        dangerouslySetInnerHTML={createHTML(cardItem.name)}
+                    />
                     <p
                         className="card-text"
                         style={{ overflow: "hidden", display: "-webkit-box", WebkitLineClamp: String(lineClip), WebkitBoxOrient: "vertical" }}
