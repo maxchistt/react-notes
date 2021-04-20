@@ -33,23 +33,26 @@ function Modal(props) {
 
     return (
         <React.Fragment>
-            <div className="container p-1" style={{ display: openButton ? "block" : "none" }}>
-                <button className="btn" onClick={handleOpenButtonClick}>Open modal</button>
-            </div>
+            {openButton &&
+                <div className="container p-1">
+                    <button className="btn" onClick={handleOpenButtonClick}>Open modal</button>
+                </div>
+            }
 
-            <div
-                style={{ display: !isOpen ? "none" : "flex" }}
-                className={classes.modalWrapper}
-                ref={wrapperRef}
-                onClick={handleWrapperClick}
-            >
-                <div className={classes.modalBody}>
-                    <div className="rounded container p-3 bg-light">
-                        {props.children}
+            {isOpen &&
+                <div
+                    style={{ display: "flex" }}
+                    className={classes.modalWrapper}
+                    ref={wrapperRef}
+                    onClick={handleWrapperClick}
+                >
+                    <div className={classes.modalBody}>
+                        <div className="rounded container p-3 bg-light">
+                            {props.children}
+                        </div>
                     </div>
                 </div>
-            </div>
-
+            }
         </React.Fragment>
     )
 }
