@@ -42,6 +42,11 @@ function AddCard({ onCreate, onDeleteAll }) {
     }
   }
 
+  function onEnter(e) {
+    e.preventDefault()
+    submitHandler()
+  }
+
   return (
     <div className="container">
       <div className="row my-2 text-center">
@@ -53,6 +58,7 @@ function AddCard({ onCreate, onDeleteAll }) {
             minRows={1}
             maxRows={3}
             maxLength="100"
+            onKeyPress={e => e.key === 'Enter' && onEnter(e)}
           />
         </div>
 
