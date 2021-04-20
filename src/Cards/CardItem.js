@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import PropTypes from 'prop-types'
 import Context from '../context'
 import Card from '../Shared/Card'
-import Palette from './palette'
+//import Palette from './palette'
 
 function createHTML(text) {
     let el = document.createElement("p")
@@ -11,14 +11,14 @@ function createHTML(text) {
 }
 
 function CardItem(props) {
-    const { removeCard, changeCardColor, setEditCard } = useContext(Context)
+    const { removeCard, /*changeCardColor,*/ setEditCard } = useContext(Context)
     const { card, index } = props
     const cardItem = card && new Card(card)
     const lineClip = 12
     const bgColor = cardItem.color
-    function tryChangeColor(color) {
+    /*function tryChangeColor(color) {
         changeCardColor(index, color)
-    }
+    }*/
     return (
 
         <div className="p-1" >
@@ -41,11 +41,11 @@ function CardItem(props) {
                     >
                         &#10007;
                     </button>
-                    <Palette
+                    {/*<Palette
                         className={`btn btn-light p-0 mx-2`}
                         style={{ width: "1.8em", height: "1.8em", float: "right", borderColor: "transparent", backgroundColor: "transparent" }}
                         setColor={tryChangeColor}
-                    ></Palette>
+                    ></Palette>*/}
                 </div>
 
             </div>
