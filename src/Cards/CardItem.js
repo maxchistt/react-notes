@@ -2,6 +2,7 @@ import React, { useContext } from 'react'
 import PropTypes from 'prop-types'
 import Context from '../context'
 import Card from '../Shared/Card'
+//import Palette from './palette'
 
 function createHTML(text) {
     let el = document.createElement("p")
@@ -10,15 +11,18 @@ function createHTML(text) {
 }
 
 function CardItem(props) {
-    const { removeCard, changeCardState, setEditCard } = useContext(Context)
+    const { removeCard, /*changeCardColor,*/ setEditCard } = useContext(Context)
     const { card, index } = props
     const cardItem = card && new Card(card)
     const lineClip = 12
-    const [color, btcolor] = cardItem && cardItem.completed ? ["green", "success"] : ["red", "danger"]
+    const bgColor = cardItem.color
+    /*function tryChangeColor(color) {
+        changeCardColor(index, color)
+    }*/
     return (
 
         <div className="p-1" >
-            <div className="card" style={{ color: "white", backgroundColor: color }} >
+            <div className="card" style={{ backgroundColor: bgColor }} >
 
                 <div className="card-body" onClick={() => setEditCard(index)} >
                     <h5 className="card-title">{cardItem.name}</h5>
@@ -31,19 +35,17 @@ function CardItem(props) {
 
                 <div className="card-body pt-0">
                     <button
-                        className={`btn btn-${btcolor} p-0`}
+                        className={`btn btn-light p-0`}
                         style={{ width: "1.8em", height: "1.8em", float: "right", borderColor: "transparent", backgroundColor: "transparent" }}
                         onClick={() => removeCard(index)}
                     >
                         &#10007;
                     </button>
-                    <button
-                        className={`btn btn-${btcolor} p-0 mx-2`}
+                    {/*<Palette
+                        className={`btn btn-light p-0 mx-2`}
                         style={{ width: "1.8em", height: "1.8em", float: "right", borderColor: "transparent", backgroundColor: "transparent" }}
-                        onClick={() => changeCardState(index)}
-                    >
-                        &#10003;
-                    </button>
+                        setColor={tryChangeColor}
+                    ></Palette>*/}
                 </div>
 
             </div>

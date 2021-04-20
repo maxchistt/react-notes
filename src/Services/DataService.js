@@ -65,17 +65,10 @@ export default function DataService() {
     ////////////////////////////////////////////////////////////
     function tryParce(str) {
         try {
-            return JSON.parse(str, reviver);
+            return JSON.parse(str);
         } catch (e) {
             return str;
         }
-    }
-    function reviver(key, value) {
-        if (typeof value == 'string' && (Boolean(value) !== undefined)) {
-            if (value === "false") return false;
-            if (value === "true") return true;
-        }
-        return value;
     }
 
     function checkData(data) {

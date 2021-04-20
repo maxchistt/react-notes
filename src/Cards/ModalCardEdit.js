@@ -5,6 +5,7 @@ import TextareaAutosize from 'react-textarea-autosize'
 import Modal, { ModalProps } from "../Shared/Modal/Modal"
 import debounce from '../Shared/debounce'
 import Card from '../Shared/Card'
+import Palette from './palette/palette'
 
 function calcMaxRows() {
     const small = 576
@@ -20,7 +21,7 @@ function calcMaxRows() {
 }
 
 function ModalCardEdit(props) {
-    const { removeCard, changeCardState, unsetEditCard, editCardContent } = React.useContext(Context)
+    const { removeCard, changeCardColor, unsetEditCard, editCardContent } = React.useContext(Context)
     const { card, index } = props
     React.useEffect(() => { if (card !== null) open() }, [card])
 
@@ -57,8 +58,8 @@ function ModalCardEdit(props) {
         save(name, text)
     }
 
-    function tryStateChange() {
-        changeCardState(index)
+    function tryChangeColor(color) {
+        changeCardColor(index, color)
     }
     function tryRemove() {
         unsetEditCard();
@@ -69,9 +70,6 @@ function ModalCardEdit(props) {
         unsetEditCard()
         close()
     }
-
-    // eslint-disable-next-line no-unused-vars
-    const [color, btcolor] = cardEdit && cardEdit.completed ? ["green", "success"] : ["red", "danger"]
 
     return (
         <Modal {...modalProps.bind()}>
@@ -91,9 +89,9 @@ function ModalCardEdit(props) {
                             />
 
                             <p style={{ fontWeight: "500" }} className="mb-2 text-dark">
-                                Completed:
-                                <span className={`m-1 d-inline-block text-center badge badge-${btcolor}`} style={{ width: "3em" }}>
-                                    {String(cardEdit.completed)}
+                                Color:
+                                <span className={`m-1 d-inline-block text-center badge border border-secondary`} style={{ width: "3em", backgroundColor: cardEdit.color }}>
+                                    &nbsp;
                                 </span>
                             </p>
 
@@ -114,11 +112,11 @@ function ModalCardEdit(props) {
 
                 <div style={{ display: "flex", justifyContent: "space-around", alignItems: "center", flexWrap: "wrap" }}>
                     <div>
-                        <button
+                        <Palette
                             className="btn btn-light mx-1"
                             disabled={!cardEdit}
-                            onClick={tryStateChange}
-                        >&#10003;</button>
+                            setColor={tryChangeColor}
+                        ></Palette>
                         <button
                             className="btn btn-light"
                             disabled={!cardEdit}
