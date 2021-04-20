@@ -50,3 +50,10 @@
     transform: rotate(360deg);
   }
 }
+
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap");
+
+.brand {
+  font-family: "Roboto", sans-serif;
+  padding-top: 0.2rem !important;
+}
