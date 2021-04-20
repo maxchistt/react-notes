@@ -1,6 +1,7 @@
 .App-logo {
   height: 3em;
   pointer-events: none;
+  user-select: none;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -56,4 +57,6 @@
 .brand {
   font-family: "Roboto", sans-serif;
   padding-top: 0.2rem !important;
+  pointer-events: none;
+  user-select: none;
 }
