@@ -57,7 +57,7 @@ function AddCard({ onCreate, onDeleteAll }) {
         </div>
 
         <div className="col-lg-1 col-md-1 col-sm-3 col-4 p-1">
-          <Palette setColor={setColor} className={`btn btn-outline-secondary palitra-btn ${blackOnHover() ? "palitra-blackOnHover" : ""}`} style={{ width: "100%", background: color }}></Palette>
+          <Palette setColor={setColor} className={`btn btn-outline-secondary palitra-btn ${blackOnHover() ? "palitra-blackOnHover" : "palitra-lightOnHover"}`} style={{ width: "100%", background: color }}></Palette>
         </div>
 
         <div className="col-lg-2 col-md-1 col p-1">
