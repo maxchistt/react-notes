@@ -8,7 +8,7 @@ import Loader from './Shared/Loader'
 import ModalCardEdit from './Cards/ModalCardEdit'
 import ModalLogin from './Login/ModalLogin'
 import DataService from './Services/DataService'
-import Card, { checkCardsArr } from './Shared/Card'
+import Card, { checkCardsArr } from './Cards/class/Card'
 
 const { loadData, postData, updDataServLogin } = DataService()
 

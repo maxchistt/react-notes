@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import PropTypes from 'prop-types'
 import Context from '../context'
-import Card from '../Shared/Card'
+import Card from './class/Card'
 import ReactMarkdown from 'react-markdown'
 import gfm from 'remark-gfm'
 

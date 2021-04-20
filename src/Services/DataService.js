@@ -1,5 +1,5 @@
 import $ from "jquery"
-import { checkCardsArr } from '../Shared/Card'
+import { checkCardsArr } from '../Cards/class/Card'
 
 export default function DataService() {
     ////////////////////////////////////////////////////////////
