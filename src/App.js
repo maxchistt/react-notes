@@ -209,7 +209,7 @@ function App() {
               {logged &&
                 <button className="btn btn-light m-1" onClick={loadDataFromServer}>
                   <i className="bi bi-arrow-clockwise px-1"></i>
-                  <span className='d-xl-inline d-none'>Update data</span>
+                  <span className='d-xl-inline d-none'>Update</span>
                 </button>
               }
               <button className="btn btn-light m-1" onClick={() => setOpenLogin(true)}>

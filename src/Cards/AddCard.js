@@ -42,28 +42,33 @@ function AddCard({ onCreate, onDeleteAll }) {
     }
   }
 
+  function onEnter(e) {
+    e.preventDefault()
+    submitHandler()
+  }
+
   return (
     <div className="container">
       <div className="row my-2 text-center">
 
-        <div className="col-lg-9 col-md-10 col-12 p-1">
+        <div className="col-xl-10 col-lg-10 col-md-10 col-12 p-1">
           <TextareaAutosize type="text" className="form-control" placeholder="Card name" id="Text"
             {...input.bind}
             style={{ resize: "none" }}
             minRows={1}
             maxRows={3}
             maxLength="100"
+            onKeyPress={e => e.key === 'Enter' && onEnter(e)}
           />
         </div>
 
-        <div className="col-lg-1 col-md-1 col-sm-3 col-4 p-1">
+        <div className="col-xl-1 col-lg-1 col-md-1 col-sm-3 col-4 p-1">
           <Palette setColor={setColor} className={`btn btn-outline-secondary palitra-btn ${blackOnHover() ? "palitra-blackOnHover" : "palitra-lightOnHover"}`} style={{ width: "100%", background: color }}></Palette>
         </div>
 
-        <div className="col-lg-2 col-md-1 col p-1">
+        <div className="col-xl-1 col-lg-1 col-md-1 col p-1">
           <button disabled={!input.value().trim()} className="btn btn-success btn-block" onClick={submitHandler}>
             <i className="bi bi-clipboard-plus"></i>
-            <span className='d-lg-inline d-none'> Add card</span>
           </button>
         </div>
 
