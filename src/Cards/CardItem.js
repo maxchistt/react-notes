@@ -2,6 +2,8 @@ import React, { useContext } from 'react'
 import PropTypes from 'prop-types'
 import Context from '../context'
 import Card from '../Shared/Card'
+import ReactMarkdown from 'react-markdown'
+import gfm from 'remark-gfm'
 //import Palette from './palette'
 
 function createHTML(text) {
@@ -25,16 +27,16 @@ function CardItem(props) {
             <div className="card" style={{ backgroundColor: bgColor }} >
 
                 <div className="card-body" onClick={() => setEditCard(index)} >
-                    <h5
-                        className="card-title"
-                        style={{ overflow: "hidden", display: "-webkit-box", WebkitLineClamp: String(lineClip / 2), WebkitBoxOrient: "vertical" }}
-                        dangerouslySetInnerHTML={createHTML(cardItem.name)}
-                    />
-                    <p
+                    <div
+                        className="card-title h5"
+                        style={{ overflow: "hidden", display: "-webkit-box", WebkitLineClamp: String(lineClip / 2), WebkitBoxOrient: "vertical" }} >
+                        <ReactMarkdown remarkPlugins={[gfm]} children={cardItem.name.replace(/\n/gi, '  \n')} />
+                    </div>
+                    <div
                         className="card-text"
-                        style={{ overflow: "hidden", display: "-webkit-box", WebkitLineClamp: String(lineClip), WebkitBoxOrient: "vertical" }}
-                        dangerouslySetInnerHTML={createHTML(cardItem.text)}
-                    />
+                        style={{ overflow: "hidden", display: "-webkit-box", WebkitLineClamp: String(lineClip), WebkitBoxOrient: "vertical" }}>
+                        <ReactMarkdown remarkPlugins={[gfm]} children={cardItem.text.replace(/\n/gi, '  \n')} />
+                    </div>
                 </div>
 
                 <div className="card-body pt-0">
