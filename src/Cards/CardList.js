@@ -10,7 +10,7 @@ function calcWidth() {
     const middle = 768
     const large = 992
     const xlarge = 1200
-    const winWidth = window.innerWidth
+    const winWidth = document.getElementsByTagName('main')[0].clientWidth || window.innerWidth
 
     if (winWidth >= xlarge) return '25%'
     else if (winWidth >= large) return '33.33%'
