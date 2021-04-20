@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from 'prop-types'
+import "./palette.css"
 
 export const colors = [
   "#f8f9fa",

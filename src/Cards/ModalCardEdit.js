@@ -5,7 +5,7 @@ import TextareaAutosize from 'react-textarea-autosize'
 import Modal, { ModalProps } from "../Shared/Modal/Modal"
 import debounce from '../Shared/debounce'
 import Card from '../Shared/Card'
-import Palette from './palette'
+import Palette from './palette/palette'
 
 function calcMaxRows() {
     const small = 576

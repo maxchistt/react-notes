@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import TextareaAutosize from 'react-textarea-autosize'
-import Palette, { colors } from './palette'
+import Palette, { colors } from './palette/palette'
 
 function useInputValue(defaultValue) {
   const [value, setValue] = useState(defaultValue)
