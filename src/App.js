@@ -49,7 +49,7 @@ function useUpdater() {
 function App() {
   const [cardsArr, setCards] = useCardsArr([])
   const [editCardId, setEditCardId] = React.useState(null)
-  const [loading, setLoading] = React.useState(false)
+  const [loading, setLoading] = React.useState({ state: false, res: false })
 
   const [openLogin, setOpenLogin] = React.useState(false)
   const [logged, setLogged] = React.useState(false)
@@ -126,21 +126,21 @@ function App() {
   function loadDataFromServer() {
     try {
       if (logged && userName) {
-        setLoading(true)
+        setLoading({ state: true, res: loading.res })
         loadData()
           .then(data => {
             console.log('[onLoadData]', 'Данные с сервера загружены')
             setLoadedCards(data)
-            setLoading(false)
+            setLoading({ state: false, res: true })
           })
           .catch(e => {
-            console.log(`Data load request error. Response: ${e}`)
-            setLoading(false)
+            console.log(`Data load request error. Response:`, e)
+            setLoading({ state: false, res: false })
           })
       }
     }
     catch (e) {
-      setLoading(false)
+      setLoading({ state: false, res: false })
       console.error(e)
     }
   }
@@ -208,7 +208,7 @@ function App() {
             <div className="text-center d-flex p-0 align-items-center flex-wrap ml-auto">
               {logged &&
                 <button className="btn btn-light m-1" onClick={loadDataFromServer}>
-                  <i className="bi bi-arrow-clockwise px-1"></i>
+                  {loading.state ? <Loader className='px-1' /> : <i className="bi bi-arrow-clockwise px-1"></i>}
                   <span className='d-xl-inline d-none'>Update</span>
                 </button>
               }
@@ -226,7 +226,7 @@ function App() {
 
           {cardsArr.length ? (
             <CardList cards={cardsArr} />
-          ) : loading ? null : logged ? (
+          ) : (loading.state || !loading.res) ? null : logged ? (
             <div className="container text-center">
               <p className="m-3 p-3 h5 text-muted">No cards. You can add a new one!</p>
             </div>
@@ -236,7 +236,17 @@ function App() {
             </div>
           )}
 
-          {loading && <Loader />}
+          {(logged && !loading.state && !loading.res) && (
+            <div className="container text-center">
+              <p className="m-3 p-3 h5 text-muted">Data not loaded</p>
+            </div>
+          )}
+
+          {loading.state &&
+            <div className="container display-4 text-center p-3" >
+              <Loader />
+            </div>
+          }
         </main>
       </div>
     </Context.Provider>

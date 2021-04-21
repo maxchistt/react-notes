@@ -1,9 +1,9 @@
 import React from 'react'
 
-export default function Loader() {
+export default function Loader({ className }) {
     return (
-        <div className="container text-center">
-            <div className='lds-dual-ring m-3 p-3' />
-        </div>
+        <i className={className}>
+            <span className={`lds-dual-ring`} ></span>
+        </i>
     )
 }
