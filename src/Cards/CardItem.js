@@ -5,6 +5,10 @@ import Card, { PropTypeCard } from './cardType/Card'
 import ReactMarkdown from 'react-markdown'
 import gfm from 'remark-gfm'
 
+function fixLineBreaks(mdStr) {
+    return String(mdStr).replace(/\n/gi, '  \n')
+}
+
 function CardItem({ card = new Card(), index }) {
     const { removeCard, setEditCard } = useContext(Context)
     const lineClip = 12
@@ -19,12 +23,12 @@ function CardItem({ card = new Card(), index }) {
                     <div
                         className="card-title h5"
                         style={{ overflow: "hidden", display: "-webkit-box", WebkitLineClamp: String(lineClip / 2), WebkitBoxOrient: "vertical" }} >
-                        <ReactMarkdown remarkPlugins={[gfm]} children={card.name.replace(/\n/gi, '  \n')} />
+                        <ReactMarkdown remarkPlugins={[gfm]} children={fixLineBreaks(card.name)} />
                     </div>
                     <div
                         className="card-text"
                         style={{ overflow: "hidden", display: "-webkit-box", WebkitLineClamp: String(lineClip), WebkitBoxOrient: "vertical" }}>
-                        <ReactMarkdown remarkPlugins={[gfm]} children={card.text.replace(/\n/gi, '  \n')} />
+                        <ReactMarkdown remarkPlugins={[gfm]} children={fixLineBreaks(card.text)} />
                     </div>
                 </div>
 
