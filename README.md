@@ -42,19 +42,23 @@ to run prod with predeploy
 - Run `cd react-notes && npm run deploy && cd`
 - Use PM2 with this ecosystem template:
 
-```json
+```js
 module.exports = {
-apps : [
-   {
-        "name" : "react-notes",
-        "script" : "./react-notes/app.js",
-        "watch" : "./react-notes/",
-        "ignore-watch" : [ "node_modules","./react-notes/node_modules","./react-notes/client/node_modules"],
-        "max-memory-restart" : "150MB",
-        "env" : {
-          NODE_ENV: "production"
-        }
-    }
+  apps: [
+    {
+      name: "react-notes",
+      script: "./react-notes/app.js",
+      watch: "./react-notes/",
+      "ignore-watch": [
+        "node_modules",
+        "./react-notes/node_modules",
+        "./react-notes/client/node_modules",
+      ],
+      "max-memory-restart": "150MB",
+      env: {
+        NODE_ENV: "production",
+      },
+    },
   ],
 };
 ```
