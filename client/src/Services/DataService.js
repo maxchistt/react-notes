@@ -4,8 +4,8 @@ import Card, { checkCardsArr } from '../Cards/cardType/Card'
 export default function DataService() {
     ////////////////////////////////////////////////////////////
     var user = null
-    const deploy = true
-    const url = deploy ? 'http://php-server-notes.std-1033.ist.mospolytech.ru/' : 'http://php-server-notes/'
+    const nodeBackend = true
+    const baseUrl = nodeBackend ? '/server/' : 'http://php-server-notes.std-1033.ist.mospolytech.ru/'
 
     ////////////////////////////////////////////////////////////
     function updDataServLogin(login) {
@@ -33,7 +33,7 @@ export default function DataService() {
         //console.log(` \nrequest ${rc} - "${target}" started \n params - user:"${user}" data:"${data}"`)
         return new Promise((res, rej) => {
             ajax({
-                url: url,
+                url: baseUrl,
                 type: "POST",
                 dataType: "html",
                 data: {

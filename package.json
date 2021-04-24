@@ -1,60 +1,47 @@
 {
   "name": "react-notes",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "@testing-library/jest-dom": "^5.11.10",
-    "@testing-library/react": "^11.2.6",
-    "@testing-library/user-event": "^12.8.3",
-    "bootstrap": "^4.6.0",
-    "bootstrap-icons": "^1.4.1",
-    "jquery": "^3.6.0",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-markdown": "^6.0.0",
-    "react-scripts": "4.0.3",
-    "react-stack-grid": "^0.7.1",
-    "react-textarea-autosize": "^8.3.2",
-    "remark-gfm": "^1.0.0",
-    "web-vitals": "^0.2.4",
-    "workbox-background-sync": "^5.1.4",
-    "workbox-broadcast-update": "^5.1.4",
-    "workbox-cacheable-response": "^5.1.4",
-    "workbox-core": "^5.1.4",
-    "workbox-expiration": "^5.1.4",
-    "workbox-google-analytics": "^5.1.4",
-    "workbox-navigation-preload": "^5.1.4",
-    "workbox-precaching": "^5.1.4",
-    "workbox-range-requests": "^5.1.4",
-    "workbox-routing": "^5.1.4",
-    "workbox-strategies": "^5.1.4",
-    "workbox-streams": "^5.1.4"
-  },
+  "version": "1.0.0",
+  "description": "React Notes App",
+  "main": "app.js",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "serve": "react-scripts build && serve -s build",
-    "serve-3000": "react-scripts build && serve -s build -p 3000",
-    "serve-5000": "react-scripts build && serve -s build -p 5000",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "npm run prod",
+    "full-install": "npm run server:install && npm run client:install",
+    "server:start-dev": "nodemon app.js",
+    "server:install": "npm install",
+    "server:serve": "node app.js",
+    "client:start-dev": "cd client && npm run start && cd ../",
+    "client:install": "cd client && npm install && cd ../",
+    "client:build": "cd client && npm run build && cd ../",
+    "client:serve": "cd client && npm run serve && cd ../",
+    "dev": "concurrently \"npm run server:start-dev\" \"npm run client:start-dev\"",
+    "dev:serve": "concurrently \"npm run server:serve\" \"npm run client:serve\"",
+    "prod": "cross-env NODE_ENV=production npm run server:serve",
+    "prod:deploy": "npm run deploy && npm run prod",
+    "deploy": "npm run full-install && npm run client:build",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/maxchistt/react-notes.git"
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+  "keywords": [
+    "react",
+    "mern",
+    "notes"
+  ],
+  "author": "Maxim Chistyakov <max.chistt@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/maxchistt/react-notes/issues"
+  },
+  "homepage": "https://github.com/maxchistt/react-notes#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^5.12.5"
+  },
+  "devDependencies": {
+    "concurrently": "^6.0.2",
+    "cross-env": "^7.0.3",
+    "nodemon": "^2.0.7"
   }
 }
