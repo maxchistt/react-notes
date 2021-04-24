@@ -1,0 +1,25 @@
+{
+  "name": "react-notes",
+  "version": "1.0.0",
+  "description": "React Notes App",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/maxchistt/react-notes.git"
+  },
+  "keywords": [
+    "react",
+    "mern",
+    "notes"
+  ],
+  "author": "Maxim Chistyakov <max.chistt@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/maxchistt/react-notes/issues"
+  },
+  "homepage": "https://github.com/maxchistt/react-notes#readme"
+}
