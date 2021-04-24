@@ -20,7 +20,7 @@ starts client and server concurrently in dev mode
 
 serves client and server concurrently
 
-## Prod and deploy
+## Production
 
 Use next scripts:
 
@@ -35,3 +35,26 @@ to run prod
 ### `npm run prod:deploy`
 
 to run prod with predeploy
+
+## Deployment on Ubuntu
+
+- Clone from GitHub
+- Run `cd react-notes && npm run deploy && cd`
+- Use PM2 with this ecosystem template:
+
+```json
+module.exports = {
+apps : [
+   {
+        "name" : "react-notes",
+        "script" : "./react-notes/app.js",
+        "watch" : "./react-notes/",
+        "ignore-watch" : [ "node_modules","./react-notes/node_modules","./react-notes/client/node_modules"],
+        "max-memory-restart" : "150MB",
+        "env" : {
+          NODE_ENV: "production"
+        }
+    }
+  ],
+};
+```
