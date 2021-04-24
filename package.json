@@ -4,7 +4,22 @@
   "description": "React Notes App",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js",
+    "start": "npm run dev",
+    "full-install": "npm run server:install && npm run client:install",
+
+    "server:start-dev": "nodemon app.js",
+    "server:install": "npm install",
+    "server:serve": "node app.js",
+    "server:deploy": "npm install && npm run server:serve",
+
+    "client:start-dev": "npm run start --prefix client",
+    "client:install": "npm install --prefix client",
+    "client:serve": "npm run serve --prefix client",
+    "client:deploy": "npm run client:install && npm run client:serve",
+
+    "dev": "concurrently \"npm run server:start-dev\" \"npm run client:start-dev\"",
+    "serve": "concurrently \"npm run server:serve\" \"npm run client:serve\"",
+
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -21,5 +36,13 @@
   "bugs": {
     "url": "https://github.com/maxchistt/react-notes/issues"
   },
-  "homepage": "https://github.com/maxchistt/react-notes#readme"
+  "homepage": "https://github.com/maxchistt/react-notes#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^5.12.5"
+  },
+  "devDependencies": {
+    "concurrently": "^6.0.2",
+    "nodemon": "^2.0.7"
+  }
 }
