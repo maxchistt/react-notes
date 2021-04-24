@@ -1,5 +1,5 @@
 {
-  "name": "react-notes",
+  "name": "react-notes-client",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -34,8 +34,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "serve": "react-scripts build && serve -s build",
-    "serve-3000": "react-scripts build && serve -s build -p 3000",
-    "serve-5000": "react-scripts build && serve -s build -p 5000",
+    "serve:3000": "react-scripts build && serve -s build -p 3000",
+    "serve:5000": "react-scripts build && serve -s build -p 5000",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
