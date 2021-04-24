@@ -4,7 +4,7 @@ import Card, { checkCardsArr } from '../Cards/cardType/Card'
 export default function DataService() {
     ////////////////////////////////////////////////////////////
     var user = null
-    const nodeBackend = false
+    const nodeBackend = true
     const baseUrl = nodeBackend ? '/server/' : 'http://php-server-notes.std-1033.ist.mospolytech.ru/'
 
     ////////////////////////////////////////////////////////////

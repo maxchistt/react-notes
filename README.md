@@ -12,22 +12,26 @@ Main available scripts in the project directory:
 
 installs client and server packages
 
-### `npm start`
+### `npm run dev`
 
 starts client and server concurrently in dev mode
 
-### `npm run serve`
+### `npm run dev:serve`
 
 serves client and server concurrently
 
-## Deploy
+## Prod and deploy
 
 Use next scripts:
 
-### `npm run server:deploy`
+### `npm run deploy`
 
-for server
+to install and build app before run it
 
-### `npm run client:deploy`
+### `npm run prod` or `npm start`
 
-for client
+to run prod
+
+### `npm run prod:deploy`
+
+to run prod with predeploy
