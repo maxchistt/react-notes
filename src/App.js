@@ -8,7 +8,7 @@ import Loader from './Shared/Loader'
 import ModalCardEdit from './Cards/ModalCardEdit'
 import ModalLogin from './Login/ModalLogin'
 import DataService from './Services/DataService'
-import Card, { checkCardsArr } from './Cards/class/Card'
+import Card, { checkCardsArr } from './Cards/cardType/Card'
 
 const { loadData, postData, updDataServLogin } = DataService()
 
@@ -174,8 +174,7 @@ function App() {
 
   function editCardContent(index, name, text) {
     if (cardsArr[index]) {
-      let card
-      card = new Card(cardsArr[index])
+      let card = new Card(cardsArr[index])
       card.name = name
       card.text = text
       cardsArr[index] = card

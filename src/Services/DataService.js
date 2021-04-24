@@ -1,5 +1,5 @@
-import $ from "jquery"
-import { checkCardsArr } from '../Cards/class/Card'
+import { ajax } from "jquery"
+import Card, { checkCardsArr } from '../Cards/cardType/Card'
 
 export default function DataService() {
     ////////////////////////////////////////////////////////////
@@ -32,7 +32,7 @@ export default function DataService() {
         //const rc = recuestCount++
         //console.log(` \nrequest ${rc} - "${target}" started \n params - user:"${user}" data:"${data}"`)
         return new Promise((res, rej) => {
-            $.ajax({
+            ajax({
                 url: url,
                 type: "POST",
                 dataType: "html",
@@ -97,7 +97,7 @@ export default function DataService() {
                             console.log(data)
                             if (user !== null) {
                                 console.log('clear data')
-                                requestPostData([{ id: 0, completed: false, text: "Данные были очищены из за ошибки" }]).then(() => loadData().then(res, rej), rej)//очистка данных
+                                requestPostData([new Card({ id: 0, color: "orange", name: "Error", text: "Данные были очищены из за ошибки" })]).then(() => loadData().then(res, rej), rej)//очистка данных
                             } else rej("Not format data & unlogged")
                         } else {
                             res(data || [])

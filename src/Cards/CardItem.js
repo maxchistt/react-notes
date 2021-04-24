@@ -1,16 +1,14 @@
 import React, { useContext } from 'react'
 import PropTypes from 'prop-types'
 import Context from '../context'
-import Card from './class/Card'
+import Card, { PropTypeCard } from './cardType/Card'
 import ReactMarkdown from 'react-markdown'
 import gfm from 'remark-gfm'
 
-function CardItem(props) {
+function CardItem({ card = new Card(), index }) {
     const { removeCard, setEditCard } = useContext(Context)
-    const { card, index } = props
-    const cardItem = card && new Card(card)
     const lineClip = 12
-    const bgColor = cardItem.color
+    const bgColor = card.color
 
     return (
 
@@ -21,12 +19,12 @@ function CardItem(props) {
                     <div
                         className="card-title h5"
                         style={{ overflow: "hidden", display: "-webkit-box", WebkitLineClamp: String(lineClip / 2), WebkitBoxOrient: "vertical" }} >
-                        <ReactMarkdown remarkPlugins={[gfm]} children={cardItem.name.replace(/\n/gi, '  \n')} />
+                        <ReactMarkdown remarkPlugins={[gfm]} children={card.name.replace(/\n/gi, '  \n')} />
                     </div>
                     <div
                         className="card-text"
                         style={{ overflow: "hidden", display: "-webkit-box", WebkitLineClamp: String(lineClip), WebkitBoxOrient: "vertical" }}>
-                        <ReactMarkdown remarkPlugins={[gfm]} children={cardItem.text.replace(/\n/gi, '  \n')} />
+                        <ReactMarkdown remarkPlugins={[gfm]} children={card.text.replace(/\n/gi, '  \n')} />
                     </div>
                 </div>
 
@@ -47,7 +45,7 @@ function CardItem(props) {
 }
 
 CardItem.propTypes = {
-    card: PropTypes.object.isRequired,
+    card: PropTypeCard.isRequired,
     index: PropTypes.number
 }
 

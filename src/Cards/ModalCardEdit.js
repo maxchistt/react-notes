@@ -4,7 +4,7 @@ import Context from '../context'
 import TextareaAutosize from 'react-textarea-autosize'
 import Modal, { ModalProps } from "../Shared/Modal/Modal"
 import debounce from '../Shared/debounce'
-import Card from '../Cards/class/Card'
+import Card, { PropTypeCard } from './cardType/Card'
 import Palette from './palette/palette'
 
 function calcMaxRows() {
@@ -20,12 +20,9 @@ function calcMaxRows() {
     else return '17'
 }
 
-function ModalCardEdit(props) {
+function ModalCardEdit({ card = new Card(), index }) {
     const { removeCard, changeCardColor, unsetEditCard, editCardContent } = React.useContext(Context)
-    const { card, index } = props
     React.useEffect(() => { if (card !== null) open() }, [card])
-
-    const cardEdit = card && new Card(card)
 
     const [showForm, setShowForm] = React.useState(false)
 
@@ -51,8 +48,8 @@ function ModalCardEdit(props) {
     }
 
     function onInputCange(e) {
-        let name = cardEdit.name
-        let text = cardEdit.text
+        let name = card.name
+        let text = card.text
         if (e.target.id === "modal-edit-name") name = e.target.value
         if (e.target.id === "modal-edit-text") text = e.target.value
         save(name, text)
@@ -75,7 +72,7 @@ function ModalCardEdit(props) {
         <Modal {...modalProps.bind()}>
             <div className="container p-2">
                 <div>
-                    {cardEdit ? (
+                    {card ? (
                         <React.Fragment>
                             <TextareaAutosize
                                 className="form-control form-control-lg p-0 mb-2 bg-light text-dark"
@@ -84,13 +81,13 @@ function ModalCardEdit(props) {
                                 minRows={1}
                                 maxRows={3}
                                 maxLength="100"
-                                value={cardEdit.name}
+                                value={card.name}
                                 onChange={debounce(onInputCange, 700)}
                             />
 
                             <p style={{ fontWeight: "500" }} className="mb-2 text-dark">
                                 Color:
-                                <span className={`m-1 d-inline-block text-center badge border border-secondary`} style={{ width: "3em", backgroundColor: cardEdit.color }}>
+                                <span className={`m-1 d-inline-block text-center badge border border-secondary`} style={{ width: "3em", backgroundColor: card.color }}>
                                     &nbsp;
                                 </span>
                             </p>
@@ -101,7 +98,7 @@ function ModalCardEdit(props) {
                                 style={{ border: "none", outline: "none", boxShadow: "none", resize: "none" }}
                                 minRows={3}
                                 maxRows={calcMaxRows()}
-                                value={cardEdit.text}
+                                value={card.text}
                                 onChange={debounce(onInputCange, 1000)}
                             />
                         </React.Fragment>
@@ -114,18 +111,18 @@ function ModalCardEdit(props) {
                     <div>
                         <Palette
                             className="btn btn-light mx-1"
-                            disabled={!cardEdit}
+                            disabled={!card}
                             setColor={tryChangeColor}
                         ></Palette>
                         <button
                             className="btn btn-light"
-                            disabled={!cardEdit}
+                            disabled={!card}
                             onClick={tryRemove}
                         >&#10007;</button>
                     </div>
 
                     <div className="mx-auto">
-                        <span style={{ color: "lightgray", fontWeight: "400" }}>Id: {cardEdit && cardEdit.id}</span>
+                        <span style={{ color: "lightgray", fontWeight: "400" }}>Id: {card && card.id}</span>
                     </div>
 
                     <div>
@@ -141,11 +138,8 @@ function ModalCardEdit(props) {
 }
 
 ModalCardEdit.propTypes = {
-    card: PropTypes.object,
+    card: PropTypeCard,
     index: PropTypes.number,
-
-    //isOpen: PropTypes.bool,
-    //setOpenState: PropTypes.func
 }
 
 export default ModalCardEdit
