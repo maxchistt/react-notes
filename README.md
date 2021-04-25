@@ -4,7 +4,7 @@
 
 Open [react-notes.std-1033.ist.mospolytech.ru](http://react-notes.std-1033.ist.mospolytech.ru/) to view working demo in the browser.
 
-[![Screenshot](https://i.postimg.cc/bJDKyz3s/719.png)](https://postimg.cc/47G8wTCg)
+![Screenshot](https://i.postimg.cc/bJDKyz3s/719.png)
 
 ## Start development
 
