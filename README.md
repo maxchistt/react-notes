@@ -6,7 +6,7 @@ Open [react-notes.std-1033.ist.mospolytech.ru](http://react-notes.std-1033.ist.m
 
 ![Screenshot](https://i.postimg.cc/bJDKyz3s/719.png)
 
-## Start development
+## Development
 
 Main available scripts in the project directory:
 
@@ -18,10 +18,6 @@ installs client and server packages
 
 starts client and server concurrently in dev mode
 
-### `npm run dev:serve`
-
-serves client and server concurrently
-
 ## Production
 
 Use next scripts:
@@ -32,11 +28,7 @@ to install and build app before run it
 
 ### `npm run prod` or `npm start`
 
-to run prod
-
-### `npm run prod:deploy`
-
-to run prod with predeploy
+to run production app version
 
 ## Deployment on Ubuntu
 
@@ -59,6 +51,7 @@ module.exports = {
       "max-memory-restart": "150MB",
       env: {
         NODE_ENV: "production",
+        mongoUri: "<YOUR MONGO URI>",
       },
     },
   ],

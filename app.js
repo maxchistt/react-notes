@@ -23,6 +23,10 @@ if (process.env.NODE_ENV === 'production') {
     app.get('*', (req, res) => {
         res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
     })
+} else {
+    app.get('*', (req, res) => {
+        res.send("NODE_ENV is not 'production'")
+    })
 }
 
 const PORT = process.env.PORT || 5000
