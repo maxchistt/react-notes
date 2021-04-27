@@ -8,7 +8,7 @@ Open [mern-notesapp.herokuapp.com](https://mern-notesapp.herokuapp.com/) or [rea
 
 ## Development
 
-First of all, set up your project by creating .env file with next content:
+First of all, set up your project by creating `.env` file with next content:
 
 ```env
 mongoUri = "<YOUR MONGO URI>"
@@ -57,7 +57,8 @@ module.exports = {
       "max-memory-restart": "150MB",
       env: {
         NODE_ENV: "production",
-        mongoUri: "<YOUR MONGO URI>",
+        mongoUri: "<YOUR MONGO URI>" /*replace this*/,
+        httpsRedirect: false /*true if enable*/,
       },
     },
   ],
@@ -69,5 +70,8 @@ module.exports = {
 - Create Heroku app
 - Connect to GitHub repo
 - Add Node.js buildpack in settings
-- Add config vars
+- Add config vars:
+  - NODE_ENV: production
+  - mongoUri: YOUR MONGO URI
+  - httpsRedirect: true
 - Click "Deploy branch" button
