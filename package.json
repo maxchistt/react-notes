@@ -12,8 +12,8 @@
     "client:start-dev": "(cd client && npm run start)",
     "client:install": "(cd client && npm install)",
     "client:build": "(cd client && npm run build)",
-    "dev": "concurrently \"npm run server:start-dev\" \"npm run client:start-dev\"",
-    "prod": "cross-env NODE_ENV=production npm run server:start-prod",
+    "dev": "cross-env NODE_ENV=dev concurrently \"npm run server:start-dev\" \"npm run client:start-dev\"",
+    "prod": "npm run server:start-prod",
     "prod:predeploy": "npm run deploy && npm run prod",
     "deploy": "npm run full-install && npm run client:build",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -40,6 +40,7 @@
   "devDependencies": {
     "concurrently": "^6.0.2",
     "cross-env": "^7.0.3",
+    "dotenv": "^8.2.0",
     "nodemon": "^2.0.7"
   }
 }

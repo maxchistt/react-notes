@@ -8,6 +8,12 @@ Open [react-notes.std-1033.ist.mospolytech.ru](http://react-notes.std-1033.ist.m
 
 ## Development
 
+First of all, set up your project by creating .env file with next content:
+
+```env
+mongoUri = "<YOUR MONGO URI>"
+```
+
 Main available scripts in the project directory:
 
 ### `npm run full-install`
