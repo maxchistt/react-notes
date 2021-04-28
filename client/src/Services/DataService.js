@@ -42,8 +42,8 @@ export default function DataService() {
                     data: data,
                 },
             })
-                .done(data => res(data))
-                .fail(data => rej(data))
+                .done(resdata => res(resdata))
+                .fail(rejdata => rej(rejdata))
             /*.always(() => console.log(
                 `requested - newUser:"${user}" resolveData:"${data}" \n
                  request ${rc} - "${target}" ended \n `
@@ -74,6 +74,7 @@ export default function DataService() {
     function checkData(data) {
         //console.log('start check data')
         try {
+            if( data === null) console.log("null data");
             return data === null || data === [] || checkCardsArr(data)
         } catch {
             return false
@@ -92,13 +93,15 @@ export default function DataService() {
                     .then((d) => {
                         let data = tryParce(d)//here we parce json
                         //console.log("[DATA] from loadData(): ", data)
+                        if(!data)console.log("empty data from server");
                         if (!checkData(data)) {
                             console.error("[loadData] Bad data format")
                             console.log(data)
-                            if (user !== null) {
+                            let checkDel = user !== null
+                            if (checkDel && window.confirm("Bad data: " + data + ". Delete data on server?")) {
                                 console.log('clear data')
                                 requestPostData([new Card({ id: 0, color: "orange", name: "Error", text: "Данные были очищены из за ошибки" })]).then(() => loadData().then(res, rej), rej)//очистка данных
-                            } else rej("Not format data & unlogged")
+                            } else rej("Not format data" + !user ? " & unlogged" : "")
                         } else {
                             res(data || [])
                         }
@@ -118,7 +121,10 @@ export default function DataService() {
                     ? Promise.reject(rej())
                     : loadData())
                     .then((d) => {
+                        if(!data)console.log("empty data to post");
+                        if(!d)console.log("empty loaded to check");
                         let pDat = data === null ? (d || []) : data
+                        if(!pDat)console.log("empty will be posted");
                         requestPostData(pDat).then(res, rej)
                     })
                     .catch(rej)

@@ -29,7 +29,7 @@ function useCardsArr(defaultValue) {
   const [value, setValue] = React.useState(defaultValue)
 
   function trySetValue(cardsArr) {
-    if (checkCardsArr(cardsArr)) setValue(cardsArr)
+    if (checkCardsArr(cardsArr)||cardsArr===null) setValue(cardsArr)
     else console.error('Массив cardsArr не прошел проверку \n', cardsArr)
   }
 
@@ -48,7 +48,7 @@ function useUpdater() {
 }
 
 function App() {
-  const [cardsArr, setCards] = useCardsArr([])
+  const [cardsArr, setCards] = useCardsArr(null)
   const [editCardId, setEditCardId] = React.useState(null)
   const [loading, setLoading] = React.useState({ state: false, res: false })
 
@@ -59,8 +59,9 @@ function App() {
   const [updaterVal] = useUpdater()
 
   React.useEffect(loadDataFromServer, [logged, userName, updaterVal]) // eslint-disable-line react-hooks/exhaustive-deps
-  useDebouncedEffect(loadDataToServer, [cardsArr], 1000) // eslint-disable-line react-hooks/exhaustive-deps
-  React.useEffect(clearOldData, [logged]) // eslint-disable-line react-hooks/exhaustive-deps
+  useDebouncedEffect(loadDataToServer, [cardsArr], 300) // eslint-disable-line react-hooks/exhaustive-deps
+  //React.useEffect(loadDataToServer, [cardsArr]) // eslint-disable-line react-hooks/exhaustive-deps
+  React.useEffect(clearOldData, [logged, userName]) // eslint-disable-line react-hooks/exhaustive-deps
 
   ///////////
   function onLogin(login) {
@@ -106,17 +107,22 @@ function App() {
 
   function clearOldData() {
     //console.log("clearOldData, logged:", logged)
-    if (!logged && !!cardsArr) deleteAll()
+    if (!logged) setCards(null)
   }
   ///////////
 
   ///////////
   function loadDataToServer() {
     try {
+      let startUsername = userName
       if (logged && userName) postData(cardsArr)
         .then(res => {
           if (!cardsArr) console.log("empty post!")
           console.log('[onPostData]', res)
+          if (startUsername !== userName) {
+            console.log("упс, несостыковочка с userName");
+            loadDataToServer()
+          }
         })
         .catch(e => console.log(`Data post request error. Response: ${e}`))
     }
@@ -127,12 +133,14 @@ function App() {
 
   function loadDataFromServer() {
     try {
+      let startUsername = userName
       if (logged && userName) {
         setLoading({ state: true, res: loading.res })
         loadData()
           .then(data => {
             console.log('[onLoadData]', 'Данные с сервера загружены')
-            setLoadedCards(data)
+            if (startUsername === userName) setLoadedCards(data)
+            else console.log("упс, несостыковочка с userName");
             setLoading({ state: false, res: true })
           })
           .catch(e => {
@@ -225,7 +233,7 @@ function App() {
           <AddCard onCreate={addCard} onDeleteAll={deleteAll} />
           <ModalCardEdit card={getCardByIndex(editCardId)} index={editCardId} />
 
-          {cardsArr.length ? (
+          {cardsArr && cardsArr.length ? (
             <CardList cards={cardsArr} />
           ) : (loading.state || !loading.res) ? null : logged ? (
             <div className="container text-center">
