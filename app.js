@@ -11,7 +11,7 @@ const mongoUri = process.env.mongoUri
 const httpsRedirect = process.env.httpsRedirect || false
 
 //temporary backend url
-const phpBaseUrl = 'http://php-server-notes.std-1033.ist.mospolytech.ru/'
+const phpBaseUrl = 'https://php-server-notes.herokuapp.com/'
 
 const app = express()
 
