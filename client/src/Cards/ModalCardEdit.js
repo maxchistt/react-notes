@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import Context from '../context'
 import TextareaAutosize from 'react-textarea-autosize'
 import Modal, { ModalProps } from "../Shared/Modal/Modal"
-import debounce from '../Shared/debounce'
 import Card, { PropTypeCard } from './cardType/Card'
 import Palette from './palette/palette'
 
@@ -32,7 +31,6 @@ function ModalCardEdit({ card = new Card(), index }) {
     modalProps.sideClose = true
     modalProps.onSideClick = unsetEditCard
 
-
     function open() {
         setShowForm(true)
     }
@@ -47,7 +45,7 @@ function ModalCardEdit({ card = new Card(), index }) {
         editCardContent(index, name, text)
     }
 
-    function onInputCange(e) {
+    function onInputChange(e) {
         let name = card.name
         let text = card.text
         if (e.target.id === "modal-edit-name") name = e.target.value
@@ -82,7 +80,7 @@ function ModalCardEdit({ card = new Card(), index }) {
                                 maxRows={3}
                                 maxLength="100"
                                 value={card.name}
-                                onChange={debounce(onInputCange, 700)}
+                                onChange={onInputChange}
                             />
 
                             <p style={{ fontWeight: "500" }} className="mb-2 text-dark">
@@ -99,7 +97,7 @@ function ModalCardEdit({ card = new Card(), index }) {
                                 minRows={3}
                                 maxRows={calcMaxRows()}
                                 value={card.text}
-                                onChange={debounce(onInputCange, 1000)}
+                                onChange={onInputChange}
                             />
                         </React.Fragment>
                     ) : (
