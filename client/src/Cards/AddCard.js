@@ -1,20 +1,8 @@
-import React, { useState } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import TextareaAutosize from 'react-textarea-autosize'
 import Palette, { colors } from './palette/palette'
-
-function useInputValue(defaultValue) {
-  const [value, setValue] = useState(defaultValue)
-  return {
-    bind: {
-      value,
-      onChange: event => setValue(event.target.value)
-    },
-    clear: () => setValue(defaultValue),
-    value: () => value,
-    addBreak: () => setValue(value + "\n")
-  }
-}
+import useInputValue from '../Shared/useInputValue.hook'
 
 function AddCard({ onCreate, onDeleteAll }) {
   const input = useInputValue('')
@@ -36,8 +24,8 @@ function AddCard({ onCreate, onDeleteAll }) {
   }
 
   function submitHandler() {
-    if (String(input.value()).trim() && String(color).trim()) {
-      onCreate({ name: String(input.value()).trim(), text: "", color: String(color) })
+    if (String(input.value).trim() && String(color).trim()) {
+      onCreate({ name: String(input.value).trim(), text: "", color: String(color) })
       input.clear()
       setColor(defColor)
     }
@@ -71,7 +59,7 @@ function AddCard({ onCreate, onDeleteAll }) {
         </div>
 
         <div className="col-xl-1 col-lg-1 col-md-1 col p-1">
-          <button disabled={!input.value().trim()} className="btn btn-success btn-block" onClick={submitHandler}>
+          <button disabled={!input.value.trim()} className="btn btn-success btn-block" onClick={submitHandler}>
             <i className="bi bi-clipboard-plus"></i>
           </button>
         </div>

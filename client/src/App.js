@@ -9,7 +9,7 @@ import ModalCardEdit from './Cards/ModalCardEdit'
 import ModalLogin from './Login/ModalLogin'
 import DataService from './Services/DataService'
 import Card, { checkCardsArr } from './Cards/cardType/Card'
-import useDebouncedEffect from './Shared/useDebouncedEffect'
+import useDebouncedEffect from './Shared/useDebouncedEffect.hook'
 
 const { loadData, postData, updDataServLogin } = DataService()
 

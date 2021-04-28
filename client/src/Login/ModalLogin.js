@@ -1,6 +1,7 @@
 import React from "react"
 import Modal, { ModalProps } from "../Shared/Modal/Modal"
 import PropTypes from 'prop-types'
+import useInputValue from '../Shared/useInputValue.hook'
 import LoginService from '../Services/LoginService'
 const { logIn, logOut } = LoginService()
 
@@ -10,19 +11,6 @@ function checkUsername(str) {
 
 function validateUsername(str) {
     return String(str).replace(/@|;|:|\.|,|\/|\\|\||\$|\?|!|#|%|\*|\^|\+|=|\[|\]| |\\ |«|<|>/gi, "").trim()
-}
-
-function useInputValue(defaultValue) {
-    const [value, setValue] = React.useState(defaultValue)
-
-    return {
-        bind: {
-            value: value,
-            onChange: event => setValue(event.target.value)
-        },
-        clear: () => setValue(""),
-        value: value
-    }
 }
 
 function ModalLogin(props) {
