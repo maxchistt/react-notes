@@ -59,7 +59,7 @@ function App() {
   const [updaterVal] = useUpdater()
 
   React.useEffect(loadDataFromServer, [logged, userName, updaterVal]) // eslint-disable-line react-hooks/exhaustive-deps
-  useDebouncedEffect(loadDataToServer, [cardsArr], 1200) // eslint-disable-line react-hooks/exhaustive-deps
+  useDebouncedEffect(loadDataToServer, [cardsArr], 1000) // eslint-disable-line react-hooks/exhaustive-deps
   React.useEffect(clearOldData, [logged]) // eslint-disable-line react-hooks/exhaustive-deps
 
   ///////////
@@ -115,6 +115,7 @@ function App() {
     try {
       if (logged && userName) postData(cardsArr)
         .then(res => {
+          if (!cardsArr) console.log("empty post!")
           console.log('[onPostData]', res)
         })
         .catch(e => console.log(`Data post request error. Response: ${e}`))
