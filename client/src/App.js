@@ -9,7 +9,7 @@ import ModalCardEdit from './Cards/ModalCardEdit'
 import ModalLogin from './Login/ModalLogin'
 import DataService from './Services/DataService'
 import Card, { checkCardsArr } from './Cards/cardType/Card'
-import useDebouncedEffect from './Shared/useDebouncedEffect.hook'
+//import useDebouncedEffect from './Shared/useDebouncedEffect.hook'
 
 const { loadData, postData, updDataServLogin } = DataService()
 
@@ -29,7 +29,7 @@ function useCardsArr(defaultValue) {
   const [value, setValue] = React.useState(defaultValue)
 
   function trySetValue(cardsArr) {
-    if (checkCardsArr(cardsArr)||cardsArr===null) setValue(cardsArr)
+    if (checkCardsArr(cardsArr) || cardsArr === null) setValue(cardsArr)
     else console.error('Массив cardsArr не прошел проверку \n', cardsArr)
   }
 
@@ -59,8 +59,8 @@ function App() {
   const [updaterVal] = useUpdater()
 
   React.useEffect(loadDataFromServer, [logged, userName, updaterVal]) // eslint-disable-line react-hooks/exhaustive-deps
-  useDebouncedEffect(loadDataToServer, [cardsArr], 300) // eslint-disable-line react-hooks/exhaustive-deps
-  //React.useEffect(loadDataToServer, [cardsArr]) // eslint-disable-line react-hooks/exhaustive-deps
+  //useDebouncedEffect(loadDataToServer, [cardsArr], 300) // eslint-disable-line react-hooks/exhaustive-deps
+  React.useEffect(loadDataToServer, [cardsArr]) // eslint-disable-line react-hooks/exhaustive-deps
   React.useEffect(clearOldData, [logged, userName]) // eslint-disable-line react-hooks/exhaustive-deps
 
   ///////////
@@ -172,8 +172,10 @@ function App() {
   }
 
   function addCard(cardData = {}) {
+    const newCard = new Card({ id: ++cardCount, name: cardData.name, color: cardData.color, text: cardData.text })
     setCards(
-      cardsArr.concat([new Card({ id: ++cardCount, name: cardData.name, color: cardData.color, text: cardData.text })])
+
+      (cardsArr != null) ? cardsArr.concat([newCard]) : [newCard]
     )
   }
 
