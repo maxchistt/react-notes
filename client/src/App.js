@@ -9,7 +9,7 @@ import ModalCardEdit from './Cards/ModalCardEdit'
 import ModalLogin from './Login/ModalLogin'
 import DataService from './Services/DataService'
 import Card, { checkCardsArr } from './Cards/cardType/Card'
-import useDebouncedEffect from './Shared/useDebouncedEffect.hook'
+//import useDebouncedEffect from './Shared/useDebouncedEffect.hook'
 
 const { loadData, postData, updDataServLogin } = DataService()
 
@@ -59,8 +59,8 @@ function App() {
   const [updaterVal] = useUpdater()
 
   React.useEffect(loadDataFromServer, [logged, userName, updaterVal]) // eslint-disable-line react-hooks/exhaustive-deps
-  useDebouncedEffect(loadDataToServer, [cardsArr], 300) // eslint-disable-line react-hooks/exhaustive-deps
-  //React.useEffect(loadDataToServer, [cardsArr]) // eslint-disable-line react-hooks/exhaustive-deps
+  //useDebouncedEffect(loadDataToServer, [cardsArr], 300) // eslint-disable-line react-hooks/exhaustive-deps
+  React.useEffect(loadDataToServer, [cardsArr]) // eslint-disable-line react-hooks/exhaustive-deps
   React.useEffect(clearOldData, [logged, userName]) // eslint-disable-line react-hooks/exhaustive-deps
 
   ///////////
