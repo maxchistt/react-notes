@@ -29,7 +29,7 @@ function useCardsArr(defaultValue) {
   const [value, setValue] = React.useState(defaultValue)
 
   function trySetValue(cardsArr) {
-    if (checkCardsArr(cardsArr)||cardsArr===null) setValue(cardsArr)
+    if (checkCardsArr(cardsArr) || cardsArr === null) setValue(cardsArr)
     else console.error('Массив cardsArr не прошел проверку \n', cardsArr)
   }
 
@@ -172,8 +172,10 @@ function App() {
   }
 
   function addCard(cardData = {}) {
+    const newCard = new Card({ id: ++cardCount, name: cardData.name, color: cardData.color, text: cardData.text })
     setCards(
-      cardsArr.concat([new Card({ id: ++cardCount, name: cardData.name, color: cardData.color, text: cardData.text })])
+
+      (cardsArr != null) ? cardsArr.concat([newCard]) : [newCard]
     )
   }
 
