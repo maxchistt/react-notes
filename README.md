@@ -36,6 +36,12 @@ to install and build app before run it
 
 to run production app version
 
+## MongoDb
+
+[Instruction for Windows](./installMongo/Windows/Readme.txt)
+
+[Instruction for Ubuntu](./installMongo/Ubuntu/Readme.txt)
+
 ## Deployment on Ubuntu LVS
 
 - Clone from GitHub
