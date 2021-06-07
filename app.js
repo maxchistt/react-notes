@@ -10,22 +10,16 @@ const PORT = process.env.PORT || 5000
 const mongoUri = process.env.mongoUri
 const httpsRedirect = process.env.httpsRedirect || false
 
-//temporary backend url
-const phpBaseUrl = 'https://php-server-notes.herokuapp.com/'
-
 const app = express()
 
 app.use(express.json({ extended: true }))
 
 //app.use('/api/auth', require('./routes/auth.routes'))
+app.use('/server', require('./routes/phpserver.routes'))
 
-app.post('/server', function (req, res) {
-    //console.log("backend redirect", req.url)
-    res.redirect(307, phpBaseUrl)
-})
+if (httpsRedirect) app.use(httpToHttps)
 
 if (!devMode) {
-    if (httpsRedirect) app.use(httpToHttps)
     app.use('/', express.static(path.join(__dirname, 'client', 'build')))
     app.get('*', (req, res) => {
         res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
