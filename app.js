@@ -38,16 +38,8 @@ if (!devMode) {
 
 async function start() {
     try {
-        if (mongoUri) {
-            await mongoose.connect(mongoUri, {
-                useNewUrlParser: true,
-                useUnifiedTopology: true,
-                useCreateIndex: true
-            })
-        } else {
-            console.log("\n!!!NO MONGO URI!!!")
-        }
-        app.listen(PORT, () => logServerStart(PORT))
+        connectMongo(mongoUri)
+        app.listen(PORT, logServerStart)
     } catch (e) {
         console.log('Server Error', e.message)
         process.exit(1)
@@ -56,12 +48,25 @@ async function start() {
 
 start()
 
-function logServerStart(PORT) {
-    dns.lookup(os.hostname(), (err, address, fam) => {
-        const [logN, bef, af] = devMode ? ['Express server', ' ', ':'] : ['React Notes App', '-', '']
-        console.log(`\n${logN} has been started`)
-        console.log(`${bef} Local${af}            http://localhost:${PORT}`)
-        console.log(`${bef} On Your Network${af}  http://${address}:${PORT}`)
+async function connectMongo(mongoUri) {
+    if (mongoUri) {
+        await mongoose.connect(mongoUri, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+            useCreateIndex: true
+        })
+    } else {
+        console.log("\n!!!NO MONGO URI!!!")
+    }
+}
+
+function logServerStart() {
+    dns.lookup(os.hostname(), (err, address) => {
+        const [logName, sBef, sAft] = devMode ? ['Express server', ' ', ':'] : ['React Notes App', '-', '']
+        console.log(`\n${logName} has been started`)
+        console.log(`${sBef} Local${sAft}            http://localhost:${PORT}`)
+        console.log(`${sBef} On Your Network${sAft}  http://${address}:${PORT}`)
+        if (err) console.log(err)
     })
 }
 
