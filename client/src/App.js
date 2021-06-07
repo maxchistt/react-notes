@@ -1,5 +1,5 @@
 import React from 'react';
-import logo from './logo.svg';
+import logo from './Shared/Logo/logo.svg';
 import './App.css';
 import CardList from './Cards/CardList'
 import AddCard from './Cards/AddCard'
