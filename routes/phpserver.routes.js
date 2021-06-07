@@ -5,6 +5,7 @@ const router = Router()
 //temporary backend url
 const phpBaseUrl = 'https://php-server-notes.herokuapp.com/'
 
+//auth not used
 router.post('/', /*auth,*/ async (req, res) => {
   try {
     //console.log("backend redirect", req.url)

@@ -4,8 +4,7 @@ import Card, { checkCardsArr } from '../Cards/cardType/Card'
 export default function DataService() {
     ////////////////////////////////////////////////////////////
     var user = null
-    const nodeBackend = true
-    const baseUrl = nodeBackend ? '/server/' : 'http://php-server-notes.std-1033.ist.mospolytech.ru/'
+    const baseUrl = '/api/server/'
 
     ////////////////////////////////////////////////////////////
     function updDataServLogin(login) {
@@ -74,7 +73,7 @@ export default function DataService() {
     function checkData(data) {
         //console.log('start check data')
         try {
-            if( data === null) console.log("null data");
+            if (data === null) console.log("null data");
             return data === null || data === [] || checkCardsArr(data)
         } catch {
             return false
@@ -93,7 +92,7 @@ export default function DataService() {
                     .then((d) => {
                         let data = tryParce(d)//here we parce json
                         //console.log("[DATA] from loadData(): ", data)
-                        if(!data)console.log("empty data from server");
+                        if (!data) console.log("empty data from server");
                         if (!checkData(data)) {
                             console.error("[loadData] Bad data format")
                             console.log(data)
@@ -121,10 +120,10 @@ export default function DataService() {
                     ? Promise.reject(rej())
                     : loadData())
                     .then((d) => {
-                        if(!data)console.log("empty data to post");
-                        if(!d)console.log("empty loaded to check");
+                        if (!data) console.log("empty data to post");
+                        if (!d) console.log("empty loaded to check");
                         let pDat = data === null ? (d || []) : data
-                        if(!pDat)console.log("empty will be posted");
+                        if (!pDat) console.log("empty will be posted");
                         requestPostData(pDat).then(res, rej)
                     })
                     .catch(rej)
