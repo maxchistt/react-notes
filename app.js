@@ -10,22 +10,16 @@ const PORT = process.env.PORT || 5000
 const mongoUri = process.env.mongoUri
 const httpsRedirect = process.env.httpsRedirect || false
 
-//temporary backend url
-const phpBaseUrl = 'https://php-server-notes.herokuapp.com/'
-
 const app = express()
 
 app.use(express.json({ extended: true }))
 
-//app.use('/api/auth', require('./routes/auth.routes'))
+app.use('/api/auth', require('./routes/auth.routes'))
+app.use('/api/server', require('./routes/phpserver.routes'))
 
-app.post('/server', function (req, res) {
-    //console.log("backend redirect", req.url)
-    res.redirect(307, phpBaseUrl)
-})
+if (httpsRedirect) app.use(httpToHttps)
 
 if (!devMode) {
-    if (httpsRedirect) app.use(httpToHttps)
     app.use('/', express.static(path.join(__dirname, 'client', 'build')))
     app.get('*', (req, res) => {
         res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
@@ -38,16 +32,8 @@ if (!devMode) {
 
 async function start() {
     try {
-        if (mongoUri) {
-            await mongoose.connect(mongoUri, {
-                useNewUrlParser: true,
-                useUnifiedTopology: true,
-                useCreateIndex: true
-            })
-        } else {
-            console.log("\n!!!NO MONGO URI!!!")
-        }
-        app.listen(PORT, () => logServerStart(PORT))
+        connectMongo(mongoUri)
+        app.listen(PORT, logServerStart)
     } catch (e) {
         console.log('Server Error', e.message)
         process.exit(1)
@@ -56,12 +42,25 @@ async function start() {
 
 start()
 
-function logServerStart(PORT) {
-    dns.lookup(os.hostname(), (err, address, fam) => {
-        const [logN, bef, af] = devMode ? ['Express server', ' ', ':'] : ['React Notes App', '-', '']
-        console.log(`\n${logN} has been started`)
-        console.log(`${bef} Local${af}            http://localhost:${PORT}`)
-        console.log(`${bef} On Your Network${af}  http://${address}:${PORT}`)
+async function connectMongo(mongoUri) {
+    if (mongoUri) {
+        await mongoose.connect(mongoUri, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+            useCreateIndex: true
+        })
+    } else {
+        console.log("\n!!!NO MONGO URI!!!")
+    }
+}
+
+function logServerStart() {
+    dns.lookup(os.hostname(), (err, address) => {
+        const [logName, sBef, sAft] = devMode ? ['Express server', ' ', ':'] : ['React Notes App', '-', '']
+        console.log(`\n${logName} has been started`)
+        console.log(`${sBef} Local${sAft}            http://localhost:${PORT}`)
+        console.log(`${sBef} On Your Network${sAft}  http://${address}:${PORT}`)
+        if (err) console.log(err)
     })
 }
 

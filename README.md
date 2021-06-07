@@ -12,6 +12,7 @@ First of all, set up your project by creating `.env` file with next content:
 
 ```env
 mongoUri = "<YOUR MONGO URI>"
+jwtSecret = "<SECRET KEY>"
 ```
 
 Main available scripts in the project directory:
@@ -93,6 +94,7 @@ module.exports = {
         NODE_ENV: "production",
         mongoUri: "<YOUR MONGO URI>" /*replace this*/,
         httpsRedirect: false /*true if enable*/,
+        jwtSecret: "<SECRET KEY>",
       },
     },
   ],
@@ -108,4 +110,5 @@ module.exports = {
   - NODE_ENV: production
   - mongoUri: YOUR MONGO URI
   - httpsRedirect: true
+  - jwtSecret: SECRET KEY
 - Click "Deploy branch" button
