@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import TextareaAutosize from 'react-textarea-autosize'
 import Palette, { colors } from './palette/palette'
 import useInputValue from '../Shared/useInputValue.hook'
-import CardsContext from '../Context/cardsContext'
+import CardsContext from '../Context/CardsContext'
 
 function AddCard() {
   const { addCard } = React.useContext(CardsContext)

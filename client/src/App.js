@@ -3,7 +3,7 @@ import logo from './Shared/Logo/logo.svg';
 import './App.css';
 import CardList from './Cards/CardList'
 import AddCard from './Cards/AddCard'
-import CardsContext from './Context/cardsContext'
+import CardsContext from './Context/CardsContext'
 import Loader from './Shared/Loader'
 import ModalCardEdit from './Cards/ModalCardEdit'
 import ModalLogin from './Login/ModalLogin'

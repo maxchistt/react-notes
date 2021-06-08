@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import CardsContext from '../Context/cardsContext'
+import CardsContext from '../Context/CardsContext'
 import TextareaAutosize from 'react-textarea-autosize'
 import Modal, { ModalProps } from "../Shared/Modal/Modal"
 import Card, { PropTypeCard } from './cardType/Card'
