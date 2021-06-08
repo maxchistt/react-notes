@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import Context from '../context'
+import CardsContext from '../Context/cardsContext'
 import TextareaAutosize from 'react-textarea-autosize'
 import Modal, { ModalProps } from "../Shared/Modal/Modal"
 import Card, { PropTypeCard } from './cardType/Card'
@@ -20,7 +20,7 @@ function calcMaxRows() {
 }
 
 function ModalCardEdit({ card = new Card(), index }) {
-    const { removeCard, changeCardColor, unsetEditCard, editCardContent } = React.useContext(Context)
+    const { removeCard, changeCardColor, unsetEditCard, editCardContent } = React.useContext(CardsContext)
     React.useEffect(() => { if (card !== null) open() }, [card])
 
     const [showForm, setShowForm] = React.useState(false)

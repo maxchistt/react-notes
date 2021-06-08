@@ -3,7 +3,7 @@ import logo from './Shared/Logo/logo.svg';
 import './App.css';
 import CardList from './Cards/CardList'
 import AddCard from './Cards/AddCard'
-import Context from './context'
+import CardsContext from './Context/cardsContext'
 import Loader from './Shared/Loader'
 import ModalCardEdit from './Cards/ModalCardEdit'
 import ModalLogin from './Login/ModalLogin'
@@ -167,10 +167,6 @@ function App() {
     setCards([...cardsArr])
   }
 
-  function deleteAll() {
-    setCards([])
-  }
-
   function addCard(cardData = {}) {
     const newCard = new Card({ id: ++cardCount, name: cardData.name, color: cardData.color, text: cardData.text })
     setCards(
@@ -208,7 +204,7 @@ function App() {
   ///////////
 
   return (
-    <Context.Provider value={{ removeCard, changeCardColor, setEditCard, unsetEditCard, editCardContent, editCardId }}>
+    <CardsContext.Provider value={{ addCard, removeCard, changeCardColor, setEditCard, unsetEditCard, editCardContent, editCardId }}>
       <div className="App pb-3 mb-3">
         <header className="p-1">
           <nav className="d-flex container px-0 flex-wrap-reverse justify-content-around">
@@ -232,7 +228,7 @@ function App() {
         </header>
 
         <main className="p-1 pb-3 mb-3">
-          <AddCard onCreate={addCard} onDeleteAll={deleteAll} />
+          <AddCard />
           <ModalCardEdit card={getCardByIndex(editCardId)} index={editCardId} />
 
           {cardsArr && cardsArr.length ? (
@@ -260,7 +256,7 @@ function App() {
           }
         </main>
       </div>
-    </Context.Provider>
+    </CardsContext.Provider>
   );
 }
 
