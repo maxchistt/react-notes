@@ -1,12 +1,14 @@
 const { Schema, model, Types } = require('mongoose')
 
+/**
+ * Схема заметки для базы данных
+ */
 const schema = new Schema({
-  id: { type: String, required: true, unique: true /*, default: String(Date.now) + String(Math.random)*/ },
+  id: { type: String, required: true, unique: true },
   name: { type: String },
   text: { type: String },
   color: { type: String },
   image: { type: String },
-  //date: { type: Date, default: Date.now },
   owner: { type: Types.ObjectId, ref: 'User', required: true }
 })
 

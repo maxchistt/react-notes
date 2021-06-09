@@ -5,6 +5,9 @@ const os = require('os')
 const mongoose = require('mongoose')
 require('dotenv').config()
 
+/**
+ * подключение переменных среды
+ */
 const devMode = process.env.NODE_ENV === "dev"
 const PORT = process.env.PORT || 5000
 const mongoUri = process.env.mongoUri
@@ -14,11 +17,17 @@ const app = express()
 
 app.use(express.json({ extended: true }))
 
+/**
+ * подключение роутов
+ */
 app.use('/api/auth', require('./routes/auth.routes'))
 app.use('/api/notes', require('./routes/notes.routes'))
 
 if (httpsRedirect) app.use(httpToHttps)
 
+/**
+ * подключение статической библиотеки клиента
+ */
 if (!devMode) {
     app.use('/', express.static(path.join(__dirname, 'client', 'build')))
     app.get('*', (req, res) => {
@@ -30,6 +39,9 @@ if (!devMode) {
     })
 }
 
+/**
+ * запуск сервера
+ */
 async function start() {
     try {
         connectMongo(mongoUri)
@@ -42,6 +54,10 @@ async function start() {
 
 start()
 
+/**
+ * подключение к MongoDb
+ * @param {*} mongoUri 
+ */
 async function connectMongo(mongoUri) {
     if (mongoUri) {
         await mongoose.connect(mongoUri, {
@@ -54,6 +70,9 @@ async function connectMongo(mongoUri) {
     }
 }
 
+/**
+ * Вывод информации о сервере
+ */
 function logServerStart() {
     dns.lookup(os.hostname(), (err, address) => {
         const [logName, sBef, sAft] = devMode ? ['Express server', ' ', ':'] : ['React Notes App', '-', '']
@@ -64,6 +83,9 @@ function logServerStart() {
     })
 }
 
+/**
+ * перенаправление с http на https для PWA 
+ */
 function httpToHttps(req, res, next) {
     if (req.header('x-forwarded-proto') !== 'https') {
         res.redirect(`https://${req.header('host')}${req.url}`)

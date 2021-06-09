@@ -1,3 +1,8 @@
+/**
+ * Проверка рбьекта заметки
+ * @param {*} card 
+ * @returns 
+ */
 function checkCard(card) {
     return (
         typeof card.id === "string" &&
