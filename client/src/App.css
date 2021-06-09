@@ -1,48 +1,3 @@
-.App-logo {
-  height: 3em;
-  pointer-events: none;
-  user-select: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.card:hover {
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-}
-
-.card {
-  transition: box-shadow 0.3s;
-}
-
-.card-text > h1 {
-  font-size: 1.625em;
-}
-.card-text > h2 {
-  font-size: 1.5em;
-}
-.card-text > h3 {
-  font-size: 1.375em;
-}
-.card-text > h4 {
-  font-size: 1.25em;
-}
-.card-text > h5 {
-  font-size: 1.125em;
-}
-
 .lds-dual-ring {
   display: inline-block;
   height: 1em;
@@ -67,13 +22,4 @@
   100% {
     transform: rotate(360deg);
   }
-}
-
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap");
-
-.brand {
-  font-family: "Roboto", sans-serif;
-  padding-top: 0.2rem !important;
-  pointer-events: none;
-  user-select: none;
 }

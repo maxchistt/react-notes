@@ -15,7 +15,7 @@ const app = express()
 app.use(express.json({ extended: true }))
 
 app.use('/api/auth', require('./routes/auth.routes'))
-app.use('/api/server', require('./routes/phpserver.routes'))
+app.use('/api/notes', require('./routes/notes.routes'))
 
 if (httpsRedirect) app.use(httpToHttps)
 

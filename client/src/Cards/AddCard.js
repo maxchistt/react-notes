@@ -1,9 +1,8 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import TextareaAutosize from 'react-textarea-autosize'
 import Palette, { colors } from './palette/palette'
-import useInputValue from '../Shared/useInputValue.hook'
-import CardsContext from '../Context/CardsContext'
+import useInputValue from '../hooks/useInputValue.hook'
+import CardsContext from '../context/CardsContext'
 
 function AddCard() {
   const { addCard } = React.useContext(CardsContext)
@@ -69,10 +68,6 @@ function AddCard() {
       </div>
     </div>
   )
-}
-
-AddCard.propTypes = {
-  onDeleteAll: PropTypes.func.isRequired
 }
 
 export default AddCard
