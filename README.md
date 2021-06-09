@@ -46,28 +46,35 @@ Local `mongoUri` will be `"mongodb://localhost:27017/mydb"`
 1. Download and install MongoDb server from [www.mongodb.com/try/download/community](https://www.mongodb.com/try/download/community) (set it on "D:\Program Files\" to not edit the .bat file)
 
 2. Edit [mongo_win_install.bat](./installMongo/Windows/mongo_win_install.bat) file and fix next variables (dont use spaces around "="):
-    - set `MongoDb_ExePath` - path to mongod.exe
-    - set `MongoDb_DataFolderPath` - path to db folder
+
+   - set `MongoDb_ExePath` - path to mongod.exe
+   - set `MongoDb_DataFolderPath` - path to db folder
 
 3. To start Mongo database
-    - run `mongo_win_install.bat` file 
-    - or run `npm run mongo-windows:start` command with npm
+
+   - run `mongo_win_install.bat` file
+   - or run `npm run mongo-windows:start` command with npm
 
 ### Mongo installation on Ubuntu 20.04
 
 1. To prepare and setup mongo
-    - run next in bash:
-      - `sudo apt update && sudo apt upgrade`
-      - `cd && cd react-notes/installMongo/Ubuntu && chmod +x mongo_ubuntu_setup.sh && chmod +x mongo_ubuntu_install.sh && cd`
-      - `cd && ./react-notes/installMongo/Ubuntu/mongo_ubuntu_setup.sh`
 
-    - or run next with npm: `npm run mongo-ubuntu:full-setup`
+   - run next in bash:
 
-2. To start Mongo database 
-    - run next in bash: `cd && ./react-notes/installMongo/Ubuntu/mongo_ubuntu_install.sh`
-    - or run next with npm: `npm run mongo-ubuntu:start`
+     - `sudo apt update && sudo apt upgrade`
+     - `cd && cd react-notes/installMongo/Ubuntu && chmod +x mongo_ubuntu_setup.sh && chmod +x mongo_ubuntu_install.sh && cd`
+     - `cd && ./react-notes/installMongo/Ubuntu/mongo_ubuntu_setup.sh`
 
-### Mongo on Heroku
+   - or run next with npm: `npm run mongo-ubuntu:full-setup`
+
+2. To start Mongo database
+
+   - run next in bash: `cd && ./react-notes/installMongo/Ubuntu/mongo_ubuntu_install.sh`
+   - or run next with npm: `npm run mongo-ubuntu:start`
+
+### Cloud Mongo connection
+
+Can be also used with Heroku
 
 Use [MongoDB Atlas](https://www.mongodb.com/cloud/atlas). Look video lesson [here](https://youtu.be/mTS0DH3lMNs)
 
