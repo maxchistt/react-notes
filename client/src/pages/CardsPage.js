@@ -8,10 +8,11 @@ import Loader from '../shared/Loader'
 import ModalCardEdit from '../Cards/ModalCardEdit'
 
 import Card, { checkCardsArr } from '../Cards/cardType/Card'
-import Header from "./SharedComponents/Header"
+
 
 import { NavLink } from 'react-router-dom'
 import { AuthContext } from '../context/AuthContext'
+import { PageContext } from '../context/PageContext'
 
 import { useHttp } from '../hooks/http.hook'
 
@@ -29,17 +30,22 @@ function useCardsArr(defaultValue) {
 function useUpdater() {
     const [updaterVal, setUpdaterVal] = React.useState(null)
     const timer = React.useRef()
-    if (timer.current) clearTimeout(timer.current)
-    timer.current = setTimeout(() => {
-        console.log("Timed update")
-        setUpdaterVal(Date.now())
-    }, 60 * 1000) // обновяем через минуту
+    React.useEffect(() => {
+        if (timer.current) clearTimeout(timer.current)
+        timer.current = setTimeout(() => {
+            console.log("Timed update")
+            setUpdaterVal(Date.now())
+        }, 60 * 1000) // обновяем через минуту
+        return () => clearTimeout(timer.current)
+    }, []) // eslint-disable-line react-hooks/exhaustive-deps
     return [updaterVal]
 }
 
 function CardsPage() {
 
     const auth = React.useContext(AuthContext)
+    const page = React.useContext(PageContext)
+
     const { loading, request, error, clearError } = useHttp()
     const fetchNotes = React.useCallback(async (url = "", method = "GET", body = null, resCallback = () => { }) => {
         try {
@@ -69,7 +75,14 @@ function CardsPage() {
 
     const [updaterVal] = useUpdater()
 
-    React.useEffect(loadDataFromServer, [auth.isAuthenticated, auth.email, updaterVal]) // eslint-disable-line react-hooks/exhaustive-deps
+    const updatingEnable = React.useRef(true)
+
+    React.useEffect(() => {
+        updatingEnable.current = true
+        loadDataFromServer()
+        return () => updatingEnable.current = false
+    }, [auth.isAuthenticated, auth.email, updaterVal]) // eslint-disable-line react-hooks/exhaustive-deps
+
     React.useEffect(clearOldData, [auth.isAuthenticated]) // eslint-disable-line react-hooks/exhaustive-deps
 
     ///////////
@@ -85,7 +98,7 @@ function CardsPage() {
     }
 
     function setLoadedCards(cards) {
-        setCardsArr([...cards])
+        if (updatingEnable.current) setCardsArr([...cards])
     }
     ///////////
 
@@ -142,22 +155,25 @@ function CardsPage() {
     }
     ///////////
 
+    React.useEffect(() => {
+        page.setNav(
+            <React.Fragment>
+                <button className="btn btn-light m-1" onClick={loadDataFromServer}>
+                    {loading ? <Loader className='px-1' /> : <i className="bi bi-arrow-clockwise px-1"></i>}
+                    <span className='d-xl-inline d-none'>Update</span>
+                </button>
+
+                <NavLink to="/authpage" className="btn btn-light m-1">
+                    <span><i className="bi bi-person"></i> {auth.email}</span>
+                </NavLink>
+            </React.Fragment>
+        )
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [auth.email, auth.token])
+
     return (
         <CardsContext.Provider value={{ addCard, removeCard, changeCardColor, setEditCard, unsetEditCard, editCardContent, editCardId }}>
             <div className="">
-                <Header>
-
-                    <button className="btn btn-light m-1" onClick={loadDataFromServer}>
-                        {loading ? <Loader className='px-1' /> : <i className="bi bi-arrow-clockwise px-1"></i>}
-                        <span className='d-xl-inline d-none'>Update</span>
-                    </button>
-
-
-                    <NavLink to="/authpage" className="btn btn-light m-1">
-                        <span><i className="bi bi-person"></i> {auth.email}</span>
-                    </NavLink>
-
-                </Header>
 
                 <main className="p-1 pb-3 mb-3">
                     <AddCard />

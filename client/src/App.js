@@ -8,11 +8,15 @@ import { BrowserRouter as Router } from 'react-router-dom'
 import { useRoutes } from './routes'
 import { useAuth } from './hooks/auth.hook'
 import { AuthContext } from './context/AuthContext'
+import { PageContext } from './context/PageContext'
+import Header from './pages/SharedComponents/Header'
 
 function App() {
   const { token, login, logout, userId, email, ready } = useAuth()
   const isAuthenticated = !!token
   const routes = useRoutes(isAuthenticated)
+
+  const [nav, setNav] = React.useState()
 
   if (!ready) {
     return (
@@ -22,15 +26,20 @@ function App() {
     )
   }
 
+
   return (
     <AuthContext.Provider value={{
       token, login, logout, userId, email, isAuthenticated
     }}>
-      <Router>
+      <PageContext.Provider value={{setNav}}>
+        <Router>
+        <Header>{nav}</Header>
         <div className="App pb-3 mb-3">
           {routes}
         </div>
       </Router>
+      </PageContext.Provider>
+      
     </AuthContext.Provider>
   )
 }

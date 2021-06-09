@@ -2,12 +2,14 @@ import React, { useContext, useEffect, useState } from 'react'
 import { useHttp } from '../hooks/http.hook'
 
 import { AuthContext } from '../context/AuthContext'
-import Header from './SharedComponents/Header'
+import { PageContext } from '../context/PageContext'
+
 import { NavLink, useHistory } from 'react-router-dom'
 import './AuthPage.css'
 
 function AuthPage() {
   const auth = useContext(AuthContext)
+  const page = useContext(PageContext)
   const history = useHistory()
 
   const { loading, request, error, clearError } = useHttp()
@@ -45,15 +47,18 @@ function AuthPage() {
     auth.logout()
   }
 
+  React.useEffect(() => {
+    page.setNav(auth.isAuthenticated &&
+      <NavLink to="/notes" className="btn btn-light m-1">
+        <span><i className="bi bi-x d-inline d-sm-none"></i> К заметкам</span>
+      </NavLink>
+    )
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [auth.isAuthenticated, auth.token])
+
   return (
     <div className="AuthPage">
-      <Header >
-        {auth.isAuthenticated &&
-          <NavLink to="/notes" className="btn btn-light m-1">
-            <span><i className="bi bi-x d-inline d-sm-none"></i> К заметкам</span>
-          </NavLink>
-        }
-      </Header>
+
 
       <div className="p-1 pb-3 mb-3 container" >
         <div className=" form-body mx-auto ">

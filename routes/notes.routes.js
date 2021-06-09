@@ -64,7 +64,7 @@ router.post('/delete', auth, async (req, res) => {
             //console.log("EXITING");
            
             existing.remove()
-            console.log("fdsdf");
+
         } else res.status(500).json({ message: 'уже удален' })
     }
 })
