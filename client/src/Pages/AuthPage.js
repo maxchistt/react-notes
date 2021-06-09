@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { useHttp } from '../hooks/http.hook'
+import { useHttp } from '../Hooks/http.hook'
 
-import { AuthContext } from '../context/AuthContext'
-import { PageContext } from '../context/PageContext'
+import { AuthContext } from '../Context/AuthContext'
+import { PageContext } from '../Context/PageContext'
 
 import { NavLink, useHistory } from 'react-router-dom'
 import './AuthPage.css'

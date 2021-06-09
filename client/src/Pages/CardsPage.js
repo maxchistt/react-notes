@@ -3,18 +3,18 @@ import React from 'react';
 import './CardsPage.css';
 import CardList from '../Cards/CardList'
 import AddCard from '../Cards/AddCard'
-import CardsContext from '../context/CardsContext'
-import Loader from '../shared/Loader'
+import CardsContext from '../Context/CardsContext'
+import Loader from '../Shared/Loader'
 import ModalCardEdit from '../Cards/ModalCardEdit'
 
 import Card, { checkCardsArr } from '../Cards/cardType/Card'
 
 
 import { NavLink } from 'react-router-dom'
-import { AuthContext } from '../context/AuthContext'
-import { PageContext } from '../context/PageContext'
+import { AuthContext } from '../Context/AuthContext'
+import { PageContext } from '../Context/PageContext'
 
-import { useHttp } from '../hooks/http.hook'
+import { useHttp } from '../Hooks/http.hook'
 
 function useCardsArr(defaultValue) {
     const [value, setValue] = React.useState(defaultValue)

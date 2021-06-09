@@ -1,8 +1,8 @@
 import React from 'react'
 import TextareaAutosize from 'react-textarea-autosize'
 import Palette, { colors } from './palette/palette'
-import useInputValue from '../hooks/useInputValue.hook'
-import CardsContext from '../context/CardsContext'
+import useInputValue from '../Hooks/useInputValue.hook'
+import CardsContext from '../Context/CardsContext'
 
 function AddCard() {
   const { addCard } = React.useContext(CardsContext)

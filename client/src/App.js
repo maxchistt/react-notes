@@ -2,14 +2,14 @@ import React from 'react';
 
 import './App.css';
 
-import Loader from './shared/Loader'
+import Loader from './Shared/Loader'
 
 import { BrowserRouter as Router } from 'react-router-dom'
 import { useRoutes } from './routes'
-import { useAuth } from './hooks/auth.hook'
-import { AuthContext } from './context/AuthContext'
-import { PageContext } from './context/PageContext'
-import Header from './pages/SharedComponents/Header'
+import { useAuth } from './Hooks/auth.hook'
+import { AuthContext } from './Context/AuthContext'
+import { PageContext } from './Context/PageContext'
+import Header from './Pages/SharedComponents/Header'
 
 function App() {
   const { token, login, logout, userId, email, ready } = useAuth()

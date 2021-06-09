@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import PropTypes from 'prop-types'
-import CardsContext from '../context/CardsContext'
+import CardsContext from '../Context/CardsContext'
 import Card, { PropTypeCard } from './cardType/Card'
 import ReactMarkdown from 'react-markdown'
 import gfm from 'remark-gfm'

@@ -1,5 +1,5 @@
 import React from 'react';
-import logo from '../../shared/Logo/logo.svg';
+import logo from '../../Shared/Logo/logo.svg';
 import './Header.css';
 
 const brandText = "Notes"

@@ -1,9 +1,9 @@
 import React from 'react'
 import { Switch, Route, Redirect } from 'react-router-dom'
 
-import CardsPage from './pages/CardsPage'
+import CardsPage from './Pages/CardsPage'
 
-import AuthPage from './pages/AuthPage'
+import AuthPage from './Pages/AuthPage'
 
 export const useRoutes = isAuthenticated => {
   if (isAuthenticated) {
