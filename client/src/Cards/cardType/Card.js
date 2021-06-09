@@ -1,10 +1,7 @@
 import PropTypes from 'prop-types'
 
 export const PropTypeCard = PropTypes.shape({
-    id: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.number,
-    ]),
+    id:  PropTypes.string,
     name: PropTypes.string,
     color: PropTypes.string,
     text: PropTypes.string,
@@ -12,7 +9,7 @@ export const PropTypeCard = PropTypes.shape({
 
 export function checkCard(card) {
     return (
-        (typeof card.id === "number" || typeof card.id === "string") &&
+        (typeof card.id === "string") &&
         typeof card.name === "string" &&
         typeof card.color === "string" &&
         typeof card.text === "string"
@@ -34,7 +31,7 @@ export function checkCardsArr(cardsArr) {
 
 export class Card {
     constructor({ id, name, color, text }) {
-        this.id = Number(id)
+        this.id = String(id)
         this.name = String(name)
         this.color = String(color)
         this.text = String(text)

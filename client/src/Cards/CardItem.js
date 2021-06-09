@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import PropTypes from 'prop-types'
-import Context from '../context'
+import CardsContext from '../context/CardsContext'
 import Card, { PropTypeCard } from './cardType/Card'
 import ReactMarkdown from 'react-markdown'
 import gfm from 'remark-gfm'
@@ -10,7 +10,7 @@ function fixLineBreaks(mdStr) {
 }
 
 function CardItem({ card = new Card(), index }) {
-    const { removeCard, setEditCard } = useContext(Context)
+    const { removeCard, setEditCard } = useContext(CardsContext)
     const lineClip = 12
     const bgColor = card.color
 

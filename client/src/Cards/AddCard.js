@@ -1,10 +1,11 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import TextareaAutosize from 'react-textarea-autosize'
 import Palette, { colors } from './palette/palette'
-import useInputValue from '../Shared/useInputValue.hook'
+import useInputValue from '../hooks/useInputValue.hook'
+import CardsContext from '../context/CardsContext'
 
-function AddCard({ onCreate, onDeleteAll }) {
+function AddCard() {
+  const { addCard } = React.useContext(CardsContext)
   const input = useInputValue('')
 
   const defColor = colors[0]
@@ -25,7 +26,7 @@ function AddCard({ onCreate, onDeleteAll }) {
 
   function submitHandler() {
     if (String(input.value).trim() && String(color).trim()) {
-      onCreate({ name: String(input.value).trim(), text: "", color: String(color) })
+      addCard({ name: String(input.value).trim(), text: "", color: String(color) })
       input.clear()
       setColor(defColor)
     }
@@ -67,11 +68,6 @@ function AddCard({ onCreate, onDeleteAll }) {
       </div>
     </div>
   )
-}
-
-AddCard.propTypes = {
-  onCreate: PropTypes.func.isRequired,
-  onDeleteAll: PropTypes.func.isRequired
 }
 
 export default AddCard

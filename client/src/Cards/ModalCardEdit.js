@@ -1,8 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import Context from '../context'
+import CardsContext from '../context/CardsContext'
 import TextareaAutosize from 'react-textarea-autosize'
-import Modal, { ModalProps } from "../Shared/Modal/Modal"
+import Modal, { ModalProps } from "../shared/Modal/Modal"
 import Card, { PropTypeCard } from './cardType/Card'
 import Palette from './palette/palette'
 
@@ -20,7 +20,7 @@ function calcMaxRows() {
 }
 
 function ModalCardEdit({ card = new Card(), index }) {
-    const { removeCard, changeCardColor, unsetEditCard, editCardContent } = React.useContext(Context)
+    const { removeCard, changeCardColor, unsetEditCard, editCardContent } = React.useContext(CardsContext)
     React.useEffect(() => { if (card !== null) open() }, [card])
 
     const [showForm, setShowForm] = React.useState(false)
@@ -120,7 +120,7 @@ function ModalCardEdit({ card = new Card(), index }) {
                     </div>
 
                     <div className="mx-auto">
-                        <span style={{ color: "lightgray", fontWeight: "400" }}>Id: {card && card.id}</span>
+                        <span style={{ color: "lightgray", fontWeight: "400" }}>Id {index}</span>
                     </div>
 
                     <div>
