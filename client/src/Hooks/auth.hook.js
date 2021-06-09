@@ -17,6 +17,7 @@ export const useAuth = () => {
     setToken(jwtToken)
     setUserId(id)
     setEmail(email)
+    /**запись данных в кэш */
     localStorage.setItem(storageName, JSON.stringify({
       userId: id, token: jwtToken, email: email
     }))
@@ -27,7 +28,7 @@ export const useAuth = () => {
     setToken(null)
     setUserId(null)
     setEmail(null)
-    //запись данных в кэш
+    /**удаление данных из кэша */
     localStorage.removeItem(storageName)
   }, [])
 
