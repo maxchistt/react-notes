@@ -6,12 +6,12 @@ import Modal, { ModalProps } from "../Shared/Modal/Modal"
 import Card, { PropTypeCard } from './cardType/Card'
 import Palette from './palette/palette'
 
+/**расчет числа строк */
 function calcMaxRows() {
     const small = 576
     const middle = 768
     const large = 992
     const winWidth = window.innerWidth
-
 
     if (winWidth < small) return '7'
     else if (winWidth < middle) return '8'
@@ -19,32 +19,45 @@ function calcMaxRows() {
     else return '17'
 }
 
+/**
+ * Модальное окно редактирования заметки
+ * @param {*} param0 
+ * @returns 
+ */
 function ModalCardEdit({ card = new Card(), index }) {
+    /**получение контекста */
     const { removeCard, changeCardColor, unsetEditCard, editCardContent } = React.useContext(CardsContext)
     React.useEffect(() => { if (card !== null) open() }, [card])
 
+    /**хук состояния формы */
     const [showForm, setShowForm] = React.useState(false)
 
+    /**создание параметров модального окна*/
     const modalProps = new ModalProps()
     modalProps.isOpen = showForm
     modalProps.setOpenState = setShowForm
     modalProps.sideClose = true
     modalProps.onSideClick = unsetEditCard
 
+    /**открытие окна */
     function open() {
         setShowForm(true)
     }
 
+    /**закрытие окна */
     function close() {
         setShowForm(false)
     }
 
-    /////
-
+    /**сохранение данных */
     function save(name, text) {
         editCardContent(index, name, text)
     }
 
+    /**
+     * обраюотчик изменений инпута
+     * @param {*} e 
+     */
     function onInputChange(e) {
         let name = card.name
         let text = card.text
@@ -53,19 +66,32 @@ function ModalCardEdit({ card = new Card(), index }) {
         save(name, text)
     }
 
+    /**
+     * Изменение цвета
+     * @param {*} color 
+     */
     function tryChangeColor(color) {
         changeCardColor(index, color)
     }
+
+    /**
+     * удаление
+     */
     function tryRemove() {
         unsetEditCard();
         close();
         removeCard(index);
     }
+
+    /**
+     * закрытие и сброс окна
+     */
     function tryClose() {
         unsetEditCard()
         close()
     }
 
+    /**рендер */
     return (
         <Modal {...modalProps.bind()}>
             <div className="container p-2">
@@ -135,6 +161,7 @@ function ModalCardEdit({ card = new Card(), index }) {
     )
 }
 
+// Валидация
 ModalCardEdit.propTypes = {
     card: PropTypeCard,
     index: PropTypes.number,

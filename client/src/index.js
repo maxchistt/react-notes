@@ -9,6 +9,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import "bootstrap/dist/js/bootstrap.bundle.min";
 
+/**рендер приложения */
 ReactDOM.render(
   <React.StrictMode>
     <App />
@@ -19,10 +20,18 @@ ReactDOM.render(
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://cra.link/PWA
+/**
+ * Подключение ServiceWorker для PWA
+ */
 serviceWorkerRegistration.register({
+  /**подключение обновителя */
   onUpdate: updater
 });
 
+/**
+ * Обновление кэша PWA
+ * @param {*} registration 
+ */
 function updater(registration) {
   alert('New version available!  Ready to update?');
   if (registration && registration.waiting) {

@@ -5,6 +5,7 @@ import StackGrid, { transitions } from "react-stack-grid"
 import sizeMe from 'react-sizeme'
 const { scaleDown } = transitions
 
+/**расчет ширины столбцов */
 function calcWidth() {
     const small = 576
     const middle = 768
@@ -19,14 +20,17 @@ function calcWidth() {
     else return '100%'
 }
 
+/** Компонент списка карточек */
 function CardList(props) {
     const grid = React.useRef(null)
     React.useEffect(gridRedraw, [props.size])
 
+    /**обновление рендера */
     function gridRedraw() {
         setTimeout(() => { if (grid.current && grid.current.updateLayout) grid.current.updateLayout() }, 10)
     }
 
+    /**параметры сетки */
     const gridSettings = {
         ref: grid,
         columnWidth: calcWidth(),
@@ -40,6 +44,7 @@ function CardList(props) {
         leaved: scaleDown.leaved
     }
 
+    /**рендер */
     return (
         <div className="p-0 m-0 px-sm-1 px-md-2 px-lg-3 px-xl-4">
             <StackGrid className="container p-0" {...gridSettings}>
@@ -53,6 +58,7 @@ function CardList(props) {
     )
 }
 
+// Валидация
 CardList.propTypes = {
     cards: PropTypes.arrayOf(PropTypes.object).isRequired,
 }

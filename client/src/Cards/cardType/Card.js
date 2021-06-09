@@ -1,12 +1,14 @@
 import PropTypes from 'prop-types'
 
+/**валидация пропсов заметки*/
 export const PropTypeCard = PropTypes.shape({
-    id:  PropTypes.string,
+    id: PropTypes.string,
     name: PropTypes.string,
     color: PropTypes.string,
     text: PropTypes.string,
 })
 
+/**валидация заметки */
 export function checkCard(card) {
     return (
         (typeof card.id === "string") &&
@@ -16,6 +18,7 @@ export function checkCard(card) {
     )
 }
 
+/**валидация массива заметок */
 export function checkCardsArr(cardsArr) {
     if (!Array.isArray(cardsArr)) return false
     else if (cardsArr.length === 0) return true
@@ -29,6 +32,7 @@ export function checkCardsArr(cardsArr) {
     }
 }
 
+/**класс заметки */
 export class Card {
     constructor({ id, name, color, text }) {
         this.id = String(id)

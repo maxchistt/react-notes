@@ -1,54 +1,67 @@
 import React from 'react';
-
 import './CardsPage.css';
 import CardList from '../Cards/CardList'
 import AddCard from '../Cards/AddCard'
 import CardsContext from '../Context/CardsContext'
 import Loader from '../Shared/Loader'
 import ModalCardEdit from '../Cards/ModalCardEdit'
-
 import Card, { checkCardsArr } from '../Cards/cardType/Card'
-
-
 import { NavLink } from 'react-router-dom'
 import { AuthContext } from '../Context/AuthContext'
 import { PageContext } from '../Context/PageContext'
-
 import { useHttp } from '../Hooks/http.hook'
 
+/**
+ * Хук использования массива заметок
+ * @param {*} defaultValue 
+ * @returns 
+ */
 function useCardsArr(defaultValue) {
     const [value, setValue] = React.useState(defaultValue)
-
     function trySetValue(cardsArr) {
         if (checkCardsArr(cardsArr) || cardsArr === null) setValue(cardsArr)
         else console.error('Массив cardsArr не прошел проверку \n', cardsArr)
     }
-
     return [value, trySetValue]
 }
 
+/**
+ * Хук-таймер для обновления данных с очисткой счетчика при ререндере
+ * @returns 
+ */
 function useUpdater() {
     const [updaterVal, setUpdaterVal] = React.useState(null)
     const timer = React.useRef()
     React.useEffect(() => {
-        if (timer.current) clearTimeout(timer.current)
+        if (timer.current) clearTimeout(timer.current) // сброс при переопределении таймера
         timer.current = setTimeout(() => {
             console.log("Timed update")
             setUpdaterVal(Date.now())
         }, 60 * 1000) // обновяем через минуту
-        return () => clearTimeout(timer.current)
+        return () => clearTimeout(timer.current) // сброс при ререндере
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
     return [updaterVal]
 }
 
+/**
+ * Страница с заметками
+ * @returns 
+ */
 function CardsPage() {
-
+    /**подключение контекстов */
     const auth = React.useContext(AuthContext)
     const page = React.useContext(PageContext)
 
+    /**подключение хука http запросов */
     const { loading, request, error, clearError } = useHttp()
+
+    /**хук сообщений от сервера */
+    const [message, setMessage] = React.useState(null)
+
+    /**Хук-функция для работы с базой данных заметок */
     const fetchNotes = React.useCallback(async (url = "", method = "GET", body = null, resCallback = () => { }) => {
         try {
+            /**запрос к серверу с определенными параметрами*/
             const fetched = await request(`/api/notes${url ? ("/" + url) : ""}`, method, body, { Authorization: `Bearer ${auth.token}` })
             resCallback(tryParce(fetched))
         } catch (e) { }
@@ -61,42 +74,52 @@ function CardsPage() {
         }
     }, [auth.token, request])
 
-    const [message, setMessage] = React.useState(null)
-
+    /** очистка оштбок хука запросов и запись ошибки в сообщение*/
     React.useEffect(() => {
         if (error) setMessage([error, false])
         clearError()
     }, [error, clearError])
 
-
-
+    /**Массив заметок */
     const [cardsArr, setCardsArr] = useCardsArr(null)
+
+    /**Id редактируемой заметки */
     const [editCardId, setEditCardId] = React.useState(null)
 
     const [updaterVal] = useUpdater()
-
     const updatingEnable = React.useRef(true)
 
+    /**
+     * хук обновления данных с сервера
+     * флаг updatingEnable позволяет избежать взаимодействия с устаревшей unmount версией компонента
+     */
     React.useEffect(() => {
         updatingEnable.current = true
         loadDataFromServer()
         return () => updatingEnable.current = false
     }, [auth.isAuthenticated, auth.email, updaterVal]) // eslint-disable-line react-hooks/exhaustive-deps
 
-    React.useEffect(clearOldData, [auth.isAuthenticated]) // eslint-disable-line react-hooks/exhaustive-deps
-
     ///////////
+    //очистка старых данных
+    React.useEffect(clearOldData, [auth.isAuthenticated]) // eslint-disable-line react-hooks/exhaustive-deps
     function clearOldData() {
-        //console.log("clearOldData, auth.isAuthenticated:", auth.isAuthenticated)
         if (!auth.isAuthenticated) setCardsArr(null)
     }
     ///////////
 
     ///////////
+
+    /**
+     * получение данных с сервера
+     */
     function loadDataFromServer() {
         fetchNotes("", "GET", null, setLoadedCards)
     }
 
+    /**
+     * Внесение в полученных данных в массив
+     * @param {*} cards 
+     */
     function setLoadedCards(cards) {
         if (updatingEnable.current) setCardsArr([...cards])
     }
@@ -104,16 +127,29 @@ function CardsPage() {
 
     ///////////
 
+    /**
+     * Загрузка данных на сервер
+     * @param {*} card 
+     * @param {*} target 
+     */
     function loadDataToServer(card = new Card(), target = 'set') {
         fetchNotes(target, "POST", { card })
     }
 
+    /**
+     * удаление карточки
+     * @param {*} index 
+     */
     function removeCard(index) {
         const toDelete = cardsArr.splice(index, 1)[0]
         setCardsArr([...cardsArr])
         loadDataToServer(toDelete, "delete")
     }
 
+    /**
+     * добавление карточки
+     * @param {*} cardData 
+     */
     function addCard(cardData = {}) {
         const newId = String(auth.email) + String(Date.now()) + String(Math.random())
         const newCard = new Card({ id: newId, name: cardData.name, color: cardData.color, text: cardData.text })
@@ -125,12 +161,23 @@ function CardsPage() {
 
     }
 
+    /**
+     * Изменение цвета карточки
+     * @param {*} index 
+     * @param {*} color 
+     */
     function changeCardColor(index, color) {
         cardsArr[index].color = color
         setCardsArr([...cardsArr])
         loadDataToServer(cardsArr[index], "set")
     }
 
+    /**
+     * Изменение текстового содержания карточки
+     * @param {*} index 
+     * @param {*} name 
+     * @param {*} text 
+     */
     function editCardContent(index, name, text) {
         if (cardsArr[index]) {
             let card = new Card(cardsArr[index])
@@ -144,17 +191,23 @@ function CardsPage() {
     ///////////
 
     ///////////
-    function getCardByIndex(index) {
-        return index !== null ? cardsArr[index] : null
-    }
+    /**функция назначения редактируемой заметки для модального окна */
     function setEditCard(index) {
         setEditCardId(index)
     }
+    /**функция сброса редактируемой заметки для модального окна */
     function unsetEditCard() {
         setEditCardId(null)
     }
+    /**функция получения карточки по id */
+    function getCardByIndex(index) {
+        return index !== null ? cardsArr[index] : null
+    }
     ///////////
 
+    /**
+     * Обновление навбара при переходе на эту страницу и изменениях
+     */
     React.useEffect(() => {
         page.setNav(
             <React.Fragment>
@@ -162,7 +215,6 @@ function CardsPage() {
                     {loading ? <Loader className='px-1' /> : <i className="bi bi-arrow-clockwise px-1"></i>}
                     <span className='d-xl-inline d-none'>Update</span>
                 </button>
-
                 <NavLink to="/authpage" className="btn btn-light m-1">
                     <span><i className="bi bi-person"></i> {auth.email}</span>
                 </NavLink>
@@ -171,11 +223,13 @@ function CardsPage() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [auth.email, auth.token])
 
+    /**рендер */
     return (
+        /**Здесь отрисовываются меню добавления и редактирования заметок и сам перечнь заметок в виде динамичной отзывчивой сетки */
         <CardsContext.Provider value={{ addCard, removeCard, changeCardColor, setEditCard, unsetEditCard, editCardContent, editCardId }}>
             <div className="">
-
                 <main className="p-1 pb-3 mb-3">
+
                     <AddCard />
                     <ModalCardEdit card={getCardByIndex(editCardId)} index={editCardId} />
 
@@ -197,6 +251,7 @@ function CardsPage() {
                             <Loader />
                         </div>
                     }
+
                 </main>
             </div>
         </CardsContext.Provider>

@@ -7,7 +7,13 @@ const classes = {
     modalBody: 'modal-window-body'
 }
 
+/**
+ * Компонент-остнова для модального окна
+ * @param {{ isOpen, setOpenState, openButton, sideClose, onSideClick }} props
+ * @returns 
+ */
 function Modal(props) {
+    /**получение параметров */
     const { isOpen, setOpenState, openButton, sideClose, onSideClick } = props
 
     const wrapperRef = React.useRef(null)
@@ -21,16 +27,19 @@ function Modal(props) {
         if (typeof onSideClick === "function") onSideClick()
     }
 
+    /**обработчик клика по кнопке открытия */
     function handleOpenButtonClick() {
         open()
     }
 
+    /**обработчик клика вне окна */
     function handleWrapperClick(e) {
         if (wrapperRef.current && wrapperRef.current === e.target) {
             if (sideClose) close()
         }
     }
 
+    /**рендер */
     return (
         <React.Fragment>
             {openButton &&
@@ -57,6 +66,9 @@ function Modal(props) {
     )
 }
 
+/**
+ * Класс для удобного создания обьекта параметров модального окна
+ */
 class ModalProps {
     constructor() {
         this.isOpen = false
@@ -77,9 +89,9 @@ class ModalProps {
     }
 }
 
+/**валидация параметров */
 Modal.propTypes = {
     children: PropTypes.object,
-
     isOpen: PropTypes.bool,
     setOpenState: PropTypes.func,
     openButton: PropTypes.bool,

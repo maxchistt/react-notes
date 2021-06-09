@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from 'prop-types'
 import "./palette.css"
 
+/**набор цветов */
 export const colors = [
   "#f8f9fa",
   "#F38181",
@@ -14,7 +15,11 @@ export const colors = [
   "#6EF3D6"
 ];
 
-
+/**
+ * компонент палитры
+ * @param {*} param0 
+ * @returns 
+ */
 function Palette({ setColor, style, className, disabled }) {
   return (
     <span className="dropdown">
@@ -59,6 +64,7 @@ function Palette({ setColor, style, className, disabled }) {
   );
 }
 
+// Валидация
 Palette.propTypes = {
   setColor: PropTypes.func,
   style: PropTypes.object,

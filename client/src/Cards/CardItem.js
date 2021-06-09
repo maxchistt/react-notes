@@ -5,17 +5,24 @@ import Card, { PropTypeCard } from './cardType/Card'
 import ReactMarkdown from 'react-markdown'
 import gfm from 'remark-gfm'
 
+/**исправление переноса строки в markdown */
 function fixLineBreaks(mdStr) {
     return String(mdStr).replace(/\n/gi, '  \n')
 }
 
+/**
+ * Компонент заметки
+ * @param {*} param0 
+ * @returns 
+ */
 function CardItem({ card = new Card(), index }) {
+    /**Подключение контекста */
     const { removeCard, setEditCard } = useContext(CardsContext)
+
     const lineClip = 12
     const bgColor = card.color
 
     return (
-
         <div className="p-1" >
             <div className="card" style={{ backgroundColor: bgColor }} >
 
@@ -44,10 +51,10 @@ function CardItem({ card = new Card(), index }) {
 
             </div>
         </div>
-
     )
 }
 
+// Валидация
 CardItem.propTypes = {
     card: PropTypeCard.isRequired,
     index: PropTypes.number

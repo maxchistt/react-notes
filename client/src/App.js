@@ -12,10 +12,14 @@ import { PageContext } from './Context/PageContext'
 import Header from './Pages/SharedComponents/Header'
 
 function App() {
+  /**подключение хука авторизации */
   const { token, login, logout, userId, email, ready } = useAuth()
   const isAuthenticated = !!token
+
+  /**подключение хука роутов */
   const routes = useRoutes(isAuthenticated)
 
+  /**хук обновления навбара */
   const [nav, setNav] = React.useState()
 
   if (!ready) {
@@ -26,20 +30,23 @@ function App() {
     )
   }
 
-
+  /**рендер */
   return (
+    /**
+     * обертка в контексты авторизации и обноления хедера
+     * внутри роутер со статичным хедером и динамическим содержимым
+     * */
     <AuthContext.Provider value={{
       token, login, logout, userId, email, isAuthenticated
     }}>
-      <PageContext.Provider value={{setNav}}>
+      <PageContext.Provider value={{ setNav }}>
         <Router>
-        <Header>{nav}</Header>
-        <div className="App pb-3 mb-3">
-          {routes}
-        </div>
-      </Router>
+          <Header>{nav}</Header>
+          <div className="App pb-3 mb-3">
+            {routes}
+          </div>
+        </Router>
       </PageContext.Provider>
-      
     </AuthContext.Provider>
   )
 }

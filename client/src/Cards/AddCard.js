@@ -4,12 +4,16 @@ import Palette, { colors } from './palette/palette'
 import useInputValue from '../Hooks/useInputValue.hook'
 import CardsContext from '../Context/CardsContext'
 
+/**Компонент добавления новой заметки */
 function AddCard() {
+  /**контекст*/
   const { addCard } = React.useContext(CardsContext)
+  /**хук инпута*/
   const input = useInputValue('')
 
   const defColor = colors[0]
   const [color, setColor] = React.useState(defColor)
+  /**проверка темного фона */
   const blackOnHover = () => {
     switch (color) {
       case colors[0]:
@@ -24,6 +28,7 @@ function AddCard() {
     }
   }
 
+  /**обработчик добавления заметки */
   function submitHandler() {
     if (String(input.value).trim() && String(color).trim()) {
       addCard({ name: String(input.value).trim(), text: "", color: String(color) })
@@ -37,6 +42,7 @@ function AddCard() {
     submitHandler()
   }
 
+  /**рендер */
   return (
     <div className="container">
       <div className="row my-2 text-center">

@@ -6,9 +6,13 @@ const router = Router()
 
 const { checkCard } = require('../validation/CardCheck')
 
-
+/**
+ * Добавление и редактирование заметки
+ * /api/notes/set
+ */
 router.post('/set', auth, async (req, res) => {
     try {
+        /**получение данных о заметке и запись в бд */
         const card = tryParce(req.body.card)
         if (checkCard(card)) {
             postNote(card)
@@ -20,18 +24,20 @@ router.post('/set', auth, async (req, res) => {
         res.status(500).json({ message: 'Что-то пошло не так, попробуйте снова' })
     }
 
+    /**Добавление или редактирование заметки в бд */
     async function postNote(noteToSave) {
 
         noteToSave.owner = req.user.userId
 
+        /**проверка существования заметки */
         const existing = await Note.findOne({ id: noteToSave.id })
 
         if (existing) {
-            //console.log("EXITING");
+            /**Выполнится если такая заметка уже есть */
             existing.overwrite(noteToSave)
             existing.save()
         } else {
-            //console.log("NON EXITING")
+            /**Выполнится если нет такой заметки */
             const note = new Note(noteToSave)
             await note.save()
         }
@@ -40,10 +46,13 @@ router.post('/set', auth, async (req, res) => {
 })
 
 
-
+/**
+ * Удаление заметки
+ * /api/notes/delete
+ */
 router.post('/delete', auth, async (req, res) => {
     try {
-        
+        /**получение данных о заметке и удаление */
         const card = tryParce(req.body.card)
         if (checkCard(card)) {
             deleteNote(card)
@@ -55,32 +64,29 @@ router.post('/delete', auth, async (req, res) => {
         res.status(500).json({ message: 'Что-то пошло не так, попробуйте снова' })
     }
 
+    /**Удаление заметки в бд */
     async function deleteNote(noteToSave) {
         noteToSave.owner = req.user.userId
 
         const existing = await Note.findOne({ id: noteToSave.id })
 
         if (existing) {
-            //console.log("EXITING");
-           
             existing.remove()
-
         } else res.status(500).json({ message: 'уже удален' })
     }
 })
 
-
-
+/**
+ * Получение массива заметок
+ * /api/notes/
+ */
 router.get('/', auth, async (req, res) => {
     try {
-        //console.log(req.user.userId);
+        /**Нахождение пользовательских заметок в бд */
         const notes = await Note.find({ owner: req.user.userId })
-        //console.log(notes);
-        res.json(notes)
+        res.status(200).json(notes)
     } catch (e) {
-        //console.log("\n\n\n   GET");
-        //console.log(e);
-        res.status(500).json({ message: '[GET] Что-то пошло не так, попробуйте снова' })
+        res.status(500).json({ message: 'Что-то пошло не так, попробуйте снова' })
     }
 })
 
