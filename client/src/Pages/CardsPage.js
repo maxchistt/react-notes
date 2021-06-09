@@ -76,8 +76,11 @@ function CardsPage() {
 
     /** очистка оштбок хука запросов и запись ошибки в сообщение*/
     React.useEffect(() => {
-        if (error) setMessage([error, false])
+        if (error) setMessage(error)
+        /**Выйти в случае неавторизации */
+        if (error === 'Нет авторизации') auth.logout()
         clearError()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [error, clearError])
 
     /**Массив заметок */
