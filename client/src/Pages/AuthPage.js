@@ -74,6 +74,7 @@ function AuthPage() {
    * Обновление навбара при переходе на эту страницу и изменениях
    */
   React.useEffect(() => {
+    /**Установка кнопки возврата к странице заметок */
     page.setNav(auth.isAuthenticated &&
       <NavLink to="/notes" className="btn btn-light m-1">
         <span><i className="bi bi-x d-inline d-sm-none"></i> К заметкам</span>
@@ -88,7 +89,7 @@ function AuthPage() {
     <div className="AuthPage">
       <div className="p-1   py-5 container" >
         <div className="form-body  px-5 py-4 bg-light mx-auto">
-
+          {/**Индикатор авторизации */}
           <div className='bg-light form-group mb-2'>
             <div className='mb-1'>
               <span className={auth.isAuthenticated ? `badge badge-success` : `badge badge-secondary`}>
@@ -97,18 +98,19 @@ function AuthPage() {
               {auth.email ? <span> {auth.email} </span> : ``}
             </div>
           </div>
-
+          {/**Надпись */}
           <div className='bg-light form-group mb-3'>
             <h1 className="text-center">Авторизация</h1>
           </div>
-
+          {/**Форма авторизации */}
           <div className='bg-light form-group'>
             {message &&
+              /**Уведомление */
               <div className={`alert alert-${message[1] ? "info" : "danger"} my-1`} role="alert">
                 <span className={`badge badge-${message[1] ? "info" : "danger"} d-inline mr-2`}>{message[1] ? "Инфо" : "Ошибка"}</span>
                 <span>{String(message[0])}</span>
-              </div>
-            }
+              </div>}
+            {/**Поле email */}
             <label htmlFor="email">Email</label>
             <input
               placeholder="Введите email"
@@ -121,6 +123,7 @@ function AuthPage() {
               readOnly={auth.isAuthenticated}
               onKeyPress={e => e.key === 'Enter' && loginHandler()}
             />
+            {/**Поле с паролем */}
             <label htmlFor="email">Пароль</label>
             <input
               placeholder="Введите пароль"
@@ -134,9 +137,10 @@ function AuthPage() {
               onKeyPress={e => e.key === 'Enter' && loginHandler()}
             />
           </div>
-
+          {/**Кнопки действия */}
           <div className='bg-light form-group form-row'>
             {!auth.isAuthenticated ? (
+              /**Вход и регистрация если не авторизирован */
               <React.Fragment>
                 <div className="col-12 col-sm-4 col-md-5 p-1">
                   <button className="btn btn-primary col" disabled={loading} onClick={loginHandler}><i className="bi bi-person-check"></i> Войти</button>
@@ -146,6 +150,7 @@ function AuthPage() {
                 </div>
               </React.Fragment>
             ) : (
+              /**Выход если авторизирован */
               <React.Fragment>
                 <div className="col-12 p-1">
                   <button className="btn btn-danger col" disabled={loading} onClick={logoutHandler}><i className="bi bi-person-x"></i> Выйти</button>
@@ -153,7 +158,6 @@ function AuthPage() {
               </React.Fragment>
             )}
           </div>
-
         </div>
       </div>
     </div>

@@ -18,6 +18,7 @@ import { useHttp } from '../Hooks/http.hook'
  */
 function useCardsArr(defaultValue) {
     const [value, setValue] = React.useState(defaultValue)
+    /**Сеттер с проверкой валидности массива */
     function trySetValue(cardsArr) {
         if (checkCardsArr(cardsArr) || cardsArr === null) setValue(cardsArr)
         else console.error('Массив cardsArr не прошел проверку \n', cardsArr)
@@ -212,6 +213,7 @@ function CardsPage() {
      * Обновление навбара при переходе на эту страницу и изменениях
      */
     React.useEffect(() => {
+        /**Установка кнопок обновления контента и возврата к странице авторизации */
         page.setNav(
             <React.Fragment>
                 <button className="btn btn-light m-1" onClick={loadDataFromServer}>
@@ -232,29 +234,30 @@ function CardsPage() {
         <CardsContext.Provider value={{ addCard, removeCard, changeCardColor, setEditCard, unsetEditCard, editCardContent, editCardId }}>
             <div className="">
                 <main className="p-1 pb-3 mb-3">
-
+                    {/**Компонент добавления карточки и модальное окно редактирования */}
                     <AddCard />
                     <ModalCardEdit card={getCardByIndex(editCardId)} index={editCardId} />
-
+                    {/**Вариативное отображение контента (заметок) */}
                     {cardsArr && cardsArr.length ? (
+                        /**Список карточек */
                         <CardList cards={cardsArr} />
                     ) : (loading) ? null : !message ? (
+                        /**Сообщение об отсутствии карточек */
                         <div className="container text-center">
                             <p className="m-3 p-3 h5 text-muted">No cards. You can add a new one!</p>
                         </div>
                     ) : (
+                        /**Ошибка загрузки данных */
                         <div className="container text-center">
-                            <p className="m-3 p-3 h5 text-muted">Data not loaded</p>
-                            <p className="m-3 p-3 h5 text-muted">{message}</p>
+                            <p className="m-3 p-3 h5 text-muted">Data not loaded<br />{message}</p>
                         </div>
                     )}
-
+                    {/**Компонент добавления карточки и модальное окно редактирования */}
                     {loading &&
                         <div className="container display-4 text-center p-3" >
                             <Loader />
                         </div>
                     }
-
                 </main>
             </div>
         </CardsContext.Provider>
