@@ -13,7 +13,7 @@ function fixLineBreaks(mdStr) {
 /**
  * Компонент заметки
  * @param {*} param0 
- * @returns 
+ *  
  */
 function CardItem({ card = new Card(), index }) {
     /**Подключение контекста */

@@ -1,3 +1,6 @@
+/**
+ * @file auth.routes.js
+ */
 const { Router } = require('express')
 const bcrypt = require('bcryptjs')
 require('dotenv').config()

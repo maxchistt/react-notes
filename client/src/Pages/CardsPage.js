@@ -13,8 +13,7 @@ import { useHttp } from '../Hooks/http.hook'
 
 /**
  * Хук использования массива заметок
- * @param {*} defaultValue 
- * @returns 
+ * @param {*} defaultValue  
  */
 function useCardsArr(defaultValue) {
     const [value, setValue] = React.useState(defaultValue)
@@ -27,8 +26,7 @@ function useCardsArr(defaultValue) {
 }
 
 /**
- * Хук-таймер для обновления данных с очисткой счетчика при ререндере
- * @returns 
+ * Хук-таймер для обновления данных с очисткой счетчика при ререндере 
  */
 function useUpdater() {
     const [updaterVal, setUpdaterVal] = React.useState(null)
@@ -45,8 +43,7 @@ function useUpdater() {
 }
 
 /**
- * Страница с заметками
- * @returns 
+ * Страница с заметками 
  */
 function CardsPage() {
     /**подключение контекстов */

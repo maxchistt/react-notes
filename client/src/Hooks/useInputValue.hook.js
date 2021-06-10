@@ -3,7 +3,7 @@ import { useState } from 'react'
 /**
  * Хук для обработки форм
  * @param {*} defaultValue 
- * @returns 
+ * 
  */
 export default function useInputValue(defaultValue) {
     const [value, setValue] = useState(defaultValue)

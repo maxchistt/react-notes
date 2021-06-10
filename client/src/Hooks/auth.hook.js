@@ -4,7 +4,7 @@ const storageName = 'userData'
 
 /**
  * Хук авторизации
- * @returns 
+ *  
  */
 export const useAuth = () => {
   const [token, setToken] = useState(null)

@@ -119,3 +119,7 @@ module.exports = {
   - httpsRedirect: true
   - jwtSecret: SECRET KEY
 - Click "Deploy branch" button
+
+## Generate [JSDoc](https://jsdoc.app/) documentation
+
+run `npm run doc`
