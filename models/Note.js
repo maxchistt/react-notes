@@ -1,3 +1,6 @@
+/**
+ * @file Note.js
+ */
 const { Schema, model, Types } = require('mongoose')
 
 /**

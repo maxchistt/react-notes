@@ -18,7 +18,7 @@ export const colors = [
 /**
  * компонент палитры
  * @param {*} param0 
- * @returns 
+ *  
  */
 function Palette({ setColor, style, className, disabled }) {
   return (

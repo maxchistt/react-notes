@@ -1,7 +1,11 @@
 /**
+ * @file CardCheck.js file
+ * @breif validation of note
+ */
+/**
  * Проверка рбьекта заметки
  * @param {*} card 
- * @returns 
+ *  
  */
 function checkCard(card) {
     return (

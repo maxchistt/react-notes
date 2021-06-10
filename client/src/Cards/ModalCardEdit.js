@@ -22,7 +22,7 @@ function calcMaxRows() {
 /**
  * Модальное окно редактирования заметки
  * @param {*} param0 
- * @returns 
+ * 
  */
 function ModalCardEdit({ card = new Card(), index }) {
     /**получение контекста */

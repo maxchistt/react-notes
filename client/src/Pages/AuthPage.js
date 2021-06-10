@@ -7,7 +7,6 @@ import './AuthPage.css'
 
 /**
  * Страница авторизации
- * @returns 
  */
 function AuthPage() {
   /**подключение контекстов */

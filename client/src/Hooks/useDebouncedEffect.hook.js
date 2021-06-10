@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
  * Хук debounce
  * @param {*} value 
  * @param {*} delay 
- * @returns 
+ * 
  */
 function useDebounce(value, delay) {
     const [debouncedValue, setDebouncedValue] = useState(value);

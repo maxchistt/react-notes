@@ -3,7 +3,7 @@ import { useState, useCallback } from 'react'
 /**
  * Хук обработки Http запросов
  * Позволяет выводить результаты, ошибки и статус запроса, удобно совершать параметрические запросы
- * @returns 
+ *  
  */
 export const useHttp = () => {
   const [loading, setLoading] = useState(false)

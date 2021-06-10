@@ -10,7 +10,6 @@ const classes = {
 /**
  * Компонент-остнова для модального окна
  * @param {{ isOpen, setOpenState, openButton, sideClose, onSideClick }} props
- * @returns 
  */
 function Modal(props) {
     /**получение параметров */

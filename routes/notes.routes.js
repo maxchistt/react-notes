@@ -1,3 +1,6 @@
+/**
+ * @file notes.routes.js
+ */
 const { Router } = require('express')
 
 const Note = require('../models/Note')
