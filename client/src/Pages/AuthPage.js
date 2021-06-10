@@ -79,7 +79,7 @@ function AuthPage() {
     /**Установка кнопки возврата к странице заметок */
     page.setNav(auth.isAuthenticated &&
       <NavLink to="/notes" className="btn btn-light m-1">
-        <span><i className="bi bi-x d-inline d-sm-none"></i> К заметкам</span>
+        <span>К заметкам</span>
       </NavLink>
     )
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -89,8 +89,8 @@ function AuthPage() {
   return (
     /**Здесь отрисовываются меню регистрации и авторизации */
     <div className="AuthPage">
-      <div className="p-1   py-5 container" >
-        <div className="form-body  px-5 py-4 bg-light mx-auto">
+      <div className="p-1 py-5 container" >
+        <div className="form-body px-5 py-4 bg-light mx-auto">
           {/**Индикатор авторизации */}
           <div className='bg-light form-group mb-2'>
             <div className='mb-1'>

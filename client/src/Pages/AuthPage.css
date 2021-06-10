@@ -2,8 +2,6 @@
   width: 100%;
   max-width: 620px;
   max-height: 100%;
-  overflow-y: auto;
-  height: fit-content;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   border-radius: 0.5em;
 }

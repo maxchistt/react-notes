@@ -253,7 +253,7 @@ function CardsPage() {
                         </div>
                     )}
                     {/**Компонент добавления карточки и модальное окно редактирования */}
-                    {loading &&
+                    {(loading && editCardId === null) &&
                         <div className="container display-4 text-center p-3" >
                             <Loader />
                         </div>
