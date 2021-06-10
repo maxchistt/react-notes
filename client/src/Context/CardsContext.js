@@ -1,3 +1,6 @@
+/**
+ * @file CardsContext.js
+ */
 import {createContext} from 'react'
 
 /**контекст заметок */

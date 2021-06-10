@@ -1,3 +1,6 @@
+/**
+ * @file auth.hook.js
+ */
 import { useState, useCallback, useEffect } from 'react'
 
 const storageName = 'userData'

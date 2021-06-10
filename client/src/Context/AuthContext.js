@@ -1,3 +1,6 @@
+/**
+ * @file AuthContext.js
+ */
 import {createContext} from 'react'
 
 function noop() {}

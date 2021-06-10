@@ -1,3 +1,6 @@
+/**
+ * @file Card.js
+ */
 import PropTypes from 'prop-types'
 
 /**валидация пропсов заметки*/

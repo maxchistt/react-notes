@@ -1,10 +1,12 @@
+/**
+ * @file useDebouncedEffect.hook.js
+ */
 import { useState, useEffect } from 'react';
 
 /**
  * Хук debounce
  * @param {*} value 
  * @param {*} delay 
- * 
  */
 function useDebounce(value, delay) {
     const [debouncedValue, setDebouncedValue] = useState(value);

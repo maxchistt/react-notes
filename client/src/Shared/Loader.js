@@ -1,3 +1,6 @@
+/**
+ * @file Loader.js
+ */
 import React from 'react'
 
 /**просто вращающееся колесико загрузки */

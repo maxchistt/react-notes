@@ -1,3 +1,6 @@
+/**
+ * @file useInputValue.hook.js
+ */
 import { useState } from 'react'
 
 /**

@@ -1,3 +1,6 @@
+/**
+ * @file AuthPage.js
+ */
 import React, { useContext, useEffect, useState } from 'react'
 import { useHttp } from '../Hooks/http.hook'
 import { AuthContext } from '../Context/AuthContext'

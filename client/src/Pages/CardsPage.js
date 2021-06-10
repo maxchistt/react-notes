@@ -1,3 +1,6 @@
+/**
+ * @file CardsPage.js
+ */
 import React from 'react';
 import './CardsPage.css';
 import CardList from '../Cards/CardList'

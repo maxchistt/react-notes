@@ -1,3 +1,6 @@
+/**
+ * @file Header.js
+ */
 import React from 'react';
 import logo from '../../Shared/Logo/logo.svg';
 import './Header.css';

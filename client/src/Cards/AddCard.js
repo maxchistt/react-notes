@@ -1,3 +1,6 @@
+/**
+ * @file AddCard.js
+ */
 import React from 'react'
 import TextareaAutosize from 'react-textarea-autosize'
 import Palette, { colors } from './palette/palette'

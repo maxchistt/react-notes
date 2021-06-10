@@ -1,6 +1,8 @@
+/**
+ * @file routes.js
+ */
 import React from 'react'
 import { Switch, Route, Redirect } from 'react-router-dom'
-
 import CardsPage from './Pages/CardsPage'
 import AuthPage from './Pages/AuthPage'
 
