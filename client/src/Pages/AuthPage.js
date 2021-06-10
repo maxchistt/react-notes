@@ -89,10 +89,10 @@ function AuthPage() {
   return (
     /**Здесь отрисовываются меню регистрации и авторизации */
     <div className="AuthPage">
-      <div className="p-1 py-5 container" >
-        <div className="form-body px-5 py-4 bg-light mx-auto">
+      <div className="p-1 py-5 mt-3 container" >
+        <div className="form-body px-5 py-4 mx-auto">
           {/**Индикатор авторизации */}
-          <div className='bg-light form-group mb-2'>
+          <div className='form-group mb-2'>
             <div className='mb-1'>
               <span className={auth.isAuthenticated ? `badge badge-success` : `badge badge-secondary`}>
                 {auth.isAuthenticated ? <span><i className="bi bi-key"> </i>AUTORISED</span> : 'UNAUTORISED'}
@@ -101,11 +101,11 @@ function AuthPage() {
             </div>
           </div>
           {/**Надпись */}
-          <div className='bg-light form-group mb-3'>
+          <div className='form-group mb-3'>
             <h1 className="text-center">Авторизация</h1>
           </div>
           {/**Форма авторизации */}
-          <div className='bg-light form-group'>
+          <div className='form-group'>
             {message &&
               /**Уведомление */
               <div className={`alert alert-${message[1] ? "info" : "danger"} my-1`} role="alert">
@@ -117,8 +117,9 @@ function AuthPage() {
             <input
               placeholder="Введите email"
               id="email"
-              type="text"
+              type="email"
               name="email"
+              autoComplete="email"
               className="form-control mb-1"
               value={form.email}
               onChange={changeHandler}
@@ -126,7 +127,7 @@ function AuthPage() {
               onKeyPress={e => e.key === 'Enter' && loginHandler()}
             />
             {/**Поле с паролем */}
-            <label htmlFor="email">Пароль</label>
+            <label htmlFor="password">Пароль</label>
             <input
               placeholder="Введите пароль"
               id="password"
@@ -140,7 +141,7 @@ function AuthPage() {
             />
           </div>
           {/**Кнопки действия */}
-          <div className='bg-light form-group form-row'>
+          <div className='form-group form-row'>
             {!auth.isAuthenticated ? (
               /**Вход и регистрация если не авторизирован */
               <React.Fragment>
