@@ -47,7 +47,9 @@ function CardList(props) {
     /**рендер */
     return (
         <div className="p-0 m-0 px-sm-1 px-md-2 px-lg-3 px-xl-4">
+            {/**Отзывчивая сетка карточек */}
             <StackGrid className="container p-0" {...gridSettings}>
+                {/**Рендер каждой карточки из массива */}
                 {props.cards.map ? (props.cards.map((card, index) => {
                     return (
                         <CardItem card={card} key={card.id} index={index} />

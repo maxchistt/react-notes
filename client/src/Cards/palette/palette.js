@@ -23,7 +23,7 @@ export const colors = [
 function Palette({ setColor, style, className, disabled }) {
   return (
     <span className="dropdown">
-
+      {/**Кнопка вызова палитры */}
       <button
         disabled={disabled}
         className={`btn ${className}`}
@@ -36,7 +36,7 @@ function Palette({ setColor, style, className, disabled }) {
       >
         <i className="bi bi-palette" ></i>
       </button>
-
+      {/**Форма выбора цвета */}
       <div className="dropdown-menu tab-content mt-1" aria-labelledby="dropdownMenuButton">
         <form>
           <div className="d-flex flex-row flex-wrap justify-content-center">

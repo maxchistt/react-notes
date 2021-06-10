@@ -25,7 +25,7 @@ function CardItem({ card = new Card(), index }) {
     return (
         <div className="p-1" >
             <div className="card" style={{ backgroundColor: bgColor }} >
-
+                {/**Заголовок и текст заметки с обработчиками отображения markdown*/}
                 <div className="card-body" onClick={() => setEditCard(index)} >
                     <div
                         className="card-title h5"
@@ -38,7 +38,7 @@ function CardItem({ card = new Card(), index }) {
                         <ReactMarkdown remarkPlugins={[gfm]} children={fixLineBreaks(card.text)} />
                     </div>
                 </div>
-
+                {/**Кнопка удаления */}
                 <div className="card-body pt-0">
                     <button
                         className={`btn btn-light p-0`}
@@ -48,7 +48,6 @@ function CardItem({ card = new Card(), index }) {
                         &#10007;
                     </button>
                 </div>
-
             </div>
         </div>
     )

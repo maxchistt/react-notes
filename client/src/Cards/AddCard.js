@@ -46,7 +46,7 @@ function AddCard() {
   return (
     <div className="container">
       <div className="row my-2 text-center">
-
+        {/**Поле заголовка */}
         <div className="col-xl-10 col-lg-10 col-md-10 col-12 p-1">
           <TextareaAutosize type="text" className="form-control" placeholder="Card name" id="Text"
             {...input.bind}
@@ -60,17 +60,16 @@ function AddCard() {
             }}
           />
         </div>
-
+        {/**Палитра */}
         <div className="col-xl-1 col-lg-1 col-md-1 col-sm-3 col-4 p-1">
           <Palette setColor={setColor} className={`btn btn-outline-secondary palitra-btn ${blackOnHover() ? "palitra-blackOnHover" : "palitra-lightOnHover"}`} style={{ width: "100%", background: color }}></Palette>
         </div>
-
+        {/**Кнопка создания заметки */}
         <div className="col-xl-1 col-lg-1 col-md-1 col p-1">
           <button disabled={!input.value.trim()} className="btn btn-success btn-block" onClick={submitHandler}>
             <i className="bi bi-clipboard-plus"></i>
           </button>
         </div>
-
       </div>
     </div>
   )

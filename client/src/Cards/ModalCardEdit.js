@@ -95,9 +95,11 @@ function ModalCardEdit({ card = new Card(), index }) {
     return (
         <Modal {...modalProps.bind()}>
             <div className="container p-2">
+                {/**Блок редактирования контента */}
                 <div>
                     {card ? (
                         <React.Fragment>
+                            {/**Редактирование заголовка */}
                             <TextareaAutosize
                                 className="form-control form-control-lg p-0 mb-2 bg-light text-dark"
                                 id="modal-edit-name"
@@ -108,14 +110,14 @@ function ModalCardEdit({ card = new Card(), index }) {
                                 value={card.name}
                                 onChange={onInputChange}
                             />
-
+                            {/**Индикатор цвета заметки */}
                             <p style={{ fontWeight: "500" }} className="mb-2 text-dark">
                                 Color:
                                 <span className={`m-1 d-inline-block text-center badge border border-secondary`} style={{ width: "3em", backgroundColor: card.color }}>
                                     &nbsp;
                                 </span>
                             </p>
-
+                            {/**Редактирование текста */}
                             <TextareaAutosize
                                 className="form-control p-0 mb-2 bg-light"
                                 id="modal-edit-text"
@@ -130,8 +132,9 @@ function ModalCardEdit({ card = new Card(), index }) {
                         <h1>No card</h1>
                     )}
                 </div>
-
+                {/**Футер с функциональными кнопками */}
                 <div style={{ display: "flex", justifyContent: "space-around", alignItems: "center", flexWrap: "wrap" }}>
+                    {/**Палитра и кнопка удаления */}
                     <div>
                         <Palette
                             className="btn btn-light mx-1"
@@ -144,11 +147,11 @@ function ModalCardEdit({ card = new Card(), index }) {
                             onClick={tryRemove}
                         >&#10007;</button>
                     </div>
-
+                    {/**Индикатор номера заметки */}
                     <div className="mx-auto">
                         <span style={{ color: "lightgray", fontWeight: "400" }}>Id {index}</span>
                     </div>
-
+                    {/**Зактрытие окна */}
                     <div>
                         <button
                             className="btn btn-light"
