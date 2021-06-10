@@ -1,16 +1,36 @@
 {
   "source": {
-    "include": [""],
+    "include": [
+      "",
+      "validation",
+      "routes",
+      "models",
+      "middleware",
+      "client",
+      "client/src",
+      "client/src/Shared",
+      "client/src/Shared/Logo",
+      "client/src/Shared/Modal",
+      "client/src/Pages",
+      "client/src/Pages/SharedComponents",
+      "client/src/Hooks",
+      "client/src/Context",
+      "client/src/Cards",
+      "client/src/Cards/palette",
+      "client/src/Cards/cardType"
+    ],
     "includePattern": ".js$",
-    "excludePattern": "(node_modules/|client/node_modules/|client/build/|docs)"
+    "excludePattern": "(docs|node_modules/|client/node_modules/|client/build/)"
   },
-  "plugins": ["plugins/markdown"],
+  "plugins": [
+    "plugins/markdown"
+  ],
   "templates": {
     "cleverLinks": true,
     "monospaceLinks": true
   },
   "opts": {
-    "recurse": true,
+    "recurse": false,
     "destination": "./docs/",
     "readme": "./readme.md"
   }
