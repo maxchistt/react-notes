@@ -88,14 +88,16 @@ router.post(
         return res.status(400).json({ message: 'Неверный пароль, попробуйте снова' })
       }
 
+      const expiresHours = 1
+
       /**Создание токена */
       const token = jwt.sign(
         { userId: user.id },
         process.env.jwtSecret,
-        { expiresIn: '1h' }
+        { expiresIn: `${expiresHours}h` }
       )
 
-      res.json({ token, userId: user.id, email: user.email })
+      res.json({ token, userId: user.id, email: user.email, expiresHours })
 
     } catch (e) {
       res.status(500).json({ message: 'Что-то пошло не так, попробуйте снова' })
