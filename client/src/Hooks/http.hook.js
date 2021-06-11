@@ -1,18 +1,23 @@
 /**
  * @file http.hook.js
  */
-import { useState, useCallback } from 'react'
+import { useState } from 'react'
 
 /**
  * Хук обработки Http запросов
  * Позволяет выводить результаты, ошибки и статус запроса, удобно совершать параметрические запросы
- *  
  */
 export const useHttp = () => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
-
-  const request = useCallback(async (url, method = 'GET', body = null, headers = {}) => {
+  /**
+   * асинхронный запрос к серверу
+   * @param {string} url 
+   * @param {string} method 
+   * @param {object} body 
+   * @param {object} headers 
+   */
+  const request = async (url, method = 'GET', body = null, headers = {}) => {
     setLoading(true)
     try {
       /**составление запроса */
@@ -34,9 +39,9 @@ export const useHttp = () => {
       setError(e.message)
       throw e
     }
-  }, [])
+  }
 
-  const clearError = useCallback(() => setError(null), [])
+  const clearError = () => setError(null)
 
   return { loading, request, error, clearError }
 }

@@ -59,8 +59,14 @@ function NotesPage() {
     /**хук сообщений от сервера */
     const [message, setMessage] = React.useState(null)
 
-    /**Хук-функция для работы с базой данных заметок */
-    const fetchNotes = React.useCallback(async (url = "", method = "GET", body = null, resCallback = () => { }) => {
+    /**
+     * Функция для работы с базой данных заметок
+     * @param {string} url 
+     * @param {string} method 
+     * @param {object} body 
+     * @param {void} resCallback 
+     */
+    const fetchNotes = async (url = "", method = "GET", body = null, resCallback = () => { }) => {
         try {
             /**запрос к серверу с определенными параметрами*/
             const fetched = await request(`/api/notes${url ? ("/" + url) : ""}`, method, body, { Authorization: `Bearer ${auth.token}` })
@@ -73,7 +79,7 @@ function NotesPage() {
                 return str;
             }
         }
-    }, [auth.token, request])
+    }
 
     /** очистка оштбок хука запросов и запись ошибки в сообщение*/
     React.useEffect(() => {
