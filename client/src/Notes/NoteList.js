@@ -1,9 +1,9 @@
 /**
- * @file CardList.js
+ * @file NoteList.js
  */
 import React from 'react'
 import PropTypes from 'prop-types'
-import CardItem from './CardItem'
+import NoteItem from './NoteItem'
 import StackGrid, { transitions } from "react-stack-grid"
 import sizeMe from 'react-sizeme'
 const { scaleDown } = transitions
@@ -24,7 +24,7 @@ function calcWidth() {
 }
 
 /** Компонент списка карточек */
-function CardList(props) {
+function NoteList(props) {
     const grid = React.useRef(null)
     React.useEffect(gridRedraw, [props.size])
 
@@ -53,9 +53,9 @@ function CardList(props) {
             {/**Отзывчивая сетка карточек */}
             <StackGrid className="container p-0" {...gridSettings}>
                 {/**Рендер каждой карточки из массива */}
-                {props.cards.map ? (props.cards.map((card, index) => {
+                {props.notes.map ? (props.notes.map((note, index) => {
                     return (
-                        <CardItem card={card} key={card.id} index={index} />
+                        <NoteItem note={note} key={note.id} index={index} />
                     )
                 })) : null}
             </StackGrid>
@@ -64,8 +64,8 @@ function CardList(props) {
 }
 
 // Валидация
-CardList.propTypes = {
-    cards: PropTypes.arrayOf(PropTypes.object).isRequired,
+NoteList.propTypes = {
+    notes: PropTypes.arrayOf(PropTypes.object).isRequired,
 }
 
-export default sizeMe()(CardList)
+export default sizeMe()(NoteList)

@@ -1,10 +1,10 @@
 /**
- * @file CardItem.js
+ * @file NoteItem.js
  */
 import React, { useContext } from 'react'
 import PropTypes from 'prop-types'
-import CardsContext from '../Context/CardsContext'
-import Card, { PropTypeCard } from './cardType/Card'
+import NotesContext from '../Context/NotesContext'
+import Note, { PropTypeNote } from './noteType/Note'
 import ReactMarkdown from 'react-markdown'
 import gfm from 'remark-gfm'
 
@@ -18,27 +18,27 @@ function fixLineBreaks(mdStr) {
  * @param {*} param0 
  *  
  */
-function CardItem({ card = new Card(), index }) {
+function NoteItem({ note = new Note(), index }) {
     /**Подключение контекста */
-    const { removeCard, setEditCard } = useContext(CardsContext)
+    const { removeNote, setEditNote } = useContext(NotesContext)
 
     const lineClip = 12
-    const bgColor = card.color
+    const bgColor = note.color
 
     return (
         <div className="p-1" >
             <div className="card" style={{ backgroundColor: bgColor }} >
                 {/**Заголовок и текст заметки с обработчиками отображения markdown*/}
-                <div className="card-body" onClick={() => setEditCard(index)} >
+                <div className="card-body" onClick={() => setEditNote(index)} >
                     <div
                         className="card-title h5"
                         style={{ overflow: "hidden", display: "-webkit-box", WebkitLineClamp: String(lineClip / 2), WebkitBoxOrient: "vertical" }} >
-                        <ReactMarkdown remarkPlugins={[gfm]} children={fixLineBreaks(card.name)} />
+                        <ReactMarkdown remarkPlugins={[gfm]} children={fixLineBreaks(note.name)} />
                     </div>
                     <div
                         className="card-text"
                         style={{ overflow: "hidden", display: "-webkit-box", WebkitLineClamp: String(lineClip), WebkitBoxOrient: "vertical" }}>
-                        <ReactMarkdown remarkPlugins={[gfm]} children={fixLineBreaks(card.text)} />
+                        <ReactMarkdown remarkPlugins={[gfm]} children={fixLineBreaks(note.text)} />
                     </div>
                 </div>
                 {/**Кнопка удаления */}
@@ -46,7 +46,7 @@ function CardItem({ card = new Card(), index }) {
                     <button
                         className={`btn btn-light p-0`}
                         style={{ width: "1.8em", height: "1.8em", float: "right", borderColor: "transparent", backgroundColor: "transparent" }}
-                        onClick={() => removeCard(index)}
+                        onClick={() => removeNote(index)}
                     >
                         &#10007;
                     </button>
@@ -57,12 +57,12 @@ function CardItem({ card = new Card(), index }) {
 }
 
 // Валидация
-CardItem.propTypes = {
-    card: PropTypeCard.isRequired,
+NoteItem.propTypes = {
+    note: PropTypeNote.isRequired,
     index: PropTypes.number
 }
 
-export default CardItem
+export default NoteItem
 
 
 

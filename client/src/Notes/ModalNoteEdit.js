@@ -1,12 +1,12 @@
 /**
- * @file ModalCardEdit.js
+ * @file ModalNoteEdit.js
  */
 import React from 'react'
 import PropTypes from 'prop-types'
-import CardsContext from '../Context/CardsContext'
+import NotesContext from '../Context/NotesContext'
 import TextareaAutosize from 'react-textarea-autosize'
 import Modal, { ModalProps } from "../Shared/Modal/Modal"
-import Card, { PropTypeCard } from './cardType/Card'
+import Note, { PropTypeNote } from './noteType/Note'
 import Palette from './palette/palette'
 
 /**расчет числа строк */
@@ -27,10 +27,10 @@ function calcMaxRows() {
  * @param {*} param0 
  * 
  */
-function ModalCardEdit({ card = new Card(), index }) {
+function ModalNoteEdit({ note = new Note(), index }) {
     /**получение контекста */
-    const { removeCard, changeCardColor, unsetEditCard, editCardContent } = React.useContext(CardsContext)
-    React.useEffect(() => { if (card !== null) open() }, [card])
+    const { removeNote, changeNoteColor, unsetEditNote, editNoteContent } = React.useContext(NotesContext)
+    React.useEffect(() => { if (note !== null) open() }, [note])
 
     /**хук состояния формы */
     const [showForm, setShowForm] = React.useState(false)
@@ -40,7 +40,7 @@ function ModalCardEdit({ card = new Card(), index }) {
     modalProps.isOpen = showForm
     modalProps.setOpenState = setShowForm
     modalProps.sideClose = true
-    modalProps.onSideClick = unsetEditCard
+    modalProps.onSideClick = unsetEditNote
 
     /**открытие окна */
     function open() {
@@ -54,7 +54,7 @@ function ModalCardEdit({ card = new Card(), index }) {
 
     /**сохранение данных */
     function save(name, text) {
-        editCardContent(index, name, text)
+        editNoteContent(index, name, text)
     }
 
     /**
@@ -62,8 +62,8 @@ function ModalCardEdit({ card = new Card(), index }) {
      * @param {*} e 
      */
     function onInputChange(e) {
-        let name = card.name
-        let text = card.text
+        let name = note.name
+        let text = note.text
         if (e.target.id === "modal-edit-name") name = e.target.value
         if (e.target.id === "modal-edit-text") text = e.target.value
         save(name, text)
@@ -74,23 +74,23 @@ function ModalCardEdit({ card = new Card(), index }) {
      * @param {*} color 
      */
     function tryChangeColor(color) {
-        changeCardColor(index, color)
+        changeNoteColor(index, color)
     }
 
     /**
      * удаление
      */
     function tryRemove() {
-        unsetEditCard();
+        unsetEditNote();
         close();
-        removeCard(index);
+        removeNote(index);
     }
 
     /**
      * закрытие и сброс окна
      */
     function tryClose() {
-        unsetEditCard()
+        unsetEditNote()
         close()
     }
 
@@ -100,7 +100,7 @@ function ModalCardEdit({ card = new Card(), index }) {
             <div className="container p-2">
                 {/**Блок редактирования контента */}
                 <div>
-                    {card ? (
+                    {note ? (
                         <React.Fragment>
                             {/**Редактирование заголовка */}
                             <TextareaAutosize
@@ -110,13 +110,13 @@ function ModalCardEdit({ card = new Card(), index }) {
                                 minRows={1}
                                 maxRows={3}
                                 maxLength="100"
-                                value={card.name}
+                                value={note.name}
                                 onChange={onInputChange}
                             />
                             {/**Индикатор цвета заметки */}
                             <p style={{ fontWeight: "500" }} className="mb-2 text-dark">
                                 Color:
-                                <span className={`m-1 d-inline-block text-center badge border border-secondary`} style={{ width: "3em", backgroundColor: card.color }}>
+                                <span className={`m-1 d-inline-block text-center badge border border-secondary`} style={{ width: "3em", backgroundColor: note.color }}>
                                     &nbsp;
                                 </span>
                             </p>
@@ -127,12 +127,12 @@ function ModalCardEdit({ card = new Card(), index }) {
                                 style={{ border: "none", outline: "none", boxShadow: "none", resize: "none" }}
                                 minRows={3}
                                 maxRows={calcMaxRows()}
-                                value={card.text}
+                                value={note.text}
                                 onChange={onInputChange}
                             />
                         </React.Fragment>
                     ) : (
-                        <h1>No card</h1>
+                        <h1>No note</h1>
                     )}
                 </div>
                 {/**Футер с функциональными кнопками */}
@@ -141,12 +141,12 @@ function ModalCardEdit({ card = new Card(), index }) {
                     <div>
                         <Palette
                             className="btn btn-light mx-1"
-                            disabled={!card}
+                            disabled={!note}
                             setColor={tryChangeColor}
                         ></Palette>
                         <button
                             className="btn btn-light"
-                            disabled={!card}
+                            disabled={!note}
                             onClick={tryRemove}
                         >&#10007;</button>
                     </div>
@@ -168,9 +168,9 @@ function ModalCardEdit({ card = new Card(), index }) {
 }
 
 // Валидация
-ModalCardEdit.propTypes = {
-    card: PropTypeCard,
+ModalNoteEdit.propTypes = {
+    note: PropTypeNote,
     index: PropTypes.number,
 }
 
-export default ModalCardEdit
+export default ModalNoteEdit

@@ -1,10 +1,10 @@
 /**
- * @file Card.js
+ * @file Note.js
  */
 import PropTypes from 'prop-types'
 
 /**валидация пропсов заметки*/
-export const PropTypeCard = PropTypes.shape({
+export const PropTypeNote = PropTypes.shape({
     id: PropTypes.string,
     name: PropTypes.string,
     color: PropTypes.string,
@@ -12,31 +12,31 @@ export const PropTypeCard = PropTypes.shape({
 })
 
 /**валидация заметки */
-export function checkCard(card) {
+export function checkNote(note) {
     return (
-        (typeof card.id === "string") &&
-        typeof card.name === "string" &&
-        typeof card.color === "string" &&
-        typeof card.text === "string"
+        (typeof note.id === "string") &&
+        typeof note.name === "string" &&
+        typeof note.color === "string" &&
+        typeof note.text === "string"
     )
 }
 
 /**валидация массива заметок */
-export function checkCardsArr(cardsArr) {
-    if (!Array.isArray(cardsArr)) return false
-    else if (cardsArr.length === 0) return true
+export function checkNotesArr(notesArr) {
+    if (!Array.isArray(notesArr)) return false
+    else if (notesArr.length === 0) return true
     else {
         let res = true
-        cardsArr.forEach((card) => {
-            if (typeof card !== "object") res = false
-            else if (!checkCard(card)) res = false
+        notesArr.forEach((note) => {
+            if (typeof note !== "object") res = false
+            else if (!checkNote(note)) res = false
         })
         return res
     }
 }
 
 /**класс заметки */
-export class Card {
+export class Note {
     constructor({ id, name, color, text }) {
         this.id = String(id)
         this.name = String(name)
@@ -45,4 +45,4 @@ export class Card {
     }
 }
 
-export default Card
+export default Note

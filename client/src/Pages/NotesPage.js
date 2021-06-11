@@ -1,14 +1,14 @@
 /**
- * @file CardsPage.js
+ * @file NotesPage.js
  */
 import React from 'react';
-import './CardsPage.css';
-import CardList from '../Cards/CardList'
-import AddCard from '../Cards/AddCard'
-import CardsContext from '../Context/CardsContext'
+import './NotesPage.css';
+import NoteList from '../Notes/NoteList'
+import AddNote from '../Notes/AddNote'
+import NotesContext from '../Context/NotesContext'
 import Loader from '../Shared/Loader'
-import ModalCardEdit from '../Cards/ModalCardEdit'
-import Card, { checkCardsArr } from '../Cards/cardType/Card'
+import ModalNoteEdit from '../Notes/ModalNoteEdit'
+import Note, { checkNotesArr } from '../Notes/noteType/Note'
 import { NavLink } from 'react-router-dom'
 import { AuthContext } from '../Context/AuthContext'
 import { PageContext } from '../Context/PageContext'
@@ -18,12 +18,12 @@ import { useHttp } from '../Hooks/http.hook'
  * Хук использования массива заметок
  * @param {*} defaultValue  
  */
-function useCardsArr(defaultValue) {
+function useNotesArr(defaultValue) {
     const [value, setValue] = React.useState(defaultValue)
     /**Сеттер с проверкой валидности массива */
-    function trySetValue(cardsArr) {
-        if (checkCardsArr(cardsArr) || cardsArr === null) setValue(cardsArr)
-        else console.error('Массив cardsArr не прошел проверку \n', cardsArr)
+    function trySetValue(notesArr) {
+        if (checkNotesArr(notesArr) || notesArr === null) setValue(notesArr)
+        else console.error('Массив notesArr не прошел проверку \n', notesArr)
     }
     return [value, trySetValue]
 }
@@ -48,7 +48,7 @@ function useUpdater() {
 /**
  * Страница с заметками 
  */
-function CardsPage() {
+function NotesPage() {
     /**подключение контекстов */
     const auth = React.useContext(AuthContext)
     const page = React.useContext(PageContext)
@@ -85,10 +85,10 @@ function CardsPage() {
     }, [error, clearError])
 
     /**Массив заметок */
-    const [cardsArr, setCardsArr] = useCardsArr(null)
+    const [notesArr, setNotesArr] = useNotesArr(null)
 
     /**Id редактируемой заметки */
-    const [editCardId, setEditCardId] = React.useState(null)
+    const [editNoteId, setEditNoteId] = React.useState(null)
 
     const [updaterVal] = useUpdater()
     const updatingEnable = React.useRef(true)
@@ -107,7 +107,7 @@ function CardsPage() {
     //очистка старых данных
     React.useEffect(clearOldData, [auth.isAuthenticated]) // eslint-disable-line react-hooks/exhaustive-deps
     function clearOldData() {
-        if (!auth.isAuthenticated) setCardsArr(null)
+        if (!auth.isAuthenticated) setNotesArr(null)
     }
     ///////////
 
@@ -117,15 +117,15 @@ function CardsPage() {
      * получение данных с сервера
      */
     function loadDataFromServer() {
-        fetchNotes("", "GET", null, setLoadedCards)
+        fetchNotes("", "GET", null, setLoadedNotes)
     }
 
     /**
      * Внесение в полученных данных в массив
-     * @param {*} cards 
+     * @param {*} notes 
      */
-    function setLoadedCards(cards) {
-        if (updatingEnable.current) setCardsArr([...cards])
+    function setLoadedNotes(notes) {
+        if (updatingEnable.current) setNotesArr([...notes])
     }
     ///////////
 
@@ -133,35 +133,35 @@ function CardsPage() {
 
     /**
      * Загрузка данных на сервер
-     * @param {*} card 
+     * @param {*} note 
      * @param {*} target 
      */
-    function loadDataToServer(card = new Card(), target = 'set') {
-        fetchNotes(target, "POST", { card })
+    function loadDataToServer(note = new Note(), target = 'set') {
+        fetchNotes(target, "POST", { note })
     }
 
     /**
      * удаление карточки
      * @param {*} index 
      */
-    function removeCard(index) {
-        const toDelete = cardsArr.splice(index, 1)[0]
-        setCardsArr([...cardsArr])
+    function removeNote(index) {
+        const toDelete = notesArr.splice(index, 1)[0]
+        setNotesArr([...notesArr])
         loadDataToServer(toDelete, "delete")
     }
 
     /**
      * добавление карточки
-     * @param {*} cardData 
+     * @param {*} noteData 
      */
-    function addCard(cardData = {}) {
+    function addNote(noteData = {}) {
         const newId = String(auth.email) + String(Date.now()) + String(Math.random())
-        const newCard = new Card({ id: newId, name: cardData.name, color: cardData.color, text: cardData.text })
-        //console.log(newId, newCard.id);
-        setCardsArr(
-            (cardsArr != null) ? cardsArr.concat([newCard]) : [newCard]
+        const newNote = new Note({ id: newId, name: noteData.name, color: noteData.color, text: noteData.text })
+        //console.log(newId, newNote.id);
+        setNotesArr(
+            (notesArr != null) ? notesArr.concat([newNote]) : [newNote]
         )
-        loadDataToServer(newCard, "set")
+        loadDataToServer(newNote, "set")
 
     }
 
@@ -170,10 +170,10 @@ function CardsPage() {
      * @param {*} index 
      * @param {*} color 
      */
-    function changeCardColor(index, color) {
-        cardsArr[index].color = color
-        setCardsArr([...cardsArr])
-        loadDataToServer(cardsArr[index], "set")
+    function changeNoteColor(index, color) {
+        notesArr[index].color = color
+        setNotesArr([...notesArr])
+        loadDataToServer(notesArr[index], "set")
     }
 
     /**
@@ -182,30 +182,30 @@ function CardsPage() {
      * @param {*} name 
      * @param {*} text 
      */
-    function editCardContent(index, name, text) {
-        if (cardsArr[index]) {
-            let card = new Card(cardsArr[index])
-            card.name = name
-            card.text = text
-            cardsArr[index] = card
+    function editNoteContent(index, name, text) {
+        if (notesArr[index]) {
+            let note = new Note(notesArr[index])
+            note.name = name
+            note.text = text
+            notesArr[index] = note
         }
-        setCardsArr([...cardsArr])
-        loadDataToServer(cardsArr[index], "set")
+        setNotesArr([...notesArr])
+        loadDataToServer(notesArr[index], "set")
     }
     ///////////
 
     ///////////
     /**функция назначения редактируемой заметки для модального окна */
-    function setEditCard(index) {
-        setEditCardId(index)
+    function setEditNote(index) {
+        setEditNoteId(index)
     }
     /**функция сброса редактируемой заметки для модального окна */
-    function unsetEditCard() {
-        setEditCardId(null)
+    function unsetEditNote() {
+        setEditNoteId(null)
     }
     /**функция получения карточки по id */
-    function getCardByIndex(index) {
-        return index !== null ? cardsArr[index] : null
+    function getNoteByIndex(index) {
+        return index !== null ? notesArr[index] : null
     }
     ///////////
 
@@ -220,7 +220,7 @@ function CardsPage() {
                     <i style={{ verticalAlign: "top" }} className={`bi bi-fix-align bi-arrow-${!loading ? "clockwise" : "repeat"} px-1 ${loading && "lds-animation"}`}></i>
                     <span className='d-xl-inline d-none'>Update</span>
                 </button>
-                <NavLink to="/authpage" className="btn btn-light m-1">
+                <NavLink to="/auth" className="btn btn-light m-1">
                     <span><i className="bi bi-person"></i> {auth.email}</span>
                 </NavLink>
             </React.Fragment>
@@ -231,20 +231,20 @@ function CardsPage() {
     /**рендер */
     return (
         /**Здесь отрисовываются меню добавления и редактирования заметок и сам перечнь заметок в виде динамичной отзывчивой сетки */
-        <CardsContext.Provider value={{ addCard, removeCard, changeCardColor, setEditCard, unsetEditCard, editCardContent, editCardId }}>
+        <NotesContext.Provider value={{ addNote, removeNote, changeNoteColor, setEditNote, unsetEditNote, editNoteContent, editNoteId }}>
             <div className="">
                 <main className="p-1 pb-3 mb-3">
                     {/**Компонент добавления карточки и модальное окно редактирования */}
-                    <AddCard />
-                    <ModalCardEdit card={getCardByIndex(editCardId)} index={editCardId} />
+                    <AddNote />
+                    <ModalNoteEdit note={getNoteByIndex(editNoteId)} index={editNoteId} />
                     {/**Вариативное отображение контента (заметок) */}
-                    {cardsArr && cardsArr.length ? (
+                    {notesArr && notesArr.length ? (
                         /**Список карточек */
-                        <CardList cards={cardsArr} />
+                        <NoteList notes={notesArr} />
                     ) : (loading) ? null : !message ? (
                         /**Сообщение об отсутствии карточек */
                         <div className="container text-center">
-                            <p className="m-3 p-3 h5 text-muted">No cards. You can add a new one!</p>
+                            <p className="m-3 p-3 h5 text-muted">No Notes. You can add a new one!</p>
                         </div>
                     ) : (
                         /**Ошибка загрузки данных */
@@ -253,15 +253,15 @@ function CardsPage() {
                         </div>
                     )}
                     {/**Колесико загрузки */}
-                    {(loading && !cardsArr && editCardId === null) &&
+                    {(loading && !notesArr && editNoteId === null) &&
                         <div className="container display-4 text-center p-3" >
                             <Loader />
                         </div>
                     }
                 </main>
             </div>
-        </CardsContext.Provider>
+        </NotesContext.Provider>
     );
 }
 
-export default CardsPage
+export default NotesPage

@@ -7,7 +7,7 @@ const Note = require('../models/Note')
 const auth = require('../middleware/auth.middleware')
 const router = Router()
 
-const { checkCard } = require('../validation/CardCheck')
+const { checkNote } = require('../validation/NoteCheck')
 
 /**
  * Добавление и редактирование заметки
@@ -16,10 +16,10 @@ const { checkCard } = require('../validation/CardCheck')
 router.post('/set', auth, async (req, res) => {
     try {
         /**получение данных о заметке и запись в бд */
-        const card = tryParce(req.body.card)
-        if (checkCard(card)) {
-            postNote(card)
-            res.status(201).json({ card: card })
+        const note = tryParce(req.body.note)
+        if (checkNote(note)) {
+            postNote(note)
+            res.status(201).json({ note })
         } else {
             res.status(500).json({ message: 'Неверный формат данных заметки' })
         }
@@ -56,10 +56,10 @@ router.post('/set', auth, async (req, res) => {
 router.post('/delete', auth, async (req, res) => {
     try {
         /**получение данных о заметке и удаление */
-        const card = tryParce(req.body.card)
-        if (checkCard(card)) {
-            deleteNote(card)
-            res.status(201).json({ card: card })
+        const note = tryParce(req.body.note)
+        if (checkNote(note)) {
+            deleteNote(note)
+            res.status(201).json({ note })
         } else {
             res.status(500).json({ message: 'Неверный формат данных заметки' })
         }

@@ -1,16 +1,16 @@
 /**
- * @file AddCard.js
+ * @file AddNote.js
  */
 import React from 'react'
 import TextareaAutosize from 'react-textarea-autosize'
 import Palette, { colors } from './palette/palette'
 import useInputValue from '../Hooks/useInputValue.hook'
-import CardsContext from '../Context/CardsContext'
+import NotesContext from '../Context/NotesContext'
 
 /**Компонент добавления новой заметки */
-function AddCard() {
+function AddNote() {
   /**контекст*/
-  const { addCard } = React.useContext(CardsContext)
+  const { addNote } = React.useContext(NotesContext)
   /**хук инпута*/
   const input = useInputValue('')
 
@@ -34,7 +34,7 @@ function AddCard() {
   /**обработчик добавления заметки */
   function submitHandler() {
     if (String(input.value).trim() && String(color).trim()) {
-      addCard({ name: String(input.value).trim(), text: "", color: String(color) })
+      addNote({ name: String(input.value).trim(), text: "", color: String(color) })
       input.clear()
       setColor(defColor)
     }
@@ -51,7 +51,7 @@ function AddCard() {
       <div className="row my-2 text-center">
         {/**Поле заголовка */}
         <div className="col-xl-10 col-lg-10 col-md-10 col-12 p-1">
-          <TextareaAutosize type="text" className="form-control" placeholder="Card name" id="Text"
+          <TextareaAutosize type="text" className="form-control" placeholder="Note name" id="Text"
             {...input.bind}
             style={{ resize: "none" }}
             minRows={1}
@@ -78,4 +78,4 @@ function AddCard() {
   )
 }
 
-export default AddCard
+export default AddNote
