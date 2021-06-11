@@ -15,9 +15,9 @@
       "client/src/Pages/SharedComponents",
       "client/src/Hooks",
       "client/src/Context",
-      "client/src/Cards",
-      "client/src/Cards/palette",
-      "client/src/Cards/cardType"
+      "client/src/Notes",
+      "client/src/Notes/palette",
+      "client/src/Notes/noteType"
     ],
     "includePattern": ".js$",
     "excludePattern": "(docs|node_modules/|client/node_modules/|client/build/)"
