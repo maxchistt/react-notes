@@ -1,6 +1,4 @@
-/**
- * @file http.hook.js
- */
+/** @file http.hook.js */
 import { useState } from 'react'
 
 /**

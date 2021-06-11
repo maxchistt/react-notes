@@ -11,8 +11,8 @@ import ModalNoteEdit from '../NoteComponents/ModalNoteEdit'
 import Note, { checkNotesArr } from '../Shared/noteType/Note'
 import { NavLink } from 'react-router-dom'
 import { AuthContext } from '../Context/AuthContext'
-import { PageContext } from '../Context/PageContext'
 import { useHttp } from '../Hooks/http.hook'
+import useNavbarEffect from '../Hooks/useNavbarEffect.hook'
 
 /**
  * Хук использования массива заметок
@@ -49,9 +49,8 @@ function useUpdater() {
  * Страница с заметками 
  */
 function NotesPage() {
-    /**подключение контекстов */
+    /**подключение контекста авторизации */
     const auth = React.useContext(AuthContext)
-    const page = React.useContext(PageContext)
 
     /**подключение хука http запросов */
     const { loading, request, error, clearError } = useHttp()
@@ -219,21 +218,18 @@ function NotesPage() {
     /**
      * Обновление навбара при переходе на эту страницу и изменениях
      */
-    React.useEffect(() => {
+    useNavbarEffect(
         /**Установка кнопок обновления контента и возврата к странице авторизации */
-        page.setNav(
-            <React.Fragment>
-                <button className="btn btn-light m-1" onClick={loadDataFromServer}>
-                    <i style={{ verticalAlign: "top" }} className={`bi bi-fix-align bi-arrow-${!loading ? "clockwise" : "repeat"} px-1 ${loading && "lds-animation"}`}></i>
-                </button>
-                <NavLink to="/auth" className="btn btn-light m-1">
-                    <span><i className="bi bi-person"></i> {auth.email}</span>
-                </NavLink>
-            </React.Fragment>
-        )
-        return page.setNav
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [auth.email, auth.token, loading])
+        <React.Fragment>
+            <button className="btn btn-light m-1" onClick={loadDataFromServer}>
+                <i style={{ verticalAlign: "top" }} className={`bi bi-fix-align bi-arrow-${!loading ? "clockwise" : "repeat"} px-1 ${loading && "lds-animation"}`}></i>
+            </button>
+            <NavLink to="/auth" className="btn btn-light m-1">
+                <span><i className="bi bi-person"></i> {auth.email}</span>
+            </NavLink>
+        </React.Fragment>,
+        [auth.email, auth.token, loading]
+    )
 
     /**рендер */
     return (

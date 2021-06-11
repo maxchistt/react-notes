@@ -1,6 +1,4 @@
-/**
- * @file useDebouncedEffect.hook.js
- */
+/** @file useDebouncedEffect.hook.js */
 import { useState, useEffect } from 'react';
 
 /**

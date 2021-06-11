@@ -1,6 +1,4 @@
-/**
- * @file auth.hook.js
- */
+/** @file auth.hook.js */
 import { useState, useEffect } from 'react'
 import cookieServiceInit from '../Shared/cookieService'
 

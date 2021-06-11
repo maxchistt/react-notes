@@ -1,12 +1,9 @@
-/**
- * @file useInputValue.hook.js
- */
+/** @file useInputValue.hook.js */
 import { useState } from 'react'
 
 /**
  * Хук для обработки форм
  * @param {*} defaultValue 
- * 
  */
 export default function useInputValue(defaultValue) {
     const [value, setValue] = useState(defaultValue)

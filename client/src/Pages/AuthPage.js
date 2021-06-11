@@ -4,17 +4,16 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useHttp } from '../Hooks/http.hook'
 import { AuthContext } from '../Context/AuthContext'
-import { PageContext } from '../Context/PageContext'
 import { NavLink, useHistory } from 'react-router-dom'
 import './AuthPage.css'
+import useNavbarEffect from '../Hooks/useNavbarEffect.hook'
 
 /**
  * Страница авторизации
  */
 function AuthPage() {
-  /**подключение контекстов */
+  /**подключение контекста авторизации */
   const auth = useContext(AuthContext)
-  const page = useContext(PageContext)
 
   const history = useHistory()
 
@@ -75,22 +74,19 @@ function AuthPage() {
   /**
    * Обновление навбара при переходе на эту страницу и изменениях
    */
-  React.useEffect(() => {
+  useNavbarEffect(
     /**Установка кнопок возврата к странице заметок и инфо*/
-    page.setNav(
-      <React.Fragment>
-        <NavLink to="/about" className="btn btn-light m-1">
-          <span>Инфо</span>
-        </NavLink>
-        {auth.isAuthenticated &&
-          <NavLink to="/notes" className="btn btn-light m-1">
-            <span>К заметкам</span>
-          </NavLink>}
-      </React.Fragment>
-    )
-    return page.setNav
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [auth.isAuthenticated, auth.token])
+    <React.Fragment>
+      <NavLink to="/about" className="btn btn-light m-1">
+        <span>Инфо</span>
+      </NavLink>
+      {auth.isAuthenticated &&
+        <NavLink to="/notes" className="btn btn-light m-1">
+          <span>К заметкам</span>
+        </NavLink>}
+    </React.Fragment>,
+    [auth.isAuthenticated, auth.token]
+  )
 
   /**рендер */
   return (
