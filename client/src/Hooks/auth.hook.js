@@ -2,42 +2,11 @@
  * @file auth.hook.js
  */
 import { useState, useCallback, useEffect } from 'react'
+import cookieServiceInit from '../Shared/cookieService'
 
 const cookieName = 'userData'
 /** интерфейс для работы с cookies */
-const cookieService = navigator.cookieEnabled ? {
-  /**
-   * получение куки
-   * @param {*} name  
-   */
-  getItem(name) {
-    const matches = document.cookie.match(new RegExp(
-      "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)" // eslint-disable-line no-useless-escape
-    ))
-    const res = matches ? decodeURIComponent(matches[1]) : undefined
-    return res
-  },
-  /**
-   * устанока куки
-   * @param {*} name 
-   * @param {*} value 
-   * @param {*} hours 
-   */
-  setItem(name, value, hours = 1) {
-    var cookie_date = new Date()
-    cookie_date.setHours(cookie_date.getHours() + Number(hours))
-    document.cookie = `${name}=${value};expires=` + cookie_date.toUTCString()
-  },
-  /**
-   * удаление куки
-   * @param {*} name 
-   */
-  removeItem(name) {
-    document.cookie = `${name}=;max-age=-1`
-  }
-} : null
-
-if (!cookieService) console.log("CookiesDisabled!")
+const cookieService = cookieServiceInit()
 
 /**
  * Хук авторизации
