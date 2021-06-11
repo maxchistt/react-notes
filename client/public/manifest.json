@@ -30,7 +30,7 @@
       "purpose": "any maskable"
     }
   ],
-  "start_url": "/?source=pwa",
+  "start_url": ".",
   "display": "standalone",
   "theme_color": "#FFFFFF",
   "background_color": "#FFFFFF"
