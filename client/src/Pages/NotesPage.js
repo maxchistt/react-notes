@@ -3,12 +3,12 @@
  */
 import React from 'react';
 import './NotesPage.css';
-import NoteList from '../Notes/NoteList'
-import AddNote from '../Notes/AddNote'
+import NoteList from '../NoteComponents/NoteList'
+import AddNote from '../NoteComponents/AddNote'
 import NotesContext from '../Context/NotesContext'
 import Loader from '../Shared/Loader'
-import ModalNoteEdit from '../Notes/ModalNoteEdit'
-import Note, { checkNotesArr } from '../Notes/noteType/Note'
+import ModalNoteEdit from '../NoteComponents/ModalNoteEdit'
+import Note, { checkNotesArr } from '../Shared/noteType/Note'
 import { NavLink } from 'react-router-dom'
 import { AuthContext } from '../Context/AuthContext'
 import { PageContext } from '../Context/PageContext'

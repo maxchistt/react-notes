@@ -6,7 +6,7 @@ import PropTypes from 'prop-types'
 import NotesContext from '../Context/NotesContext'
 import TextareaAutosize from 'react-textarea-autosize'
 import Modal, { ModalProps } from "../Shared/Modal/Modal"
-import Note, { PropTypeNote } from './noteType/Note'
+import Note, { PropTypeNote } from '../Shared/noteType/Note'
 import Palette from './palette/palette'
 
 /**расчет числа строк */

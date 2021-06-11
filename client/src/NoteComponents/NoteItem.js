@@ -4,7 +4,7 @@
 import React, { useContext } from 'react'
 import PropTypes from 'prop-types'
 import NotesContext from '../Context/NotesContext'
-import Note, { PropTypeNote } from './noteType/Note'
+import Note, { PropTypeNote } from '../Shared/noteType/Note'
 import ReactMarkdown from 'react-markdown'
 import gfm from 'remark-gfm'
 
