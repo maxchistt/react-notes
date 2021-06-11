@@ -158,11 +158,12 @@ function NotesPage() {
         const newId = String(auth.email) + String(Date.now()) + String(Math.random())
         const newNote = new Note({ id: newId, name: noteData.name, color: noteData.color, text: noteData.text })
         //console.log(newId, newNote.id);
+        const newIndex = (notesArr != null) ? notesArr.length : 0
         setNotesArr(
             (notesArr != null) ? notesArr.concat([newNote]) : [newNote]
         )
         loadDataToServer(newNote, "set")
-
+        setEditNoteId(newIndex)
     }
 
     /**
