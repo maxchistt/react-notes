@@ -24,7 +24,7 @@ function App() {
 
   if (!ready) {
     return (
-      <div className="container display-4 text-center p-3" >
+      <div className="container display-4 text-center p-5" >
         <Loader />
       </div>
     )
