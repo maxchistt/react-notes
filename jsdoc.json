@@ -11,13 +11,13 @@
       "client/src/Shared",
       "client/src/Shared/Logo",
       "client/src/Shared/Modal",
+      "client/src/Shared/noteType",
       "client/src/Pages",
       "client/src/Pages/SharedComponents",
       "client/src/Hooks",
       "client/src/Context",
-      "client/src/Notes",
-      "client/src/Notes/palette",
-      "client/src/Notes/noteType"
+      "client/src/NoteComponents",
+      "client/src/NoteComponents/palette"
     ],
     "includePattern": ".js$",
     "excludePattern": "(docs|node_modules/|client/node_modules/|client/build/)"
