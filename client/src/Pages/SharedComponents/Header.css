@@ -2,21 +2,7 @@
   height: 3em;
   pointer-events: none;
   user-select: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+  transform: rotate(15deg);
 }
 
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap");
