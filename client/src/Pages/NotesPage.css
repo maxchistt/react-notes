@@ -21,3 +21,8 @@
 .card-text > h5 {
   font-size: 1.125em;
 }
+
+.bi-arrow-repeat {
+  display: inline-block;
+  transform: rotate(90deg);
+}

@@ -17,7 +17,7 @@
 
 .lds-animation {
   display: inline-block;
-  animation: lds-dual-ring 1.2s linear infinite;
+  animation: lds-dual-ring-90 1.2s linear infinite;
 }
 
 .bi-fix-align::before {
@@ -30,5 +30,14 @@
   }
   100% {
     transform: rotate(360deg);
+  }
+}
+
+@keyframes lds-dual-ring-90 {
+  0% {
+    transform: rotate(90deg);
+  }
+  100% {
+    transform: rotate(450deg);
   }
 }
