@@ -217,7 +217,7 @@ function CardsPage() {
         page.setNav(
             <React.Fragment>
                 <button className="btn btn-light m-1" onClick={loadDataFromServer}>
-                    {loading ? <Loader className='px-1' /> : <i className="bi bi-arrow-clockwise px-1"></i>}
+                    <i style={{ verticalAlign: "top" }} className={`bi bi-fix-align bi-arrow-${!loading ? "clockwise" : "repeat"} px-1 ${loading && "lds-animation"}`}></i>
                     <span className='d-xl-inline d-none'>Update</span>
                 </button>
                 <NavLink to="/authpage" className="btn btn-light m-1">
@@ -226,7 +226,7 @@ function CardsPage() {
             </React.Fragment>
         )
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [auth.email, auth.token])
+    }, [auth.email, auth.token, loading])
 
     /**рендер */
     return (
@@ -252,8 +252,8 @@ function CardsPage() {
                             <p className="m-3 p-3 h5 text-muted">Data not loaded<br />{message}</p>
                         </div>
                     )}
-                    {/**Компонент добавления карточки и модальное окно редактирования */}
-                    {(loading && editCardId === null) &&
+                    {/**Колесико загрузки */}
+                    {(loading && !cardsArr && editCardId === null) &&
                         <div className="container display-4 text-center p-3" >
                             <Loader />
                         </div>

@@ -2,19 +2,28 @@
   display: inline-block;
   height: 1em;
   width: 1em;
-  line-height: 1em;
 }
 .lds-dual-ring:after {
-  vertical-align: bottom;
   content: " ";
-  display: inline-block;
+  display: block;
+  margin: 1px;
+  border-radius: 50%;
+  animation: lds-dual-ring 1.2s linear infinite;
   height: 100%;
   width: 100%;
-  border-radius: 50%;
   border: 0.15em solid;
   border-color: lightgrey transparent;
+}
+
+.lds-animation {
+  display: inline-block;
   animation: lds-dual-ring 1.2s linear infinite;
 }
+
+.bi-fix-align::before {
+  vertical-align: -0.09em !important;
+}
+
 @keyframes lds-dual-ring {
   0% {
     transform: rotate(0deg);
