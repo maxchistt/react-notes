@@ -148,7 +148,7 @@ function ModalNoteEdit({ note = new Note(), index }) {
                             className="btn btn-light"
                             disabled={!note}
                             onClick={tryRemove}
-                        >&#10007;</button>
+                        ><i className="bi bi-trash text-dark"></i></button>
                     </div>
                     {/**Индикатор номера заметки */}
                     <div className="mx-auto">
