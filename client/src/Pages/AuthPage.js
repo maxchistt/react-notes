@@ -76,12 +76,19 @@ function AuthPage() {
    * Обновление навбара при переходе на эту страницу и изменениях
    */
   React.useEffect(() => {
-    /**Установка кнопки возврата к странице заметок */
-    page.setNav(auth.isAuthenticated &&
-      <NavLink to="/notes" className="btn btn-light m-1">
-        <span>К заметкам</span>
-      </NavLink>
+    /**Установка кнопок возврата к странице заметок и инфо*/
+    page.setNav(
+      <React.Fragment>
+        <NavLink to="/about" className="btn btn-light m-1">
+          <span>Инфо</span>
+        </NavLink>
+        {auth.isAuthenticated &&
+          <NavLink to="/notes" className="btn btn-light m-1">
+            <span>К заметкам</span>
+          </NavLink>}
+      </React.Fragment>
     )
+    return page.setNav
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [auth.isAuthenticated, auth.token])
 

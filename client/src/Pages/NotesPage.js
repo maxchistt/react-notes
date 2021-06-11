@@ -218,13 +218,13 @@ function NotesPage() {
             <React.Fragment>
                 <button className="btn btn-light m-1" onClick={loadDataFromServer}>
                     <i style={{ verticalAlign: "top" }} className={`bi bi-fix-align bi-arrow-${!loading ? "clockwise" : "repeat"} px-1 ${loading && "lds-animation"}`}></i>
-                    <span className='d-xl-inline d-none'>Update</span>
                 </button>
                 <NavLink to="/auth" className="btn btn-light m-1">
                     <span><i className="bi bi-person"></i> {auth.email}</span>
                 </NavLink>
             </React.Fragment>
         )
+        return page.setNav
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [auth.email, auth.token, loading])
 
@@ -232,7 +232,7 @@ function NotesPage() {
     return (
         /**Здесь отрисовываются меню добавления и редактирования заметок и сам перечнь заметок в виде динамичной отзывчивой сетки */
         <NotesContext.Provider value={{ addNote, removeNote, changeNoteColor, setEditNote, unsetEditNote, editNoteContent, editNoteId }}>
-            <div className="">
+            <div className="NotesPage">
                 <main className="p-1 pb-3 mb-3">
                     {/**Компонент добавления карточки и модальное окно редактирования */}
                     <AddNote />
