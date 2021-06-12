@@ -4,7 +4,7 @@ import { PageContext } from '../Context/PageContext'
 
 /**
  * Хук обновления навбара при рендере
- * @param {JSX} content 
+ * @param {React.Component} content 
  * @param {Array} deps 
  */
 function useNavbarEffect(content, deps) {

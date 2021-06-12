@@ -5,7 +5,6 @@ import { checkNotesArr } from '../Shared/noteType/Note'
 /**
  * Хук использования массива заметок
  * @param {(null|Array)} defaultValue  
- * @returns {[(null|Array),React.Dispatch<(null|Array)>]} valueArr, trySetValueArr
  */
 function useNotesArr(defaultValue) {
     const [valueArr, setValueArr] = useState(defaultValue)
