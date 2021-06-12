@@ -28,8 +28,10 @@ function useDebounce(value, delay) {
  * @param {*} deps 
  * @param {*} delay 
  */
-export default function useDebouncedEffect(func, deps, delay) {
+function useDebouncedEffect(func, deps, delay) {
     const debounced = useDebounce(deps, delay || 0)
     const debDepsList = Array.isArray(debounced) ? debounced : debounced ? [debounced] : undefined
     useEffect(func, debDepsList) // eslint-disable-line react-hooks/exhaustive-deps
 }
+
+export default useDebouncedEffect

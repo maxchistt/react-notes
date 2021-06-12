@@ -4,10 +4,12 @@
 import React from 'react'
 
 /**просто вращающееся колесико загрузки */
-export default function Loader({ className }) {
+function Loader({ className }) {
     return (
         <i className={className}>
             <span className={`lds-dual-ring`} ></span>
         </i>
     )
 }
+
+export default Loader

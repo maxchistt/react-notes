@@ -1,8 +1,6 @@
-/**
- * @file cookieService.js
- */
+/** @file cookieService.js */
 /** инициализация интерфейса для работы с cookies */
-export default function cookieServiceInit() {
+function cookieServiceInit() {
     const service = navigator.cookieEnabled ? {
         /**
          * получение куки
@@ -37,3 +35,5 @@ export default function cookieServiceInit() {
     if (!service) console.error("CookiesDisabled!")
     return service
 }
+
+export default cookieServiceInit

@@ -3,11 +3,11 @@ import { useEffect, useContext } from 'react'
 import { PageContext } from '../Context/PageContext'
 
 /**
- * Обновление навбара при рендере
+ * Хук обновления навбара при рендере
  * @param {JSX} content 
  * @param {Array} deps 
  */
-export default function useNavbarEffect(content, deps) {
+function useNavbarEffect(content, deps) {
     const navSetter = useContext(PageContext).setNav
     useEffect(() => {
         navSetter(content)
@@ -15,3 +15,5 @@ export default function useNavbarEffect(content, deps) {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, deps)
 }
+
+export default useNavbarEffect

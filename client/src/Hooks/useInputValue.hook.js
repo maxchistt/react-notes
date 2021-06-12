@@ -5,7 +5,7 @@ import { useState } from 'react'
  * Хук для обработки форм
  * @param {*} defaultValue 
  */
-export default function useInputValue(defaultValue) {
+function useInputValue(defaultValue) {
     const [value, setValue] = useState(defaultValue)
     return {
         bind: {
@@ -17,3 +17,5 @@ export default function useInputValue(defaultValue) {
         addBreak: () => setValue(value + "\n")
     }
 }
+
+export default useInputValue

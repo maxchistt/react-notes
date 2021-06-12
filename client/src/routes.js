@@ -7,6 +7,10 @@ import NotesPage from './Pages/NotesPage'
 import AuthPage from './Pages/AuthPage'
 import AboutPage from './Pages/AboutPage'
 
+/**
+ * Хук маршрутизации, содержаший в себе роуты
+ * @param {*} isAuthenticated 
+ */
 export const useRoutes = isAuthenticated => {
   if (isAuthenticated) {
     return (
