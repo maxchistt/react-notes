@@ -29,6 +29,21 @@ function useNotesArr(defaultValue) {
     return [value, trySetValue]
 }
 
+/**Хук id редактируемой заметки */
+function useEditNoteId() {
+    /**Id редактируемой заметки */
+    const [editNoteId, setEditNoteId] = React.useState(null)
+    /**функция назначения редактируемой заметки для модального окна */
+    function setEditNote(index) {
+        setEditNoteId(index)
+    }
+    /**функция сброса редактируемой заметки для модального окна */
+    function unsetEditNote() {
+        setEditNoteId(null)
+    }
+    return [editNoteId, setEditNote, unsetEditNote]
+}
+
 /**
  * Страница с заметками 
  */
@@ -56,17 +71,13 @@ function NotesPage() {
     /**Массив заметок */
     const [notesArr, setNotesArr] = useNotesArr(null)
 
-    /**Id редактируемой заметки */
-    const [editNoteId, setEditNoteId] = React.useState(null)
+    const [editNoteId, setEditNote, unsetEditNote] = useEditNoteId()
 
     const [updatingEnable] = useDataLoadingController(loadDataFromServer, AuthContext, 60)
 
     ///////////
     //очистка старых данных
-    React.useEffect(clearOldData, [auth.isAuthenticated]) // eslint-disable-line react-hooks/exhaustive-deps
-    function clearOldData() {
-        if (!auth.isAuthenticated) setNotesArr(null)
-    }
+    React.useEffect(() => !auth.isAuthenticated && setNotesArr(null), [auth.isAuthenticated]) // eslint-disable-line react-hooks/exhaustive-deps
     ///////////
 
     ///////////
@@ -121,7 +132,7 @@ function NotesPage() {
             (notesArr != null) ? notesArr.concat([newNote]) : [newNote]
         )
         loadDataToServer(newNote, "set")
-        setEditNoteId(newIndex)
+        setEditNote(newIndex)
     }
 
     /**
@@ -154,14 +165,7 @@ function NotesPage() {
     ///////////
 
     ///////////
-    /**функция назначения редактируемой заметки для модального окна */
-    function setEditNote(index) {
-        setEditNoteId(index)
-    }
-    /**функция сброса редактируемой заметки для модального окна */
-    function unsetEditNote() {
-        setEditNoteId(null)
-    }
+
     /**функция получения карточки по id */
     function getNoteByIndex(index) {
         return index !== null ? notesArr[index] : null
@@ -187,12 +191,12 @@ function NotesPage() {
     /**рендер */
     return (
         /**Здесь отрисовываются меню добавления и редактирования заметок и сам перечнь заметок в виде динамичной отзывчивой сетки */
-        <NotesContext.Provider value={{ addNote, removeNote, changeNoteColor, setEditNote, unsetEditNote, editNoteContent, editNoteId }}>
+        <NotesContext.Provider value={{ addNote, removeNote, changeNoteColor, editNoteContent, setEditNote, unsetEditNote, editNoteId, getNoteByIndex }}>
             <div className="NotesPage">
                 <main className="p-1 pb-3 mb-3">
                     {/**Компонент добавления карточки и модальное окно редактирования */}
                     <AddNote />
-                    <ModalNoteEdit note={getNoteByIndex(editNoteId)} index={editNoteId} />
+                    <ModalNoteEdit />
                     {/**Вариативное отображение контента (заметок) */}
                     {notesArr && notesArr.length ? (
                         /**Список карточек */

@@ -2,11 +2,9 @@
  * @file ModalNoteEdit.js
  */
 import React from 'react'
-import PropTypes from 'prop-types'
 import NotesContext from '../Context/NotesContext'
 import TextareaAutosize from 'react-textarea-autosize'
 import Modal, { ModalProps } from "../Shared/Modal/Modal"
-import Note, { PropTypeNote } from '../Shared/noteType/Note'
 import Palette from './palette/palette'
 
 /**расчет числа строк */
@@ -24,12 +22,13 @@ function calcMaxRows() {
 
 /**
  * Модальное окно редактирования заметки
- * @param {*} param0 
- * 
  */
-function ModalNoteEdit({ note = new Note(), index }) {
+function ModalNoteEdit() {
     /**получение контекста */
-    const { removeNote, changeNoteColor, unsetEditNote, editNoteContent } = React.useContext(NotesContext)
+    const { removeNote, changeNoteColor, unsetEditNote, editNoteContent, getNoteByIndex, editNoteId } = React.useContext(NotesContext)
+
+    /** обьект заметки */
+    const note = getNoteByIndex(editNoteId)
     React.useEffect(() => { if (note !== null) open() }, [note])
 
     /**хук состояния формы */
@@ -54,7 +53,7 @@ function ModalNoteEdit({ note = new Note(), index }) {
 
     /**сохранение данных */
     function save(name, text) {
-        editNoteContent(index, name, text)
+        editNoteContent(editNoteId, name, text)
     }
 
     /**
@@ -74,7 +73,7 @@ function ModalNoteEdit({ note = new Note(), index }) {
      * @param {*} color 
      */
     function tryChangeColor(color) {
-        changeNoteColor(index, color)
+        changeNoteColor(editNoteId, color)
     }
 
     /**
@@ -83,7 +82,7 @@ function ModalNoteEdit({ note = new Note(), index }) {
     function tryRemove() {
         unsetEditNote();
         close();
-        removeNote(index);
+        removeNote(editNoteId);
     }
 
     /**
@@ -152,7 +151,7 @@ function ModalNoteEdit({ note = new Note(), index }) {
                     </div>
                     {/**Индикатор номера заметки */}
                     <div className="mx-auto">
-                        <span style={{ color: "lightgray", fontWeight: "400" }}>Id {index}</span>
+                        <span style={{ color: "lightgray", fontWeight: "400" }}>Id {editNoteId}</span>
                     </div>
                     {/**Зактрытие окна */}
                     <div>
@@ -165,12 +164,6 @@ function ModalNoteEdit({ note = new Note(), index }) {
             </div>
         </Modal>
     )
-}
-
-// Валидация
-ModalNoteEdit.propTypes = {
-    note: PropTypeNote,
-    index: PropTypes.number,
 }
 
 export default ModalNoteEdit
