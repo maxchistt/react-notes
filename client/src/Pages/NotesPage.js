@@ -1,35 +1,21 @@
 /**
  * @file NotesPage.js
  */
-import React from 'react';
-import './NotesPage.css';
+import React from 'react'
+import './NotesPage.css'
 import NoteList from '../NoteComponents/NoteList'
 import AddNote from '../NoteComponents/AddNote'
 import NotesContext from '../Context/NotesContext'
 import Loader from '../Shared/Loader'
 import ModalNoteEdit from '../NoteComponents/ModalNoteEdit'
-import Note, { checkNotesArr } from '../Shared/noteType/Note'
+import Note from '../Shared/noteType/Note'
 import { NavLink } from 'react-router-dom'
 import { AuthContext } from '../Context/AuthContext'
 import useNavbarEffect from '../Hooks/useNavbarEffect.hook'
 import useDataLoadingController from '../Hooks/useDataLoadingController.hook'
 import useFetchNotes from '../Hooks/useFetchNotes.hook'
-import useEditNoteId from '../Hooks/useEditNoteId.hook';
-
-/**
- * Хук использования массива заметок
- * @param {(null|Array)} defaultValue  
- * @returns {[(null|Array),React.Dispatch<(null|Array)>]} valueArr, trySetValueArr
- */
-function useNotesArr(defaultValue) {
-    const [valueArr, setValueArr] = React.useState(defaultValue)
-    /**Сеттер с проверкой валидности массива */
-    function trySetValueArr(notesArr) {
-        if (checkNotesArr(notesArr) || notesArr === null) setValueArr(notesArr)
-        else console.error('Массив notesArr не прошел проверку \n', notesArr)
-    }
-    return [valueArr, trySetValueArr]
-}
+import useEditNoteId from '../Hooks/useEditNoteId.hook'
+import useNotesArr from '../Hooks/useNotesArr.hook'
 
 /**
  * Страница с заметками 
@@ -59,32 +45,20 @@ function NotesPage() {
     /**Массив заметок */
     const [notesArr, setNotesArr] = useNotesArr(null)
 
-    ///////////
-    //очистка старых данных
+    /**очистка старых данных */
     React.useEffect(() => !auth.isAuthenticated && setNotesArr(null), [auth.isAuthenticated]) // eslint-disable-line react-hooks/exhaustive-deps
-    ///////////
+
+    /** подключение контроллера обновления данных */
+    const [updateData] = useDataLoadingController(loadDataFromServer, setLoadedNotes, auth, 60)
 
     ///////////
-
-    const updatingEnable = useDataLoadingController(loadDataFromServer, AuthContext, 60)
 
     /**
      * получение данных с сервера
      */
-    function loadDataFromServer() {
-        fetchNotes("", "GET", null, setLoadedNotes)
+    function loadDataFromServer(setterClb = () => { }) {
+        fetchNotes("", "GET", null, setterClb)
     }
-
-    /**
-     * Внесение в полученных данных в массив
-     * @param {*} notes 
-     */
-    function setLoadedNotes(notes) {
-        if (updatingEnable.current) setNotesArr([...notes])
-    }
-    ///////////
-
-    ///////////
 
     /**
      * Загрузка данных на сервер
@@ -93,6 +67,16 @@ function NotesPage() {
      */
     function loadDataToServer(note = new Note(), target = 'set') {
         fetchNotes(target, "POST", { note })
+    }
+
+    ///////////
+
+    /**
+     * Внесение в полученных данных в массив
+     * @param {*} notes 
+     */
+    function setLoadedNotes(notes) {
+        setNotesArr([...notes])
     }
 
     /**
@@ -148,14 +132,12 @@ function NotesPage() {
         setNotesArr([...notesArr])
         loadDataToServer(notesArr[index], "set")
     }
-    ///////////
-
-    ///////////
 
     /**функция получения карточки по id */
     function getNoteByIndex(index) {
         return index !== null ? notesArr[index] : null
     }
+
     ///////////
 
     /**
@@ -164,7 +146,7 @@ function NotesPage() {
     useNavbarEffect(
         /**Установка кнопок обновления контента и возврата к странице авторизации */
         <React.Fragment>
-            <button className="btn btn-light m-1" onClick={loadDataFromServer}>
+            <button className="btn btn-light m-1" onClick={updateData}>
                 <i style={{ verticalAlign: "top" }} className={`bi bi-fix-align bi-arrow-${!loading ? "clockwise" : "repeat"} px-1 ${loading && "lds-animation"}`}></i>
             </button>
             <NavLink to="/auth" className="btn btn-light m-1">

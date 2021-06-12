@@ -1,26 +1,33 @@
 /**@file useDataLoadingController.hook.js */
-import { useContext, useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import useUpdater from './useUpdater.hook'
+
 /**
  * хук обновления данных с сервера
  * флаг updatingEnable позволяет избежать взаимодействия с устаревшей unmount версией компонента
- * @param {void} loader 
- * @param {React.Context} authContext 
- * @param {Number} interval 
+ * @param {void} loaderWithClb 
+ * @param {void} setter 
+ * @param {object} auth 
+ * @param {Number} autoupdateInterval 
  */
-function useDataLoadingController(loader, authContext, interval = 60) {
-    const { isAuthenticated, token } = useContext(authContext)
-    const [updaterVal] = useUpdater(interval)
+function useDataLoadingController(loaderWithClb, setter, auth, autoupdateInterval = 60) {
+    const { isAuthenticated, token } = auth
+    const [updaterVal] = useUpdater(autoupdateInterval)
     /**Флаг допстимости обновления загруженных данных */
     const updatingEnableRef = useRef(true)
-
+    /** Обновление данных с серевера */
+    function updater() {
+        const checkedSetter = (notes) => { if (updatingEnableRef.current) setter(notes) }
+        loaderWithClb(checkedSetter)
+    }
+    /**защищенный вызов обновления */
     useEffect(() => {
         updatingEnableRef.current = true
-        loader()
+        updater()
         return () => updatingEnableRef.current = false
     }, [isAuthenticated, token, updaterVal]) // eslint-disable-line react-hooks/exhaustive-deps
 
-    return updatingEnableRef
+    return [updater]
 }
 
 export default useDataLoadingController
