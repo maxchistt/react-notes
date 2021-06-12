@@ -14,34 +14,21 @@ import { AuthContext } from '../Context/AuthContext'
 import useNavbarEffect from '../Hooks/useNavbarEffect.hook'
 import useDataLoadingController from '../Hooks/useDataLoadingController.hook'
 import useFetchNotes from '../Hooks/useFetchNotes.hook'
+import useEditNoteId from '../Hooks/useEditNoteId.hook';
 
 /**
  * Хук использования массива заметок
- * @param {*} defaultValue  
+ * @param {(null|Array)} defaultValue  
+ * @returns {[(null|Array),React.Dispatch<(null|Array)>]} valueArr, trySetValueArr
  */
 function useNotesArr(defaultValue) {
-    const [value, setValue] = React.useState(defaultValue)
+    const [valueArr, setValueArr] = React.useState(defaultValue)
     /**Сеттер с проверкой валидности массива */
-    function trySetValue(notesArr) {
-        if (checkNotesArr(notesArr) || notesArr === null) setValue(notesArr)
+    function trySetValueArr(notesArr) {
+        if (checkNotesArr(notesArr) || notesArr === null) setValueArr(notesArr)
         else console.error('Массив notesArr не прошел проверку \n', notesArr)
     }
-    return [value, trySetValue]
-}
-
-/**Хук id редактируемой заметки */
-function useEditNoteId() {
-    /**Id редактируемой заметки */
-    const [editNoteId, setEditNoteId] = React.useState(null)
-    /**функция назначения редактируемой заметки для модального окна */
-    function setEditNote(index) {
-        setEditNoteId(index)
-    }
-    /**функция сброса редактируемой заметки для модального окна */
-    function unsetEditNote() {
-        setEditNoteId(null)
-    }
-    return [editNoteId, setEditNote, unsetEditNote]
+    return [valueArr, trySetValueArr]
 }
 
 /**
@@ -51,15 +38,13 @@ function NotesPage() {
     /**подключение контекста авторизации */
     const auth = React.useContext(AuthContext)
 
-    /**
-     * Подключение хука для обращения к бд с заметками
-     */
+    /** Подключение хука для обращения к бд с заметками */
     const { loading, fetchNotes, error, clearError } = useFetchNotes(auth.token)
 
     /**хук сообщений от сервера */
     const [message, setMessage] = React.useState(null)
 
-    /** очистка оштбок хука запросов и запись ошибки в сообщение*/
+    /** очистка ошибок хука запросов и запись ошибки в сообщение*/
     React.useEffect(() => {
         if (error) setMessage(error)
         /**Выйти в случае неавторизации */
@@ -68,12 +53,11 @@ function NotesPage() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [error, clearError])
 
+    /**Подключение хука id кудактируемой заметки */
+    const { editNoteId, setEditNoteId, unsetEditNoteId } = useEditNoteId()
+
     /**Массив заметок */
     const [notesArr, setNotesArr] = useNotesArr(null)
-
-    const [editNoteId, setEditNote, unsetEditNote] = useEditNoteId()
-
-    const [updatingEnable] = useDataLoadingController(loadDataFromServer, AuthContext, 60)
 
     ///////////
     //очистка старых данных
@@ -81,6 +65,8 @@ function NotesPage() {
     ///////////
 
     ///////////
+
+    const updatingEnable = useDataLoadingController(loadDataFromServer, AuthContext, 60)
 
     /**
      * получение данных с сервера
@@ -102,8 +88,8 @@ function NotesPage() {
 
     /**
      * Загрузка данных на сервер
-     * @param {*} note 
-     * @param {*} target 
+     * @param {Note} note 
+     * @param {string} target 
      */
     function loadDataToServer(note = new Note(), target = 'set') {
         fetchNotes(target, "POST", { note })
@@ -132,7 +118,7 @@ function NotesPage() {
             (notesArr != null) ? notesArr.concat([newNote]) : [newNote]
         )
         loadDataToServer(newNote, "set")
-        setEditNote(newIndex)
+        setEditNoteId(newIndex)
     }
 
     /**
@@ -191,7 +177,7 @@ function NotesPage() {
     /**рендер */
     return (
         /**Здесь отрисовываются меню добавления и редактирования заметок и сам перечнь заметок в виде динамичной отзывчивой сетки */
-        <NotesContext.Provider value={{ addNote, removeNote, changeNoteColor, editNoteContent, setEditNote, unsetEditNote, editNoteId, getNoteByIndex }}>
+        <NotesContext.Provider value={{ addNote, removeNote, changeNoteColor, editNoteContent, setEditNoteId, unsetEditNoteId, editNoteId, getNoteByIndex }}>
             <div className="NotesPage">
                 <main className="p-1 pb-3 mb-3">
                     {/**Компонент добавления карточки и модальное окно редактирования */}

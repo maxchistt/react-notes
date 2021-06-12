@@ -20,7 +20,7 @@ function fixLineBreaks(mdStr) {
  */
 function NoteItem({ note = new Note(), index }) {
     /**Подключение контекста */
-    const { removeNote, setEditNote } = useContext(NotesContext)
+    const { removeNote, setEditNoteId } = useContext(NotesContext)
 
     const lineClip = 12
     const bgColor = note.color
@@ -29,7 +29,7 @@ function NoteItem({ note = new Note(), index }) {
         <div className="p-1" >
             <div className="card" style={{ backgroundColor: bgColor }} >
                 {/**Заголовок и текст заметки с обработчиками отображения markdown*/}
-                <div className="card-body" onClick={() => setEditNote(index)} >
+                <div className="card-body" onClick={() => setEditNoteId(index)} >
                     <div
                         className="card-title h5"
                         style={{ overflow: "hidden", display: "-webkit-box", WebkitLineClamp: String(lineClip / 2), WebkitBoxOrient: "vertical" }} >

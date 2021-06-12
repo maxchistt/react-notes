@@ -11,6 +11,7 @@ import useUpdater from './useUpdater.hook'
 function useDataLoadingController(loader, authContext, interval = 60) {
     const { isAuthenticated, token } = useContext(authContext)
     const [updaterVal] = useUpdater(interval)
+    /**Флаг допстимости обновления загруженных данных */
     const updatingEnableRef = useRef(true)
 
     useEffect(() => {
@@ -19,7 +20,7 @@ function useDataLoadingController(loader, authContext, interval = 60) {
         return () => updatingEnableRef.current = false
     }, [isAuthenticated, token, updaterVal]) // eslint-disable-line react-hooks/exhaustive-deps
 
-    return [updatingEnableRef]
+    return updatingEnableRef
 }
 
 export default useDataLoadingController

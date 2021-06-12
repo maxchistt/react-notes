@@ -25,7 +25,7 @@ function calcMaxRows() {
  */
 function ModalNoteEdit() {
     /**получение контекста */
-    const { removeNote, changeNoteColor, unsetEditNote, editNoteContent, getNoteByIndex, editNoteId } = React.useContext(NotesContext)
+    const { removeNote, changeNoteColor, unsetEditNoteId, editNoteContent, getNoteByIndex, editNoteId } = React.useContext(NotesContext)
 
     /** обьект заметки */
     const note = getNoteByIndex(editNoteId)
@@ -39,7 +39,7 @@ function ModalNoteEdit() {
     modalProps.isOpen = showForm
     modalProps.setOpenState = setShowForm
     modalProps.sideClose = true
-    modalProps.onSideClick = unsetEditNote
+    modalProps.onSideClick = unsetEditNoteId
 
     /**открытие окна */
     function open() {
@@ -80,7 +80,7 @@ function ModalNoteEdit() {
      * удаление
      */
     function tryRemove() {
-        unsetEditNote();
+        unsetEditNoteId();
         close();
         removeNote(editNoteId);
     }
@@ -89,7 +89,7 @@ function ModalNoteEdit() {
      * закрытие и сброс окна
      */
     function tryClose() {
-        unsetEditNote()
+        unsetEditNoteId()
         close()
     }
 

@@ -1,8 +1,8 @@
 /**
  * @file App.js
  */
-import React from 'react';
-import './App.css';
+import React from 'react'
+import './App.css'
 import Loader from './Shared/Loader'
 import { BrowserRouter as Router } from 'react-router-dom'
 import { useRoutes } from './routes'
