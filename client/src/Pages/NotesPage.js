@@ -11,8 +11,9 @@ import ModalNoteEdit from '../NoteComponents/ModalNoteEdit'
 import Note, { checkNotesArr } from '../Shared/noteType/Note'
 import { NavLink } from 'react-router-dom'
 import { AuthContext } from '../Context/AuthContext'
-import { useHttp } from '../Hooks/http.hook'
 import useNavbarEffect from '../Hooks/useNavbarEffect.hook'
+import useDataLoadingController from '../Hooks/useDataLoadingController.hook'
+import useFetchNotes from '../Hooks/useFetchNotes.hook'
 
 /**
  * Хук использования массива заметок
@@ -29,56 +30,19 @@ function useNotesArr(defaultValue) {
 }
 
 /**
- * Хук-таймер для обновления данных с очисткой счетчика при ререндере 
- */
-function useUpdater() {
-    const [updaterVal, setUpdaterVal] = React.useState(null)
-    const timer = React.useRef()
-    React.useEffect(() => {
-        if (timer.current) clearTimeout(timer.current) // сброс при переопределении таймера
-        timer.current = setTimeout(() => {
-            console.log("Timed update")
-            setUpdaterVal(Date.now())
-        }, 60 * 1000) // обновяем через минуту
-        return () => clearTimeout(timer.current) // сброс при ререндере
-    }, []) // eslint-disable-line react-hooks/exhaustive-deps
-    return [updaterVal]
-}
-
-/**
  * Страница с заметками 
  */
 function NotesPage() {
     /**подключение контекста авторизации */
     const auth = React.useContext(AuthContext)
 
-    /**подключение хука http запросов */
-    const { loading, request, error, clearError } = useHttp()
+    /**
+     * Подключение хука для обращения к бд с заметками
+     */
+    const { loading, fetchNotes, error, clearError } = useFetchNotes(auth.token)
 
     /**хук сообщений от сервера */
     const [message, setMessage] = React.useState(null)
-
-    /**
-     * Функция для работы с базой данных заметок
-     * @param {string} url 
-     * @param {string} method 
-     * @param {object} body 
-     * @param {void} resCallback 
-     */
-    const fetchNotes = async (url = "", method = "GET", body = null, resCallback = () => { }) => {
-        try {
-            /**запрос к серверу с определенными параметрами*/
-            const fetched = await request(`/api/notes${url ? ("/" + url) : ""}`, method, body, { Authorization: `Bearer ${auth.token}` })
-            resCallback(tryParce(fetched))
-        } catch (e) { }
-        function tryParce(str) {
-            try {
-                return JSON.parse(str);
-            } catch (e) {
-                return str;
-            }
-        }
-    }
 
     /** очистка оштбок хука запросов и запись ошибки в сообщение*/
     React.useEffect(() => {
@@ -95,18 +59,7 @@ function NotesPage() {
     /**Id редактируемой заметки */
     const [editNoteId, setEditNoteId] = React.useState(null)
 
-    const [updaterVal] = useUpdater()
-    const updatingEnable = React.useRef(true)
-
-    /**
-     * хук обновления данных с сервера
-     * флаг updatingEnable позволяет избежать взаимодействия с устаревшей unmount версией компонента
-     */
-    React.useEffect(() => {
-        updatingEnable.current = true
-        loadDataFromServer()
-        return () => updatingEnable.current = false
-    }, [auth.isAuthenticated, auth.email, updaterVal]) // eslint-disable-line react-hooks/exhaustive-deps
+    const [updatingEnable] = useDataLoadingController(loadDataFromServer, AuthContext, 60)
 
     ///////////
     //очистка старых данных
