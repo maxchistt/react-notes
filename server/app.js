@@ -35,9 +35,10 @@ if (httpsRedirect) app.use(httpToHttps)
  * подключение статической библиотеки клиента
  */
 if (!devMode) {
-    app.use('/', express.static(path.join(__dirname, '../client', 'build')))
+    const clientPath = '../client/build'
+    app.use('/', express.static(path.join(__dirname, clientPath)))
     app.get('*', (req, res) => {
-        res.sendFile(path.resolve(__dirname, '../client', 'build', 'index.html'))
+        res.sendFile(path.resolve(__dirname, clientPath, 'index.html'))
     })
 } else {
     app.get('*', (req, res) => {
