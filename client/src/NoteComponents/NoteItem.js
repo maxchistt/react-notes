@@ -58,14 +58,14 @@ function NoteItem({ note = new Note(), index }) {
                         style={footerBtn.style}
                         onClick={() => editNoteOrder(index, false)}
                     >
-                        &#10097;
+                        <i className="bi bi-chevron-compact-right"></i>
                     </button>
                     <button
                         className={footerBtn.className}
                         style={footerBtn.style}
                         onClick={() => editNoteOrder(index, true)}
                     >
-                        &#10096;
+                        <i className="bi bi-chevron-compact-left"></i>
                     </button>
                 </div>
             </div>

@@ -29,8 +29,8 @@
 
 .item-footer-btn {
   transition: opacity 0.15s !important;
-  opacity: 0.2 !important;
+  opacity: 0.3 !important;
 }
 .item-footer-btn:hover {
-  opacity: 0.9 !important;
+  opacity: 1 !important;
 }
