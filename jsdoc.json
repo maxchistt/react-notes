@@ -1,11 +1,11 @@
 {
   "source": {
     "include": [
-      "",
-      "validation",
-      "routes",
-      "models",
-      "middleware",
+      "server",
+      "server/validation",
+      "server/routes",
+      "server/models",
+      "server/middleware",
       "client",
       "client/src",
       "client/src/Shared",
