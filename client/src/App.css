@@ -21,7 +21,13 @@
 }
 
 .bi-fix-align::before {
-  vertical-align: -0.09em !important;
+  vertical-align: -0.09rem !important;
+}
+
+@media screen and (max-device-width: 767px) {
+  .bi-fix-align::before {
+    vertical-align: -0.15rem !important;
+  }
 }
 
 @keyframes lds-dual-ring {
