@@ -85,7 +85,7 @@ Use [MongoDB Atlas](https://www.mongodb.com/cloud/atlas). Look video lesson [her
 ## Deployment on Ubuntu LVS
 
 - Clone from GitHub
-- Run `cd react-notes && npm install && npm run deploy && cd`
+- Run `cd react-notes && npm run deploy && cd`
 - Use PM2 with this ecosystem template:
 
 ```js
