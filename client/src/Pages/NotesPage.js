@@ -16,6 +16,7 @@ import useDataLoadingController from '../Hooks/useDataLoadingController.hook'
 import useFetchNotes from '../Hooks/useFetchNotes.hook'
 import useEditNoteId from '../Hooks/useEditNoteId.hook'
 import useNotesArr from '../Hooks/useNotesArr.hook'
+import { calcOrder, fixOrders } from '../Shared/order'
 
 /**
  * Страница с заметками 
@@ -95,7 +96,13 @@ function NotesPage() {
      */
     function addNote(noteData = {}) {
         const newId = String(auth.email) + String(Date.now()) + String(Math.random())
-        const newNote = new Note({ id: newId, name: noteData.name, color: noteData.color, text: noteData.text })
+        const newNote = new Note({
+            id: newId,
+            name: noteData.name,
+            color: noteData.color,
+            text: noteData.text,
+            order: calcOrder(notesArr)
+        })
         //console.log(newId, newNote.id);
         const newIndex = (notesArr != null) ? notesArr.length : 0
         setNotesArr(
@@ -133,6 +140,22 @@ function NotesPage() {
         loadDataToServer(notesArr[index], "set")
     }
 
+    /**
+     * Изменение порядка заметки
+     * @param {*} index 
+     * @param {*} order 
+     */
+    function editNoteOrder(index, order) {
+        if (notesArr[index]) {
+            notesArr[index].order = order
+            let fixedArr = fixOrders(notesArr)
+            setNotesArr(fixedArr)
+            fixedArr.forEach((note) => {
+                loadDataToServer(note, "set")
+            })
+        }
+    }
+
     /**функция получения карточки по id */
     function getNoteByIndex(index) {
         return index !== null ? notesArr[index] : null
@@ -159,7 +182,7 @@ function NotesPage() {
     /**рендер */
     return (
         /**Здесь отрисовываются меню добавления и редактирования заметок и сам перечнь заметок в виде динамичной отзывчивой сетки */
-        <NotesContext.Provider value={{ addNote, removeNote, changeNoteColor, editNoteContent, setEditNoteId, unsetEditNoteId, editNoteId, getNoteByIndex }}>
+        <NotesContext.Provider value={{ addNote, removeNote, changeNoteColor, editNoteContent, editNoteOrder, setEditNoteId, unsetEditNoteId, editNoteId, getNoteByIndex }}>
             <div className="NotesPage">
                 <main className="p-1 pb-3 mb-3">
                     {/**Компонент добавления карточки и модальное окно редактирования */}

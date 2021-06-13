@@ -9,6 +9,7 @@ export const PropTypeNote = PropTypes.shape({
     name: PropTypes.string,
     color: PropTypes.string,
     text: PropTypes.string,
+    order: PropTypes.number,
 })
 
 /**валидация заметки */
@@ -17,7 +18,8 @@ export function checkNote(note) {
         (typeof note.id === "string") &&
         typeof note.name === "string" &&
         typeof note.color === "string" &&
-        typeof note.text === "string"
+        typeof note.text === "string" &&
+        (typeof note.order === "number" || typeof note.order === "undefined")
     )
 }
 
@@ -37,11 +39,12 @@ export function checkNotesArr(notesArr) {
 
 /**класс заметки */
 export class Note {
-    constructor({ id, name, color, text }) {
+    constructor({ id, name, color, text, order }) {
         this.id = String(id)
         this.name = String(name)
         this.color = String(color)
         this.text = String(text)
+        this.order = Number(order)
     }
 }
 

@@ -12,6 +12,7 @@ const schema = new Schema({
   text: { type: String },
   color: { type: String },
   image: { type: String },
+  order: { type: Number },
   owner: { type: Types.ObjectId, ref: 'User', required: true }
 })
 

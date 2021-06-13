@@ -20,7 +20,7 @@ function fixLineBreaks(mdStr) {
  */
 function NoteItem({ note = new Note(), index }) {
     /**Подключение контекста */
-    const { removeNote, setEditNoteId } = useContext(NotesContext)
+    const { setEditNoteId, editNoteOrder } = useContext(NotesContext)
 
     const lineClip = 12
     const bgColor = note.color
@@ -41,14 +41,21 @@ function NoteItem({ note = new Note(), index }) {
                         <ReactMarkdown remarkPlugins={[gfm]} children={fixLineBreaks(note.text)} />
                     </div>
                 </div>
-                {/**Кнопка удаления */}
+                {/**Кнопки изменения порядка */}
                 <div className="card-body pt-0">
                     <button
                         className={`btn btn-light p-0`}
                         style={{ width: "1.8em", height: "1.8em", float: "right", borderColor: "transparent", backgroundColor: "transparent" }}
-                        onClick={() => removeNote(index)}
+                        onClick={() => editNoteOrder(index, Number(note.order) - 1)}
                     >
-                        &#10007;
+                        &#10097;
+                    </button>
+                    <button
+                        className={`btn btn-light p-0`}
+                        style={{ width: "1.8em", height: "1.8em", float: "right", borderColor: "transparent", backgroundColor: "transparent" }}
+                        onClick={() => editNoteOrder(index, Number(note.order) + 1)}
+                    >
+                        &#10096;
                     </button>
                 </div>
             </div>

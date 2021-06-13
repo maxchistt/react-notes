@@ -151,7 +151,7 @@ function ModalNoteEdit() {
                     </div>
                     {/**Индикатор номера заметки */}
                     <div className="mx-auto">
-                        <span style={{ color: "lightgray", fontWeight: "400" }}>Id {editNoteId}</span>
+                        <span style={{ color: "lightgray", fontWeight: "400" }}>{note && note.order}</span>
                     </div>
                     {/**Зактрытие окна */}
                     <div>

@@ -5,14 +5,14 @@
 /**
  * Проверка рбьекта заметки
  * @param {*} note 
- *  
  */
 function checkNote(note) {
     return (
         typeof note.id === "string" &&
         typeof note.name === "string" &&
         typeof note.color === "string" &&
-        typeof note.text === "string"
+        typeof note.text === "string" &&
+        (typeof note.order === "number" || typeof note.order === "undefined")
     )
 }
 

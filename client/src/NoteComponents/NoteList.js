@@ -6,6 +6,7 @@ import PropTypes from 'prop-types'
 import NoteItem from './NoteItem'
 import StackGrid, { transitions } from "react-stack-grid"
 import sizeMe from 'react-sizeme'
+import { sortByOrder } from '../Shared/order'
 const { scaleDown } = transitions
 
 /**расчет ширины столбцов */
@@ -53,7 +54,7 @@ function NoteList(props) {
             {/**Отзывчивая сетка карточек */}
             <StackGrid className="container p-0" {...gridSettings}>
                 {/**Рендер каждой карточки из массива */}
-                {props.notes.map ? (props.notes.map((note, index) => {
+                {props.notes.map ? (props.notes.sort(sortByOrder).map((note, index) => {
                     return (
                         <NoteItem note={note} key={note.id} index={index} />
                     )
