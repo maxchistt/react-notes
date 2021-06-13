@@ -1,6 +1,4 @@
-/**
- * @file auth.middleware.js
- */
+/** @file auth.middleware.js */
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
 
@@ -9,7 +7,6 @@ require('dotenv').config()
  * @param {*} req 
  * @param {*} res 
  * @param {*} next 
- *  
  */
 module.exports = (req, res, next) => {
   //проверка работы сервера

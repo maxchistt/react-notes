@@ -8,6 +8,7 @@ const path = require('path')
 const dns = require('dns')
 const os = require('os')
 const mongoose = require('mongoose')
+const httpToHttps = require('./middleware/httpToHttps.middleware')
 require('dotenv').config()
 
 /**
@@ -86,15 +87,4 @@ function logServerStart() {
         console.log(`${sBef} On Your Network${sAft}  http://${address}:${PORT}`)
         if (err) console.log(err)
     })
-}
-
-/**
- * перенаправление с http на https для PWA 
- */
-function httpToHttps(req, res, next) {
-    if (req.header('x-forwarded-proto') !== 'https') {
-        res.redirect(`https://${req.header('host')}${req.url}`)
-    } else {
-        next()
-    }
 }
