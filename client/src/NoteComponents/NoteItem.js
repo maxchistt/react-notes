@@ -20,10 +20,20 @@ function fixLineBreaks(mdStr) {
  */
 function NoteItem({ note = new Note(), index }) {
     /**Подключение контекста */
-    const { removeNote, setEditNoteId } = useContext(NotesContext)
+    const { setEditNoteId, editNoteOrder } = useContext(NotesContext)
 
     const lineClip = 12
     const bgColor = note.color
+
+    const footerBtn = {
+        className: `btn btn-light p-0 text-secondary item-footer-btn`,
+        style: {
+            width: "1.8em", height: "1.8em", float: "right",
+            borderColor: "transparent",
+            backgroundColor: "transparent",
+            boxShadow: "none"
+        }
+    }
 
     return (
         <div className="p-1" >
@@ -41,14 +51,21 @@ function NoteItem({ note = new Note(), index }) {
                         <ReactMarkdown remarkPlugins={[gfm]} children={fixLineBreaks(note.text)} />
                     </div>
                 </div>
-                {/**Кнопка удаления */}
+                {/**Кнопки изменения порядка */}
                 <div className="card-body pt-0">
                     <button
-                        className={`btn btn-light p-0`}
-                        style={{ width: "1.8em", height: "1.8em", float: "right", borderColor: "transparent", backgroundColor: "transparent" }}
-                        onClick={() => removeNote(index)}
+                        className={footerBtn.className}
+                        style={footerBtn.style}
+                        onClick={() => editNoteOrder(index, false)}
                     >
-                        &#10007;
+                        <i className="bi bi-chevron-compact-right"></i>
+                    </button>
+                    <button
+                        className={footerBtn.className}
+                        style={footerBtn.style}
+                        onClick={() => editNoteOrder(index, true)}
+                    >
+                        <i className="bi bi-chevron-compact-left"></i>
                     </button>
                 </div>
             </div>

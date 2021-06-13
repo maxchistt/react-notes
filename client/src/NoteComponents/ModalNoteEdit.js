@@ -140,23 +140,26 @@ function ModalNoteEdit() {
                     <div>
                         <Palette
                             className="btn btn-light mx-1"
+                            style={{ boxShadow: "none" }}
                             disabled={!note}
                             setColor={tryChangeColor}
                         ></Palette>
                         <button
                             className="btn btn-light"
+                            style={{ boxShadow: "none" }}
                             disabled={!note}
                             onClick={tryRemove}
                         ><i className="bi bi-trash text-dark"></i></button>
                     </div>
                     {/**Индикатор номера заметки */}
                     <div className="mx-auto">
-                        <span style={{ color: "lightgray", fontWeight: "400" }}>Id {editNoteId}</span>
+                        <span style={{ color: "lightgray", fontWeight: "400" }}>{note && note.order}</span>
                     </div>
                     {/**Зактрытие окна */}
                     <div>
                         <button
                             className="btn btn-light"
+                            style={{ boxShadow: "none" }}
                             onClick={tryClose}
                         >Close</button>
                     </div>
