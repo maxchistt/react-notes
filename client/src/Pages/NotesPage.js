@@ -142,12 +142,12 @@ function NotesPage() {
 
     /**
      * Изменение порядка заметки
-     * @param {*} index 
-     * @param {*} order 
+     * @param {number} index 
+     * @param {boolean} orderOperationFlag 
      */
-    function editNoteOrder(index, order) {
+    function editNoteOrder(index, orderOperationFlag) {
         if (notesArr[index]) {
-            notesArr[index].order = order
+            notesArr[index].order += orderOperationFlag ? 2 : -2
             let fixedArr = fixOrders(notesArr)
             setNotesArr(fixedArr)
             fixedArr.forEach((note) => {

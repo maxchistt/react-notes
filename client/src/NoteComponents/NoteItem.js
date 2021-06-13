@@ -25,6 +25,16 @@ function NoteItem({ note = new Note(), index }) {
     const lineClip = 12
     const bgColor = note.color
 
+    const footerBtn = {
+        className: `btn btn-light p-0 text-secondary item-footer-btn`,
+        style: {
+            width: "1.8em", height: "1.8em", float: "right",
+            borderColor: "transparent",
+            backgroundColor: "transparent",
+            boxShadow: "none"
+        }
+    }
+
     return (
         <div className="p-1" >
             <div className="card" style={{ backgroundColor: bgColor }} >
@@ -44,16 +54,16 @@ function NoteItem({ note = new Note(), index }) {
                 {/**Кнопки изменения порядка */}
                 <div className="card-body pt-0">
                     <button
-                        className={`btn btn-light p-0`}
-                        style={{ width: "1.8em", height: "1.8em", float: "right", borderColor: "transparent", backgroundColor: "transparent" }}
-                        onClick={() => editNoteOrder(index, Number(note.order) - 1)}
+                        className={footerBtn.className}
+                        style={footerBtn.style}
+                        onClick={() => editNoteOrder(index, false)}
                     >
                         &#10097;
                     </button>
                     <button
-                        className={`btn btn-light p-0`}
-                        style={{ width: "1.8em", height: "1.8em", float: "right", borderColor: "transparent", backgroundColor: "transparent" }}
-                        onClick={() => editNoteOrder(index, Number(note.order) + 1)}
+                        className={footerBtn.className}
+                        style={footerBtn.style}
+                        onClick={() => editNoteOrder(index, true)}
                     >
                         &#10096;
                     </button>

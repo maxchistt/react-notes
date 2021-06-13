@@ -30,7 +30,7 @@ export function calcOrder(notesArr = []) {
  */
 export function fixOrders(notesArr = []) {
     let fixedArr = notesArr
-    const sortedArr = Array.isArray(notesArr) ? notesArr.sort(sortByOrder) : []
+    const sortedArr = Array.isArray(notesArr) ? notesArr.sort(sortByOrder).reverse() : []
     sortedArr.forEach((sortedNote, sortedNoteIndex) => {
         fixedArr.forEach((note) => {
             if (note.id === sortedNote.id) note.order = sortedNoteIndex

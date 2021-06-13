@@ -26,3 +26,11 @@
   display: inline-block;
   transform: rotate(90deg);
 }
+
+.item-footer-btn {
+  transition: opacity 0.15s !important;
+  opacity: 0.2 !important;
+}
+.item-footer-btn:hover {
+  opacity: 0.9 !important;
+}

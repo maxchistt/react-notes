@@ -140,11 +140,13 @@ function ModalNoteEdit() {
                     <div>
                         <Palette
                             className="btn btn-light mx-1"
+                            style={{ boxShadow: "none" }}
                             disabled={!note}
                             setColor={tryChangeColor}
                         ></Palette>
                         <button
                             className="btn btn-light"
+                            style={{ boxShadow: "none" }}
                             disabled={!note}
                             onClick={tryRemove}
                         ><i className="bi bi-trash text-dark"></i></button>
@@ -157,6 +159,7 @@ function ModalNoteEdit() {
                     <div>
                         <button
                             className="btn btn-light"
+                            style={{ boxShadow: "none" }}
                             onClick={tryClose}
                         >Close</button>
                     </div>
