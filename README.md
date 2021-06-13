@@ -8,7 +8,7 @@ Open [mern-notesapp.herokuapp.com](https://mern-notesapp.herokuapp.com/) or [rea
 
 ## Development
 
-First of all, set up your project by creating `.env` file with next content:
+First of all, set up your project by creating `.env` file in `./server` folder with next content:
 
 ```env
 mongoUri = "<YOUR MONGO URI>"
@@ -16,6 +16,10 @@ jwtSecret = "<SECRET KEY>"
 ```
 
 Main available scripts in the project directory:
+
+### `npm install`
+
+installs packages for development
 
 ### `npm run full-install`
 
@@ -45,7 +49,7 @@ Local `mongoUri` will be `"mongodb://localhost:27017/mydb"`
 
 1. Download and install MongoDb server from [www.mongodb.com/try/download/community](https://www.mongodb.com/try/download/community) (set it on "D:\Program Files\" to not edit the .bat file)
 
-2. Edit [mongo_win_install.bat](./installMongo/Windows/mongo_win_install.bat) file and fix next variables (dont use spaces around "="):
+2. Edit [mongo_win_install.bat](./mongo/Windows/mongo_win_install.bat) file and fix next variables (dont use spaces around "="):
 
    - set `MongoDb_ExePath` - path to mongod.exe
    - set `MongoDb_DataFolderPath` - path to db folder
@@ -62,14 +66,14 @@ Local `mongoUri` will be `"mongodb://localhost:27017/mydb"`
    - run next in bash:
 
      - `sudo apt update && sudo apt upgrade`
-     - `cd && cd react-notes/installMongo/Ubuntu && chmod +x mongo_ubuntu_setup.sh && chmod +x mongo_ubuntu_install.sh && cd`
-     - `cd && ./react-notes/installMongo/Ubuntu/mongo_ubuntu_setup.sh`
+     - `cd && cd react-notes/mongo/Ubuntu && chmod +x mongo_ubuntu_setup.sh && chmod +x mongo_ubuntu_install.sh && cd`
+     - `cd && ./react-notes/mongo/Ubuntu/mongo_ubuntu_setup.sh`
 
    - or run next with npm: `npm run mongo-ubuntu:full-setup`
 
 2. To start Mongo database
 
-   - run next in bash: `cd && ./react-notes/installMongo/Ubuntu/mongo_ubuntu_install.sh`
+   - run next in bash: `cd && ./react-notes/mongo/Ubuntu/mongo_ubuntu_install.sh`
    - or run next with npm: `npm run mongo-ubuntu:start`
 
 ### Cloud Mongo connection
@@ -81,7 +85,7 @@ Use [MongoDB Atlas](https://www.mongodb.com/cloud/atlas). Look video lesson [her
 ## Deployment on Ubuntu LVS
 
 - Clone from GitHub
-- Run `cd react-notes && npm run deploy && cd`
+- Run `cd react-notes && npm install && npm run deploy && cd`
 - Use PM2 with this ecosystem template:
 
 ```js
@@ -89,11 +93,12 @@ module.exports = {
   apps: [
     {
       name: "react-notes",
-      script: "./react-notes/app.js",
+      script: "./react-notes/server/app.js",
       watch: "./react-notes/",
       "ignore-watch": [
         "node_modules",
         "./react-notes/node_modules",
+        "./react-notes/server/node_modules",
         "./react-notes/client/node_modules",
       ],
       "max-memory-restart": "150MB",

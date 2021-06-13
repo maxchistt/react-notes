@@ -6,28 +6,27 @@
     "node": "14.16.1"
   },
   "description": "React Notes App",
-  "main": "app.js",
   "scripts": {
-    "start": "node app.js",
+    "start": "npm run prod",
     "full-install": "npm run server:install && npm run client:install",
-    "server:start-dev": "nodemon app.js",
-    "server:start-prod": "node app.js",
-    "server:install": "npm install",
+    "deploy": "npm run full-install && npm run client:build",
+    "server:start-dev": "(cd server && npm run start-dev)",
+    "server:start-prod": "(cd server && npm run start-prod)",
+    "server:install": "(cd server && npm install)",
     "client:start-dev": "(cd client && npm run start)",
-    "client:install": "(cd client && npm install)",
     "client:build": "(cd client && npm run build)",
+    "client:install": "(cd client && npm install)",
     "dev": "cross-env NODE_ENV=dev concurrently \"npm run server:start-dev\" \"npm run client:start-dev\"",
     "prod": "npm run server:start-prod",
     "prod:predeploy": "npm run deploy && npm run prod",
-    "deploy": "npm run full-install && npm run client:build",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "heroku-postbuild": "npm run client:install && npm run client:build",
+    "heroku-postbuild": "npm run deploy",
     "mongo-ubuntu:update": "(sudo apt update && sudo apt upgrade)",
-    "mongo-ubuntu:prepare": "(cd installMongo/Ubuntu && chmod +x mongo_ubuntu_setup.sh && chmod +x mongo_ubuntu_install.sh)",
-    "mongo-ubuntu:setup": "(cd installMongo/Ubuntu && ./mongo_ubuntu_setup.sh)",
+    "mongo-ubuntu:prepare": "(cd mongo/Ubuntu && chmod +x mongo_ubuntu_setup.sh && chmod +x mongo_ubuntu_install.sh)",
+    "mongo-ubuntu:setup": "(cd mongo/Ubuntu && ./mongo_ubuntu_setup.sh)",
     "mongo-ubuntu:full-setup": "npm run mongo-ubuntu:update && npm run mongo-ubuntu:prepare && npm run mongo-ubuntu:setup",
-    "mongo-ubuntu:start": "(cd installMongo/Ubuntu && ./mongo_ubuntu_install.sh)",
-    "mongo-windows:start": "(cd installMongo/Windows && start mongo_win_install.bat)",
+    "mongo-ubuntu:start": "(cd mongo/Ubuntu && ./mongo_ubuntu_install.sh)",
+    "mongo-windows:start": "(cd mongo/Windows && start mongo_win_install.bat)",
     "doc:generate": "jsdoc -c jsdoc.json",
     "doc:open": "start docs/index.html",
     "doc": "npm run doc:generate && npm run doc:open"
@@ -47,18 +46,9 @@
     "url": "https://github.com/maxchistt/react-notes/issues"
   },
   "homepage": "https://github.com/maxchistt/react-notes#readme",
-  "dependencies": {
-    "bcryptjs": "^2.4.3",
-    "dotenv": "^8.6.0",
-    "express": "^4.17.1",
-    "express-validator": "^6.11.1",
-    "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.12.13"
-  },
   "devDependencies": {
     "concurrently": "^6.2.0",
     "cross-env": "^7.0.3",
-    "jsdoc": "^3.6.7",
-    "nodemon": "^2.0.7"
+    "jsdoc": "^3.6.7"
   }
 }
