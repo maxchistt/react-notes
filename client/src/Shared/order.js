@@ -7,8 +7,8 @@
  * @param {object} b 
  */
 export function sortByOrder(a, b) {
-    if (a.order > b.order) return -1
-    if (a.order < b.order) return 1
+    if (a.order > b.order) return 1
+    if (a.order < b.order) return -1
     return 0
 }
 
@@ -30,7 +30,7 @@ export function calcOrder(notesArr = []) {
  */
 export function fixOrders(notesArr = []) {
     let fixedArr = notesArr
-    const sortedArr = Array.isArray(notesArr) ? notesArr.sort(sortByOrder).reverse() : []
+    const sortedArr = Array.isArray(notesArr) ? notesArr.sort(sortByOrder) : []
     sortedArr.forEach((sortedNote, sortedNoteIndex) => {
         fixedArr.forEach((note) => {
             if (note.id === sortedNote.id) note.order = sortedNoteIndex

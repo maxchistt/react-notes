@@ -147,7 +147,7 @@ function NotesPage() {
      */
     function editNoteOrder(index, orderOperationFlag) {
         if (notesArr[index]) {
-            notesArr[index].order += orderOperationFlag ? 2 : -2
+            notesArr[index].order += orderOperationFlag ? 1 : -1
             let fixedArr = fixOrders(notesArr)
             setNotesArr(fixedArr)
             fixedArr.forEach((note) => {
