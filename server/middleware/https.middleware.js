@@ -1,4 +1,4 @@
-/** @file httpToHttps.middleware.js */
+/** @file https.middleware.js */
 /**
  * Перенаправление с http на https для PWA 
  * @param {*} req 

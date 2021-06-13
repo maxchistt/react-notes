@@ -8,7 +8,7 @@ const path = require('path')
 const dns = require('dns')
 const os = require('os')
 const mongoose = require('mongoose')
-const httpToHttps = require('./middleware/httpToHttps.middleware')
+const https = require('./middleware/https.middleware')
 require('dotenv').config()
 
 /**
@@ -29,7 +29,7 @@ app.use(express.json({ extended: true }))
 app.use('/api/auth', require('./routes/auth.routes'))
 app.use('/api/notes', require('./routes/notes.routes'))
 
-if (httpsRedirect) app.use(httpToHttps)
+if (httpsRedirect) app.use(https)
 
 /**
  * подключение статической библиотеки клиента
