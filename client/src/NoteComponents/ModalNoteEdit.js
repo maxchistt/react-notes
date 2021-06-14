@@ -25,10 +25,10 @@ function calcMaxRows() {
  */
 function ModalNoteEdit() {
     /**получение контекста */
-    const { removeNote, changeNoteColor, unsetEditNoteId, editNoteContent, getNoteByIndex, editNoteId } = React.useContext(NotesContext)
+    const { removeNote, changeNoteColor, unsetEditNoteId, editNoteContent, getNoteById, editNoteId } = React.useContext(NotesContext)
 
     /** обьект заметки */
-    const note = getNoteByIndex(editNoteId)
+    const note = getNoteById(editNoteId)
     React.useEffect(() => { if (note !== null) open() }, [note])
 
     /**хук состояния формы */

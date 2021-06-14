@@ -20,6 +20,7 @@
     "dev": "cross-env NODE_ENV=dev concurrently \"npm run server:start-dev\" \"npm run client:start-dev\"",
     "prod": "npm run server:start-prod",
     "prod:predeploy": "npm run deploy && npm run prod",
+    "prod:prebuild": "npm run client:build && npm run prod",
     "test": "echo \"Error: no test specified\" && exit 1",
     "heroku-postbuild": "npm run deploy",
     "mongo-ubuntu:update": "(sudo apt update && sudo apt upgrade)",
