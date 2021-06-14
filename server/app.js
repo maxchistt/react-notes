@@ -22,9 +22,12 @@ const app = express()
 
 app.use(express.json({ extended: true }))
 
-app.get('/getIp', (req, res) => {
+app.get('/getSocketAddress', (req, res) => {
     getIp()
-        .then((ip) => res.status(200).json({ ip }))
+        .then((ip) => {
+            const socketAddress = (httpsRedirect ? "wss" : "ws") + "://" + (ip || "localhost") + ":" + WS_PORT
+            res.status(200).json({ socketAddress })
+        })
         .catch(() => res.status(500))
 })
 

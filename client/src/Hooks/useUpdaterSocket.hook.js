@@ -4,8 +4,6 @@ import useWebSocket from 'react-use-websocket'
 import useDebouncedFunction from "./useDebouncedFunction.hook"
 import { useHttp } from "./http.hook"
 
-const WS_PORT = process.env.WS_PORT || 3030
-
 /**
  * Хук веб-сокета обновления данных
  * @param {void} updateData 
@@ -20,10 +18,9 @@ function useUpdaterSocket(updateData, auth) {
     /**колбек для получения url сокета */
     const getSocketUrl = useCallback(async () => {
         return new Promise(resolve => {
-            request("/getIp")
+            request("/getSocketAddress")
                 .then((data) => {
-                    const ip = data.ip
-                    const socketAddress = "ws://" + (ip || "localhost") + ":" + WS_PORT
+                    const socketAddress = data.socketAddress
                     console.log("socketAddress", socketAddress)
                     resolve(socketAddress)
                 })
