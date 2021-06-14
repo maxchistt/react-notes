@@ -39,7 +39,12 @@ function NotesPage() {
         if (error === 'Нет авторизации') auth.logout()
         clearError()
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [error, clearError])
+    }, [error])
+
+    /** очистка message */
+    React.useEffect(() => {
+        return () => message && setMessage(null)
+    })
 
     /**Подключение хука id кудактируемой заметки */
     const { editNoteId, setEditNoteId, unsetEditNoteId } = useEditNoteId()
