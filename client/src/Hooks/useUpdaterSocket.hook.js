@@ -13,7 +13,7 @@ function useUpdaterSocket(updateData, auth) {
     const { request } = useHttp()
 
     /**дебонсированный обработчик входящего обновления */
-    const debouncedUpdate = useDebouncedFunction(updateData, 200)
+    const debouncedUpdate = useDebouncedFunction(() => { if (auth.isAuthenticated) updateData() }, 200)
 
     /**колбек для получения url сокета */
     const getSocketUrl = useCallback(async () => {
