@@ -54,9 +54,9 @@ function NoteList(props) {
             {/**Отзывчивая сетка карточек */}
             <StackGrid className="container p-0" {...gridSettings}>
                 {/**Рендер каждой карточки из массива */}
-                {Array.isArray(props.notes) ? (props.notes.sort(sortByOrder).reverse().map((note, index) => {
+                {Array.isArray(props.notes) ? (props.notes.sort(sortByOrder).reverse().map((note) => {
                     return (
-                        <NoteItem note={note} key={note.id} index={index} />
+                        <NoteItem note={note} key={note.id} />
                     )
                 })) : null}
             </StackGrid>

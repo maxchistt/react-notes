@@ -2,7 +2,6 @@
  * @file NoteItem.js
  */
 import React, { useContext } from 'react'
-import PropTypes from 'prop-types'
 import NotesContext from '../Context/NotesContext'
 import Note, { PropTypeNote } from '../Shared/noteType/Note'
 import ReactMarkdown from 'react-markdown'
@@ -18,7 +17,7 @@ function fixLineBreaks(mdStr) {
  * @param {*} param0 
  *  
  */
-function NoteItem({ note = new Note(), index }) {
+function NoteItem({ note = new Note() }) {
     /**Подключение контекста */
     const { setEditNoteId, editNoteOrder } = useContext(NotesContext)
 
@@ -39,7 +38,7 @@ function NoteItem({ note = new Note(), index }) {
         <div className="p-1" >
             <div className="card" style={{ backgroundColor: bgColor }} >
                 {/**Заголовок и текст заметки с обработчиками отображения markdown*/}
-                <div className="card-body" onClick={() => setEditNoteId(index)} >
+                <div className="card-body" onClick={() => setEditNoteId(note.id)} >
                     <div
                         className="card-title h5"
                         style={{ overflow: "hidden", display: "-webkit-box", WebkitLineClamp: String(lineClip / 2), WebkitBoxOrient: "vertical" }} >
@@ -56,14 +55,14 @@ function NoteItem({ note = new Note(), index }) {
                     <button
                         className={footerBtn.className}
                         style={footerBtn.style}
-                        onClick={() => editNoteOrder(index, false)}
+                        onClick={() => editNoteOrder(note.id, false)}
                     >
                         <i className="bi bi-chevron-compact-right"></i>
                     </button>
                     <button
                         className={footerBtn.className}
                         style={footerBtn.style}
-                        onClick={() => editNoteOrder(index, true)}
+                        onClick={() => editNoteOrder(note.id, true)}
                     >
                         <i className="bi bi-chevron-compact-left"></i>
                     </button>
@@ -75,8 +74,7 @@ function NoteItem({ note = new Note(), index }) {
 
 // Валидация
 NoteItem.propTypes = {
-    note: PropTypeNote.isRequired,
-    index: PropTypes.number
+    note: PropTypeNote.isRequired
 }
 
 export default NoteItem

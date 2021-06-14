@@ -86,9 +86,10 @@ function NotesPage() {
 
     /**
      * удаление карточки
-     * @param {*} index 
+     * @param {*} id 
      */
-    function removeNote(index) {
+    function removeNote(id) {
+        const index = getNoteIndexById(id)
         const toDelete = notesArr.splice(index, 1)[0]
         setNotesArr([...notesArr])
         loadDataToServer(toDelete, "delete")
@@ -107,13 +108,11 @@ function NotesPage() {
             text: noteData.text,
             order: calcOrder(notesArr)
         })
-        //console.log(newId, newNote.id);
-        const newIndex = (notesArr != null) ? notesArr.length : 0
         setNotesArr(
             (notesArr != null) ? notesArr.concat([newNote]) : [newNote]
         )
         loadDataToServer(newNote, "set")
-        setEditNoteId(newIndex)
+        setEditNoteId(newId)
     }
 
     /**
@@ -121,7 +120,8 @@ function NotesPage() {
      * @param {*} index 
      * @param {*} color 
      */
-    function changeNoteColor(index, color) {
+    function changeNoteColor(id, color) {
+        const index = getNoteIndexById(id)
         notesArr[index].color = color
         setNotesArr([...notesArr])
         loadDataToServer(notesArr[index], "set")
@@ -133,8 +133,9 @@ function NotesPage() {
      * @param {*} name 
      * @param {*} text 
      */
-    function editNoteContent(index, name, text) {
-        if (notesArr[index]) {
+    function editNoteContent(id, name, text) {
+        const index = getNoteIndexById(id)
+        if (index !== null) {
             let note = new Note(notesArr[index])
             note.name = name
             note.text = text
@@ -149,8 +150,9 @@ function NotesPage() {
      * @param {number} index 
      * @param {boolean} orderOperationFlag 
      */
-    function editNoteOrder(index, orderOperationFlag) {
-        if (notesArr[index]) {
+    function editNoteOrder(id, orderOperationFlag) {
+        const index = getNoteIndexById(id)
+        if (index !== null) {
             notesArr[index].order += orderOperationFlag ? 1 : -1
             let fixedArr = fixOrders(notesArr)
             setNotesArr(fixedArr)
@@ -160,9 +162,34 @@ function NotesPage() {
         }
     }
 
+    ///////////
+
     /**функция получения карточки по id */
-    function getNoteByIndex(index) {
-        return index !== null ? notesArr[index] : null
+    function getNoteById(id) {
+        const byId = () => {
+            let note = null
+            if (Array.isArray(notesArr)) {
+                notesArr.forEach((val, index) => {
+                    if (val.id === id) note = val
+                })
+            }
+            return note
+        }
+        return id !== null ? byId() : null
+    }
+
+    /**функция получения индекса карточки по id */
+    function getNoteIndexById(id) {
+        const byId = () => {
+            let index = null
+            if (Array.isArray(notesArr)) {
+                notesArr.forEach((val, ind) => {
+                    if (val.id === id) index = ind
+                })
+            }
+            return index
+        }
+        return id !== null ? byId() : null
     }
 
     ///////////
@@ -186,7 +213,7 @@ function NotesPage() {
     /**рендер */
     return (
         /**Здесь отрисовываются меню добавления и редактирования заметок и сам перечнь заметок в виде динамичной отзывчивой сетки */
-        <NotesContext.Provider value={{ addNote, removeNote, changeNoteColor, editNoteContent, editNoteOrder, setEditNoteId, unsetEditNoteId, editNoteId, getNoteByIndex }}>
+        <NotesContext.Provider value={{ addNote, removeNote, changeNoteColor, editNoteContent, editNoteOrder, setEditNoteId, unsetEditNoteId, editNoteId, getNoteById }}>
             <div className="NotesPage">
                 <main className="p-1 pb-3 mb-3">
                     {/**Компонент добавления карточки и модальное окно редактирования */}
