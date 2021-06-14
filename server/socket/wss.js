@@ -58,8 +58,8 @@ function startWSS(port) {
             })
         })
         // обработка ошибки клиента
-        wsClient.on("error", () => {
-            wsClient.close()
+        wsClient.on("error", (ws, err) => {
+            wsClient.close(undefined, err)
         })
     })
     wsServer.on("close", () => console.log("WSS closed"))

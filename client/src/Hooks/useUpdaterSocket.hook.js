@@ -24,7 +24,7 @@ function useUpdaterSocket(updateData, auth) {
                     console.log("socketAddress", socketAddress)
                     resolve(socketAddress)
                 })
-                .catch((err) => console.log(err))
+                .catch((err) => console.log("getSocketAddress err", err))
         })
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
