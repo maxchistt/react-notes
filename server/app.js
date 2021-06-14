@@ -5,29 +5,34 @@
 
 const express = require('express')
 const path = require('path')
-const dns = require('dns')
 const os = require('os')
 const mongoose = require('mongoose')
 const https = require('./middleware/https.middleware')
+const startWSS = require('./socket/wss')
 require('dotenv').config()
 
-/**
- * подключение переменных среды
- */
+//подключение переменных среды
 const devMode = process.env.NODE_ENV === "dev"
 const PORT = process.env.PORT || 5000
 const mongoUri = process.env.mongoUri
 const httpsRedirect = process.env.httpsRedirect || false
+const WS_PORT = process.env.WS_PORT || 3030
 
 const app = express()
 
 app.use(express.json({ extended: true }))
+
+app.get('/getIp', (req, res) => {
+    const ip = getIp()
+    res.status(200).json({ ip })
+})
 
 /**
  * подключение роутов
  */
 app.use('/api/auth', require('./routes/auth.routes'))
 app.use('/api/notes', require('./routes/notes.routes'))
+
 
 if (httpsRedirect) app.use(https)
 
@@ -52,6 +57,7 @@ if (!devMode) {
 async function start() {
     try {
         connectMongo(mongoUri)
+        startWSS(WS_PORT)
         app.listen(PORT, logServerStart)
     } catch (e) {
         console.log('Server Error', e.message)
@@ -81,11 +87,18 @@ async function connectMongo(mongoUri) {
  * Вывод информации о сервере
  */
 function logServerStart() {
-    dns.lookup(os.hostname(), (err, address) => {
-        const [logName, sBef, sAft] = devMode ? ['Express server', ' ', ':'] : ['React Notes App', '-', '']
-        console.log(`\n${logName} has been started`)
-        console.log(`${sBef} Local${sAft}            http://localhost:${PORT}`)
-        console.log(`${sBef} On Your Network${sAft}  http://${address}:${PORT}`)
-        if (err) console.log(err)
-    })
+    const [logName, sBef, sAft] = devMode ? ['Express server', ' ', ':'] : ['React Notes App', '-', '']
+    console.log(`\n${logName} has been started`)
+    console.log(`${sBef} Local${sAft}            http://localhost:${PORT}`)
+    console.log(`${sBef} On Your Network${sAft}  http://${getIp()}:${PORT}`, '\n')
+}
+
+/**
+ * Получение ip сервера
+ */
+function getIp() {
+    for (let key in os.networkInterfaces()) {
+        const addr = os.networkInterfaces()[key][1].address
+        if (addr != undefined) return addr
+    }
 }

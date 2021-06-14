@@ -17,6 +17,7 @@ import useFetchNotes from '../Hooks/useFetchNotes.hook'
 import useEditNoteId from '../Hooks/useEditNoteId.hook'
 import useNotesArr from '../Hooks/useNotesArr.hook'
 import { calcOrder, fixOrders } from '../Shared/order'
+import useUpdaterSocket from '../Hooks/useUpdaterSocket.hook'
 
 /**
  * Страница с заметками 
@@ -52,6 +53,9 @@ function NotesPage() {
     /** подключение контроллера обновления данных */
     const [updateData] = useDataLoadingController(loadDataFromServer, setLoadedNotes, auth, 60)
 
+    /** подключение сокета обновления данных */
+    const [sendUpdateMsg] = useUpdaterSocket(updateData, auth)
+
     ///////////
 
     /**
@@ -67,7 +71,7 @@ function NotesPage() {
      * @param {string} target 
      */
     function loadDataToServer(note = new Note(), target = 'set') {
-        fetchNotes(target, "POST", { note })
+        fetchNotes(target, "POST", { note }, sendUpdateMsg)
     }
 
     ///////////

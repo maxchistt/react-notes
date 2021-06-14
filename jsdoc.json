@@ -6,6 +6,7 @@
       "server/routes",
       "server/models",
       "server/middleware",
+      "server/socket",
       "client",
       "client/src",
       "client/src/Shared",
