@@ -8,9 +8,10 @@ const WebSocket = require('ws')
 function startWSS(port) {
     let wsCount = 0
     const wsServer = new WebSocket.Server({ port })
-    const wsCollection = { test: [] }
+    const wsCollection = {}
     wsServer.on('connection', (wsClient) => {
         wsClient.num = ++wsCount
+
         wsClient.on("message", (data) => {
             try {
                 const { userId, target } = tryParce(data)
@@ -20,35 +21,28 @@ function startWSS(port) {
                     let clients = getClients(userId)
                     clients.push({
                         num: wsClient.num,
-                        send: wsClient.send
+                        send: msg => wsClient.send(msg)
                     })
                     wsCollection[userId] = clients
-
-                    console.log("\ncollection \n", wsCollection, '\n')
                 }
 
                 if (target == "update") {
                     getClients(wsClient.userId).forEach((wsc) => {
-                        if ((wsClient.num === undefined) || (wsClient.num !== wsc.num)) wsc.send(data)
+                        if ((wsClient.num === undefined) || (wsClient.num !== wsc.num)) {
+                            wsc.send(data)
+                        }
                     })
                 }
 
-                console.log("wsClient", wsClient.num, "messaged", target)
-            } catch (e) {
-                console.log("wsClient", wsClient.num, "error on messsage", e)
-            }
+            } catch (e) { }
         })
-        wsClient.on("open", () => console.log("wsClient", wsClient.num, "opened"))
+
         wsClient.on("close", () => {
             wsCollection[wsClient.userId] = getClients(wsClient.userId).filter((wsc) => {
                 return (wsClient.num === undefined) || (wsClient.num !== wsc.num)
             })
-            console.log("wsClient", wsClient.num, "closed")
         })
-        wsClient.on("error", () => console.log("wsClient", wsClient.num, "error"))
-
-        console.log("WSS connection", wsClient.num)
-    });
+    })
     wsServer.on("close", () => console.log("WSS closed"))
     wsServer.on("error", () => console.log("WSS error"))
     wsServer.on("listening", () => console.log("WSS listening"))

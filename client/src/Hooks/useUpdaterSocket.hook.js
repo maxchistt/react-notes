@@ -26,18 +26,19 @@ function useUpdaterSocket(updateData, auth) {
         })
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
+
     const debouncedUpdate = useDebouncedFunction(updateData, 200)
 
     const socketOptions = {
         onOpen: (e) => {
             sendRegisterMsg()
-            console.log("ws open", e)
+            console.log("ws open")
         },
         onClose: (e) => {
-            console.log("ws close", e)
+            console.log("ws close")
         },
         onMessage: (e) => {
-            console.log("ws updMessage", e)
+            console.log("ws update message")
             debouncedUpdate()
         },
         onError: (e) => {
@@ -55,6 +56,8 @@ function useUpdaterSocket(updateData, auth) {
         sendMessage(msg)
     }
 
+    const sendUpdateMsgDebounced = useDebouncedFunction(sendUpdateMsg, 200)
+
     function sendUpdateMsg() {
         sendMsg("update")
     }
@@ -63,7 +66,7 @@ function useUpdaterSocket(updateData, auth) {
         sendMsg("register")
     }
 
-    return [sendUpdateMsg]
+    return [sendUpdateMsgDebounced]
 }
 
 export default useUpdaterSocket

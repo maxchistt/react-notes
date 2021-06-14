@@ -23,8 +23,9 @@ const app = express()
 app.use(express.json({ extended: true }))
 
 app.get('/getIp', (req, res) => {
-    const ip = getIp()
-    res.status(200).json({ ip })
+    getIp()
+        .then((ip) => res.status(200).json({ ip }))
+        .catch(() => res.status(500))
 })
 
 /**
@@ -86,19 +87,22 @@ async function connectMongo(mongoUri) {
 /**
  * Вывод информации о сервере
  */
-function logServerStart() {
+async function logServerStart() {
     const [logName, sBef, sAft] = devMode ? ['Express server', ' ', ':'] : ['React Notes App', '-', '']
+    const ip = await getIp()
     console.log(`\n${logName} has been started`)
     console.log(`${sBef} Local${sAft}            http://localhost:${PORT}`)
-    console.log(`${sBef} On Your Network${sAft}  http://${getIp()}:${PORT}`, '\n')
+    console.log(`${sBef} On Your Network${sAft}  http://${ip}:${PORT}\n`)
 }
 
 /**
  * Получение ip сервера
  */
 function getIp() {
-    for (let key in os.networkInterfaces()) {
-        const addr = os.networkInterfaces()[key][1].address
-        if (addr != undefined) return addr
-    }
+    return new Promise((res, rej) => {
+        require('dns').lookup(os.hostname(), (err, addr) => {
+            addr ? res(addr) : rej()
+            err && console.log(err)
+        })
+    })
 }
