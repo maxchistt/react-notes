@@ -2,8 +2,12 @@
 import { useEffect, useReducer } from 'react';
 
 /**
+ * @callback voidCallback
+ * @param arg
+ */
+/**
  * Хук Debounced Function
- * @param {(arg)=>void} callback 
+ * @param {voidCallback} callback 
  * @param {number} delayms 
  */
 function useDebouncedFunction(callback, delayms) {
