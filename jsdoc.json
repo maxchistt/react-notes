@@ -21,7 +21,7 @@
       "client/src/NoteComponents/palette"
     ],
     "includePattern": ".js$",
-    "excludePattern": "(docs|node_modules/|client/node_modules/|client/build/)"
+    "excludePattern": "(docs|node_modules/|server/node_modules/|client/node_modules/|client/build/)"
   },
   "plugins": [
     "plugins/markdown"
@@ -32,7 +32,7 @@
   },
   "opts": {
     "recurse": false,
-    "destination": "./docs/",
-    "readme": "./readme.md"
+    "destination": "../react-notes-docs/",
+    "readme": "./README.md"
   }
 }

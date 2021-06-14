@@ -125,6 +125,12 @@ module.exports = {
   - jwtSecret: SECRET KEY
 - Click "Deploy branch" button
 
-## Generate [JSDoc](https://jsdoc.app/) documentation
+## [JSDoc](https://jsdoc.app/) documentation
+
+### Generate
 
 run `npm run doc`
+
+### View 
+
+[react-notes-docs](http://react-notes-docs.std-1033.ist.mospolytech.ru)

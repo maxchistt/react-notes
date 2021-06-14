@@ -31,8 +31,12 @@ function AboutPage() {
             <div className="p-1 py-3 my-3" >
                 <section className="container">
                     <h5>О проекте</h5>
-                    <p>Веб-приложение "Заметки" на стеке MERN</p>
-                    <a href="https://github.com/maxchistt/react-notes" target="blank">GitHub</a>
+                    <p>Веб-приложение "Заметки" на стеке MERN с авторизацией, синхронизацией и удобным интерфейсом редактирования</p>
+                    <p>
+                        <a href="http://react-notes-docs.std-1033.ist.mospolytech.ru" target="blank">Документация</a>
+                        <br />
+                        <a href="https://github.com/maxchistt/react-notes" target="blank">GitHub</a>
+                    </p>
                 </section>
             </div>
         </div>
