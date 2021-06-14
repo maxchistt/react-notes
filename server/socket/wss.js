@@ -3,44 +3,63 @@ const WebSocket = require('ws')
 
 /**
  * Подключение WebSocket сервера
+ * Он принимает сигналы об обновлении от клиента и рассылает остальным для синхронизации
  * @param {*} port 
  */
 function startWSS(port) {
-    let wsCount = 0
+    /**сервер ws */
     const wsServer = new WebSocket.Server({ port })
+    /**коллекция ws клиентов разделенная по id пользователя */
     const wsCollection = {}
+    // обработка событий сервера
     wsServer.on('connection', (wsClient) => {
-        wsClient.num = ++wsCount
-
+        // уникальный номер клиента
+        const clientNum = Date.now()
+        // проверка регистрации
+        setTimeout(() => {
+            if (!wsClient.userId) wsClient.close()
+        }, 60 * 1000)
+        // обработка сообщения клиента
         wsClient.on("message", (data) => {
             try {
-                const { userId, target } = tryParce(data)
-
+                // данные с клиента
+                const { userId, target } = JSON.parse(data)
+                // обработка сообщения регистрации
                 if (target == "register") {
                     wsClient.userId = userId
-                    let clients = getClients(userId)
-                    clients.push({
-                        num: wsClient.num,
-                        send: msg => wsClient.send(msg)
+                    wsClient.num = clientNum
+                    let clients = getClients(wsClient.userId)
+                    let match = false
+                    clients.forEach(val => {
+                        if (val.num == wsClient.num) match = true
                     })
-                    wsCollection[userId] = clients
+                    if (!match && wsClient.userId) {
+                        clients.push({
+                            num: wsClient.num,
+                            send: msg => wsClient.send(msg)
+                        })
+                        wsCollection[wsClient.userId] = clients
+                    } else throw new Error("ошибка регистрации сокета")
                 }
-
-                if (target == "update") {
+                // обработка сообщения об обновлении
+                if (target == "update" && wsClient.userId) {
                     getClients(wsClient.userId).forEach((wsc) => {
-                        if ((wsClient.num === undefined) || (wsClient.num !== wsc.num)) {
+                        if ((wsClient.num !== undefined) && (wsClient.num !== wsc.num)) {
                             wsc.send(data)
                         }
                     })
                 }
-
-            } catch (e) { }
+            } catch (e) { wsClient.close() }
         })
-
+        // обработка закрытия клиента
         wsClient.on("close", () => {
-            wsCollection[wsClient.userId] = getClients(wsClient.userId).filter((wsc) => {
+            if (wsClient.userId) wsCollection[wsClient.userId] = getClients(wsClient.userId).filter((wsc) => {
                 return (wsClient.num === undefined) || (wsClient.num !== wsc.num)
             })
+        })
+        // обработка ошибки клиента
+        wsClient.on("error", () => {
+            wsClient.close()
         })
     })
     wsServer.on("close", () => console.log("WSS closed"))
@@ -54,11 +73,6 @@ function startWSS(port) {
      */
     function getClients(userId) {
         return wsCollection[userId] || []
-    }
-
-    function tryParce(str) {
-        try { return JSON.parse(str) }
-        catch (e) { return str }
     }
 }
 

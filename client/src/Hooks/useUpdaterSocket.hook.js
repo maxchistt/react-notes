@@ -13,6 +13,11 @@ const WS_PORT = process.env.WS_PORT || 3030
  */
 function useUpdaterSocket(updateData, auth) {
     const { request } = useHttp()
+
+    /**дебонсированный обработчик входящего обновления */
+    const debouncedUpdate = useDebouncedFunction(updateData, 200)
+
+    /**колбек для получения url сокета */
     const getSocketUrl = useCallback(async () => {
         return new Promise(resolve => {
             request("/getIp")
@@ -27,15 +32,14 @@ function useUpdaterSocket(updateData, auth) {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-    const debouncedUpdate = useDebouncedFunction(updateData, 200)
-
+    /**опции обработки событий сокета */
     const socketOptions = {
         onOpen: (e) => {
             sendRegisterMsg()
             console.log("ws open")
         },
         onClose: (e) => {
-            console.log("ws close")
+            console.error("ws close")
         },
         onMessage: (e) => {
             console.log("ws update message")
@@ -46,9 +50,14 @@ function useUpdaterSocket(updateData, auth) {
         },
     }
 
+    /**подключение WebSocket */
     const { sendMessage } = useWebSocket(getSocketUrl, socketOptions)
 
-    const sendMsg = (target) => {
+    /**дебонсированный обработчик отсылаемого обновления */
+    const sendUpdateMsgDebounced = useDebouncedFunction(sendUpdateMsg, 200)
+
+    /** отпрака сообщения сокета */
+    function sendMsg(target) {
         const msg = JSON.stringify({
             userId: auth.userId,
             target
@@ -56,12 +65,12 @@ function useUpdaterSocket(updateData, auth) {
         sendMessage(msg)
     }
 
-    const sendUpdateMsgDebounced = useDebouncedFunction(sendUpdateMsg, 200)
-
+    /**отправка отсылаемого обновления */
     function sendUpdateMsg() {
         sendMsg("update")
     }
 
+    /**отпрака сообщения регистрации сокета */
     function sendRegisterMsg() {
         sendMsg("register")
     }

@@ -78,7 +78,7 @@ function NotesPage() {
 
     /**
      * Внесение в полученных данных в массив
-     * @param {*} notes 
+     * @param {Array<{}>} notes 
      */
     function setLoadedNotes(notes) {
         setNotesArr([...notes])
@@ -86,7 +86,7 @@ function NotesPage() {
 
     /**
      * удаление карточки
-     * @param {*} id 
+     * @param {string} id 
      */
     function removeNote(id) {
         const index = getNoteIndexById(id)
@@ -97,7 +97,7 @@ function NotesPage() {
 
     /**
      * добавление карточки
-     * @param {*} noteData 
+     * @param {{}} noteData 
      */
     function addNote(noteData = {}) {
         const newId = String(auth.email) + String(Date.now()) + String(Math.random())
@@ -117,8 +117,8 @@ function NotesPage() {
 
     /**
      * Изменение цвета карточки
-     * @param {*} index 
-     * @param {*} color 
+     * @param {string} id  
+     * @param {string} color 
      */
     function changeNoteColor(id, color) {
         const index = getNoteIndexById(id)
@@ -129,9 +129,9 @@ function NotesPage() {
 
     /**
      * Изменение текстового содержания карточки
-     * @param {*} index 
-     * @param {*} name 
-     * @param {*} text 
+     * @param {string} id  
+     * @param {string} name 
+     * @param {string} text 
      */
     function editNoteContent(id, name, text) {
         const index = getNoteIndexById(id)
@@ -147,7 +147,7 @@ function NotesPage() {
 
     /**
      * Изменение порядка заметки
-     * @param {number} index 
+     * @param {string} id 
      * @param {boolean} orderOperationFlag 
      */
     function editNoteOrder(id, orderOperationFlag) {
@@ -164,7 +164,10 @@ function NotesPage() {
 
     ///////////
 
-    /**функция получения карточки по id */
+    /**
+     * функция получения карточки по id 
+     * @param {string} id 
+     */
     function getNoteById(id) {
         const byId = () => {
             let note = null
@@ -178,7 +181,10 @@ function NotesPage() {
         return id !== null ? byId() : null
     }
 
-    /**функция получения индекса карточки по id */
+    /**
+     * функция получения индекса карточки по id 
+     * @param {string} id 
+     */
     function getNoteIndexById(id) {
         const byId = () => {
             let index = null
