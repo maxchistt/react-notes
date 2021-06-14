@@ -32,7 +32,8 @@ function AuthPage() {
   useEffect(() => {
     if (error) setMessage([error, false])
     clearError()
-  }, [error, clearError])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [error])
 
   /**
    * обработчик ввода данных в форму

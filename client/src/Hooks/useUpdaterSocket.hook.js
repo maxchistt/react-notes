@@ -39,7 +39,7 @@ function useUpdaterSocket(updateData, auth) {
             console.log("ws open")
         },
         onClose: (e) => {
-            console.error("ws close")
+            console.log("ws close")
         },
         onMessage: (e) => {
             console.log("ws update message")
