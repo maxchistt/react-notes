@@ -6,7 +6,7 @@
  * @param {*} next 
  */
 module.exports = (req, res, next) => {
-    if (req.header('x-forwarded-proto') !== 'https') {
+    if (req.header('x-forwarded-proto') === 'http') {
         res.redirect(`https://${req.header('host')}${req.url}`)
     } else {
         next()
