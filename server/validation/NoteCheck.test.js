@@ -5,7 +5,7 @@ const noteTemplate = {
     name: "note",
     color: "GREEN",
     text: "lorem ipsum adamet amer",
-    order: 754444444424552
+    order: 5
 }
 
 test('check correct validation', () => {
