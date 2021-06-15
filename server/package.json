@@ -6,7 +6,7 @@
     "start": "npm run start-prod",
     "start-dev": "nodemon app.js",
     "start-prod": "node app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest --watchAll"
   },
   "author": "Maxim Chistyakov <max.chistt@gmail.com>",
   "license": "ISC",
@@ -20,6 +20,7 @@
     "ws": "^7.4.6"
   },
   "devDependencies": {
+    "jest": "^27.0.4",
     "nodemon": "^2.0.7"
   }
 }

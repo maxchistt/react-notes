@@ -21,7 +21,7 @@
     "prod": "npm run server:start-prod",
     "prod:predeploy": "npm run deploy && npm run prod",
     "prod:prebuild": "npm run client:build && npm run prod",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "(echo you can also run 'test' in folders 'client' or 'server') && (concurrently \"cd client && npm test\" \"cd server && npm test\")",
     "heroku-postbuild": "npm run deploy",
     "mongo-ubuntu:update": "(sudo apt update && sudo apt upgrade)",
     "mongo-ubuntu:prepare": "(cd mongo/Ubuntu && chmod +x mongo_ubuntu_setup.sh && chmod +x mongo_ubuntu_install.sh)",
