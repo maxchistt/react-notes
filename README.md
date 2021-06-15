@@ -2,9 +2,9 @@
 
 ## See demo
 
-Open [mern-notesapp.herokuapp.com](https://mern-notesapp.herokuapp.com/) (here synchronization disabled) or [react-notes.std-1033.ist.mospolytech.ru](http://react-notes.std-1033.ist.mospolytech.ru/) (here PWA disabled) to view working demo in the browser.
+Open [mern-notesapp](https://mern-notesapp.herokuapp.com/) (here synchronization disabled) or [react-notes](http://react-notes.std-1033.ist.mospolytech.ru/) (here PWA disabled) to view working demo in the browser.
 
-![Screenshot](https://i.postimg.cc/bJDKyz3s/719.png)
+![Screenshot](https://i.postimg.cc/HkCP7MgV/6.png)
 
 ## Development
 
@@ -137,6 +137,6 @@ module.exports = {
 
 use to generate documentation
 
-### View [react-notes-docs](http://react-notes-docs.std-1033.ist.mospolytech.ru)
+### [react-notes-docs](http://react-notes-docs.std-1033.ist.mospolytech.ru)
 
-to see exiting docs
+see exiting docs
