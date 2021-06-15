@@ -41,6 +41,12 @@ to install and build app before run it
 
 to run production app version
 
+## Testing
+
+### `npm test`
+
+runs concurrently tests for client and server
+
 ## MongoDb
 
 Local `mongoUri` will be `"mongodb://localhost:27017/mydb"`
@@ -127,10 +133,10 @@ module.exports = {
 
 ## [JSDoc](https://jsdoc.app/) documentation
 
-### Generate
+### `npm run doc`
 
-run `npm run doc`
+use to generate documentation
 
-### View 
+### View [react-notes-docs](http://react-notes-docs.std-1033.ist.mospolytech.ru)
 
-[react-notes-docs](http://react-notes-docs.std-1033.ist.mospolytech.ru)
+to see exiting docs
