@@ -2,7 +2,7 @@
 
 ## See demo
 
-Open [mern-notesapp.herokuapp.com](https://mern-notesapp.herokuapp.com/) or [react-notes.std-1033.ist.mospolytech.ru](http://react-notes.std-1033.ist.mospolytech.ru/) to view working demo in the browser.
+Open [mern-notesapp.herokuapp.com](https://mern-notesapp.herokuapp.com/) (here synchronization disabled) or [react-notes.std-1033.ist.mospolytech.ru](http://react-notes.std-1033.ist.mospolytech.ru/) (here PWA disabled) to view working demo in the browser.
 
 ![Screenshot](https://i.postimg.cc/bJDKyz3s/719.png)
 
