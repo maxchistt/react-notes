@@ -19,12 +19,8 @@ function useUpdaterSocket(updateData, auth) {
     const getSocketUrl = useCallback(async () => {
         return new Promise(resolve => {
             request("/getSocketAddress")
-                .then((data) => {
-                    const socketAddress = data.socketAddress
-                    console.log("socketAddress", socketAddress)
-                    resolve(socketAddress)
-                })
-                .catch((err) => console.log("getSocketAddress err", err))
+                .then(data => resolve(data.socketAddress))
+                .catch(err => console.error("getSocketAddress err", err))
         })
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
