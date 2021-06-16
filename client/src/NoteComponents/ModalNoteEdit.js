@@ -4,7 +4,7 @@
 import React from 'react'
 import NotesContext from '../Context/NotesContext'
 import TextareaAutosize from 'react-textarea-autosize'
-import Modal, { ModalProps } from "../Shared/Modal/Modal"
+import Modal, { ModalProps } from "../Shared/Components/Modal/Modal"
 import Palette from './palette/palette'
 
 /**расчет числа строк */

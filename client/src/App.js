@@ -3,7 +3,7 @@
  */
 import React from 'react'
 import './App.css'
-import Loader from './Shared/Loader'
+import Loader from './Shared/Components/Loader'
 import { BrowserRouter as Router } from 'react-router-dom'
 import { useRoutes } from './routes'
 import { useAuth } from './Hooks/auth.hook'

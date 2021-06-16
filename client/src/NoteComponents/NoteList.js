@@ -3,6 +3,7 @@
  */
 import React from 'react'
 import PropTypes from 'prop-types'
+import { PropTypeNote } from '../Shared/Validation/Note'
 import NoteItem from './NoteItem'
 import StackGrid, { transitions } from "react-stack-grid"
 import sizeMe from 'react-sizeme'
@@ -66,7 +67,7 @@ function NoteList(props) {
 
 // Валидация
 NoteList.propTypes = {
-    notes: PropTypes.arrayOf(PropTypes.object).isRequired,
+    notes: PropTypes.arrayOf(PropTypeNote).isRequired,
 }
 
 export default sizeMe()(NoteList)

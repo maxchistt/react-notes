@@ -1,6 +1,6 @@
 /**@file useNotesArr.hook.js */
 import { useState } from 'react'
-import { checkNotesArr } from '../Shared/noteType/Note'
+import { checkNotesArr } from '../Shared/Validation/Note'
 
 /**
  * Хук использования массива заметок

@@ -3,7 +3,7 @@
  */
 import React, { useContext } from 'react'
 import NotesContext from '../Context/NotesContext'
-import Note, { PropTypeNote } from '../Shared/noteType/Note'
+import { PropTypeNote } from '../Shared/Validation/Note'
 import ReactMarkdown from 'react-markdown'
 import gfm from 'remark-gfm'
 
@@ -17,7 +17,7 @@ function fixLineBreaks(mdStr) {
  * @param {*} param0 
  *  
  */
-function NoteItem({ note = new Note() }) {
+function NoteItem({ note }) {
     /**Подключение контекста */
     const { setEditNoteId, editNoteOrder } = useContext(NotesContext)
 
