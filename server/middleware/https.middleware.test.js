@@ -26,7 +26,9 @@ test('correct redirect', done => {
         }
     }
 
-    const next = done
+    const next = jest.fn()
 
     httpsMiddleware(req, res, next)
+
+    expect(next).not.toHaveBeenCalled()
 })

@@ -27,10 +27,9 @@ test('block on incorrect token', done => {
         }
     }
 
-    const next = () => {
-        throw new Error('next')
-        done()
-    }
+    const next = jest.fn()
 
-    expect(() => authMiddleware(req, res, next)).not.toThrow('next')
+    authMiddleware(req, res, next)
+
+    expect(next).not.toHaveBeenCalled()
 })
