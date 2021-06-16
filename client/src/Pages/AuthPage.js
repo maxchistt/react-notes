@@ -86,7 +86,7 @@ function AuthPage() {
           <span>К заметкам</span>
         </NavLink>}
     </React.Fragment>,
-    [auth.isAuthenticated, auth.token]
+    [auth.isAuthenticated]
   )
 
   /**рендер */

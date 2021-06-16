@@ -218,7 +218,7 @@ function NotesPage() {
                 <span><i className="bi bi-person"></i> {auth.email}</span>
             </NavLink>
         </React.Fragment>,
-        [auth.email, auth.token, loading]
+        [auth.email, loading]
     )
 
     /**рендер */
