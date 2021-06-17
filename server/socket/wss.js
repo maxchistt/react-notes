@@ -62,8 +62,14 @@ function startWSS(port) {
             wsClient.close(undefined, err)
         })
     })
-    wsServer.on("close", () => console.log("WSS closed"))
-    wsServer.on("error", () => console.log("WSS error"))
+    wsServer.on("close", () => {
+        console.log("WSS closed")
+        startWSS(port)
+    })
+    wsServer.on("error", () => {
+        console.log("WSS error")
+        wsServer.close()
+    })
     wsServer.on("listening", () => console.log("WSS listening"))
 
     /**
