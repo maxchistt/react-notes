@@ -9,9 +9,10 @@
 function checkNote(note) {
     return (
         typeof note.id === "string" &&
-        typeof note.name === "string" &&
-        typeof note.color === "string" &&
-        typeof note.text === "string" &&
+        (typeof note.name === "string" || typeof note.name === "undefined") &&
+        (typeof note.color === "string" || typeof note.color === "undefined") &&
+        (typeof note.text === "string" || typeof note.text === "undefined") &&
+        (typeof note.media === "object" || typeof note.media === "undefined") &&
         (typeof note.order === "number" || typeof note.order === "undefined")
     )
 }

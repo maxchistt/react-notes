@@ -19,6 +19,7 @@
       "client/src/Hooks",
       "client/src/Context",
       "client/src/NoteComponents",
+      "client/src/NoteComponents/media",
       "client/src/NoteComponents/palette"
     ],
     "includePattern": ".js$",

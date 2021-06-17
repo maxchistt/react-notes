@@ -6,6 +6,7 @@ const noteTemplate = () => {
         name: "note",
         color: "GREEN",
         text: "lorem ipsum adamet amer",
+        media: [],
         order: 5
     }
 }

@@ -6,6 +6,7 @@ import NotesContext from '../Context/NotesContext'
 import TextareaAutosize from 'react-textarea-autosize'
 import Modal, { ModalProps } from "../Shared/Components/Modal/Modal"
 import Palette from './palette/palette'
+import Media from './media/media'
 
 /**расчет числа строк */
 function calcMaxRows() {
@@ -25,7 +26,7 @@ function calcMaxRows() {
  */
 function ModalNoteEdit() {
     /**получение контекста */
-    const { removeNote, changeNoteColor, unsetEditNoteId, editNoteContent, getNoteById, editNoteId } = React.useContext(NotesContext)
+    const { removeNote, changeNoteColor, unsetEditNoteId, editNoteMedia, editNoteContent, getNoteById, editNoteId } = React.useContext(NotesContext)
 
     /** обьект заметки */
     const note = getNoteById(editNoteId)
@@ -74,6 +75,14 @@ function ModalNoteEdit() {
      */
     function tryChangeColor(color) {
         changeNoteColor(editNoteId, color)
+    }
+
+    /**
+     * Изменение медиа заметки
+     * @param {*} media 
+     */
+    function trySetNoteMedia(media) {
+        editNoteMedia(editNoteId, media)
     }
 
     /**
@@ -144,6 +153,14 @@ function ModalNoteEdit() {
                             disabled={!note}
                             setColor={tryChangeColor}
                         ></Palette>
+                        <Media
+                            className="btn btn-light mx-1"
+                            style={{ boxShadow: "none" }}
+                            disabled={!note}
+                            mediaList={note ? note.media || [] : []}
+                            setNoteMedia={trySetNoteMedia}
+                            noteId={note ? note.id : null}
+                        ></Media>
                         <button
                             className="btn btn-light"
                             style={{ boxShadow: "none" }}
@@ -153,7 +170,7 @@ function ModalNoteEdit() {
                     </div>
                     {/**Индикатор номера заметки */}
                     <div className="mx-auto">
-                        <span style={{ color: "lightgray", fontWeight: "400" }}>{note && note.order}</span>
+                        <span style={{ color: "lightgray", fontWeight: "400" }}>{note && String(note.order)}</span>
                     </div>
                     {/**Зактрытие окна */}
                     <div>
