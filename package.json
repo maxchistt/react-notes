@@ -42,7 +42,7 @@
     "notes"
   ],
   "author": "Maxim Chistyakov <max.chistt@gmail.com>",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/maxchistt/react-notes/issues"
   },
