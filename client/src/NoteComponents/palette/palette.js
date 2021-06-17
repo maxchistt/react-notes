@@ -32,7 +32,7 @@ function Palette({ setColor, style, className, disabled }) {
         className={`btn ${className}`}
         style={style}
         type="button"
-        id="dropdownMenuButton"
+        id="dropdownMenuButtonPalette"
         data-toggle="dropdown"
         aria-haspopup="true"
         aria-expanded="false"
@@ -40,7 +40,7 @@ function Palette({ setColor, style, className, disabled }) {
         <i className="bi bi-palette" ></i>
       </button>
       {/**Форма выбора цвета */}
-      <div className="dropdown-menu tab-content mt-1" aria-labelledby="dropdownMenuButton">
+      <div className="dropdown-menu tab-content mt-1" aria-labelledby="dropdownMenuButtonPalette">
         <form>
           <div className="d-flex flex-row flex-wrap justify-content-center">
             {colors.map((color, key) => (

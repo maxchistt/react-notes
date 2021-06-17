@@ -22,6 +22,7 @@ export const useHttp = () => {
       if (body) {
         body = JSON.stringify(body)
         headers['Content-Type'] = 'application/json'
+        headers['Content-Length'] = String(Number(String(body).length) + 100)
       }
       /**отправка запроса */
       const response = await fetch(url, { method, body, headers })

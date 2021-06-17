@@ -4,6 +4,7 @@
 const { Router } = require('express')
 
 const Note = require('../models/Note')
+const Media = require('../models/Media')
 const auth = require('../middleware/auth.middleware')
 const router = Router()
 
@@ -74,8 +75,22 @@ router.post('/delete', auth, async (req, res) => {
         const existing = await Note.findOne({ id: noteToSave.id })
 
         if (existing) {
+            const media = existing.media
+            if (Array.isArray(media)) media.forEach(mediaId => deleteMedia({ id: mediaId }))
             existing.remove()
         } else res.status(500).json({ message: 'уже удален' })
+    }
+
+    /**Удаление media связанных с заметкой в бд */
+    async function deleteMedia(mediaToDelete) {
+        mediaToDelete.owner = req.user.userId
+
+        /**проверка существования media */
+        const existing = await Media.findOne({ id: mediaToDelete.id })
+
+        if (existing) {
+            existing.remove()
+        }
     }
 })
 

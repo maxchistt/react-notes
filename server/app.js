@@ -31,11 +31,13 @@ app.get('/getSocketAddress', (req, res) => {
         .catch(() => res.status(500))
 })
 
+
 /**
  * подключение роутов
  */
 app.use('/api/auth', require('./routes/auth.routes'))
 app.use('/api/notes', require('./routes/notes.routes'))
+app.use('/api/media', require('./routes/media.routes'))
 
 
 if (httpsRedirect) app.use(https)

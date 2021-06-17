@@ -18,8 +18,16 @@ function useFetchNotes(token) {
      */
     async function fetchNotes(url = "", method = "GET", body = null, resCallback = () => { }) {
         try {
-            /**запрос к серверу с определенными параметрами*/
+            /**запрос к серверу о заметках с определенными параметрами*/
             const fetched = await request(`/api/notes${url ? ("/" + url) : ""}`, method, body, { Authorization: `Bearer ${token}` })
+            resCallback(tryParce(fetched))
+        } catch (e) { }
+    }
+
+    async function fetchMedia(url = "", method = "GET", body = null, resCallback = () => { }) {
+        try {
+            /**запрос к серверу о медиа с определенными параметрами*/
+            const fetched = await request(`/api/media${url ? ("/" + url) : ""}`, method, body, { Authorization: `Bearer ${token}` })
             resCallback(tryParce(fetched))
         } catch (e) { }
     }
@@ -32,7 +40,7 @@ function useFetchNotes(token) {
         }
     }
 
-    return { loading, fetchNotes, error, clearError }
+    return { loading, fetchNotes, fetchMedia, error, clearError }
 }
 
 export default useFetchNotes
