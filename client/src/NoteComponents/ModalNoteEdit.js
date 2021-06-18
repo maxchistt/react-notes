@@ -102,10 +102,12 @@ function ModalNoteEdit() {
         close()
     }
 
+    const sizeRef = React.useRef()
+
     /**рендер */
     return (
         <Modal {...modalProps.bind()}>
-            <div className="container p-2">
+            <div ref={sizeRef} className="container p-2">
                 {/**Блок редактирования контента */}
                 <div>
                     {note ? (
@@ -160,6 +162,7 @@ function ModalNoteEdit() {
                             mediaList={note ? note.media || [] : []}
                             setNoteMedia={trySetNoteMedia}
                             noteId={note ? note.id : null}
+                            sizeData={sizeRef}
                         ></Media>
                         <button
                             className="btn btn-light"

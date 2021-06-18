@@ -14,7 +14,7 @@ const MAX_PAYLOAD_SIZE = 100 * 1024
  * @param {*} param0 
  *  
  */
-function Media({ setNoteMedia, mediaList = [], style, className, disabled, noteId }) {
+function Media({ setNoteMedia, mediaList = [], style, className, disabled, noteId, sizeData }) {
   const { addMedia, removeMedia, getMediaById, getNoteById } = useContext(NotesContext)
 
   const limited = getNoteById(noteId).media.length >= 3
@@ -79,15 +79,15 @@ function Media({ setNoteMedia, mediaList = [], style, className, disabled, noteI
 
       {/**Форма media */}
       <Modal {...modalProps.bind()} >
-        <div className="p-1 d-flex flex-row flex-wrap justify-content-center align-items-center">
+        <div style={{ minHeight: `${sizeData.current ? sizeData.current.parentElement.clientHeight : 100}px` }} className="p-1 d-flex flex-wrap align-content-between align-items-center justify-content-center">
 
-          <div className="form-group container d-flex flex-row flex-wrap mb-0">
-            {Array.isArray(mediaList) ? (mediaList.map((imgId, index) => {
+          <div className="form-group container d-flex flex-row flex-wrap align-items-start mb-0">
+            {Array.isArray(mediaList) && mediaList.length ? (mediaList.map((imgId, index) => {
               const media = getMediaById(imgId)
               const src = typeof media === "object" && media && media.data
               return (
                 <div className="card p-1 m-1" key={imgId} style={{ position: "relative" }}>
-                  <img style={{ maxWidth: "8em", maxHeight: "8em" }} src={src} alt="note img"></img>
+                  <img style={{ maxWidth: "13em", maxHeight: "13em" }} src={src} alt="note img"></img>
                   <button
                     style={{ position: "absolute", bottom: "0", right: "0", lineHeight: "1em", padding: "0.05em" }}
                     className={`btn btn-danger m-1`}
@@ -95,7 +95,11 @@ function Media({ setNoteMedia, mediaList = [], style, className, disabled, noteI
                   >&#10007;</button>
                 </div>
               )
-            })) : null}
+            })) : (
+              <div className="p-1 m-1 text-center" style={{ minWidth: '100%' }}>
+                No images
+              </div>
+            )}
           </div>
 
           <div className="form-group container d-flex flex-wrap justify-content-between mb-0">
