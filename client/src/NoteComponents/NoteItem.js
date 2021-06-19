@@ -42,7 +42,7 @@ function NoteItem({ note }) {
                 {Array.isArray(mediaList) ? (mediaList.map((imgId) => {
                     const media = getMediaById(imgId)
                     const src = typeof media === "object" && media && media.data
-                    return (
+                    return src && (
                         <img key={imgId} onClick={() => setEditNoteId(note.id)} className="card-img-top" src={src} alt="note img"></img>
                     )
                 })) : null}
