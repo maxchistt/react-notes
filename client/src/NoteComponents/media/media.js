@@ -6,13 +6,37 @@ import PropTypes from 'prop-types'
 import "./media.css"
 import NotesContext from "../../Context/NotesContext"
 import Modal, { ModalProps } from "../../Shared/Components/Modal/Modal"
+import { downscaleImage } from "../../Shared/downscaleImage"
 
 const MAX_PAYLOAD_SIZE = 100 * 1024
 
 /**
+ * Сжатие url изображения c проверкой размера
+ * @param {String} uncompressed 
+ * @param {String} type 
+ */
+async function getCompressed(uncompressed, type) {
+  if (uncompressed.length < MAX_PAYLOAD_SIZE) return uncompressed
+  const smallcompressedRes = await downscaleImage(uncompressed, type, 480)
+  if (smallcompressedRes.length < MAX_PAYLOAD_SIZE) return smallcompressedRes
+  const mediumcompressedRes = await downscaleImage(uncompressed, type, 360)
+  if (mediumcompressedRes.length < MAX_PAYLOAD_SIZE) return mediumcompressedRes
+  const extracompressedRes = await downscaleImage(uncompressed, type, 240)
+  if (extracompressedRes.length < MAX_PAYLOAD_SIZE) return extracompressedRes
+  console.error("compressed unsuc, too long url")
+  return null
+}
+
+/**
  * компонент палитры
- * @param {*} param0 
- *  
+ * @param {object} props
+ * @param {void} props.setNoteMedia
+ * @param {Array<String>} props.mediaList
+ * @param {{}} props.style
+ * @param {String} props.className
+ * @param {Boolean} props.disabled
+ * @param {String} props.noteId
+ * @param {{}} props.sizeData
  */
 function Media({ setNoteMedia, mediaList = [], style, className, disabled, noteId, sizeData }) {
   const { addMedia, removeMedia, getMediaById, getNoteById } = useContext(NotesContext)
@@ -42,16 +66,16 @@ function Media({ setNoteMedia, mediaList = [], style, className, disabled, noteI
     var file = e.target.files[0]
     var reader = new FileReader()
 
-    reader.onloadend = function () {
-      const res = reader.result
-      if (res.length < MAX_PAYLOAD_SIZE) {
-        console.log("readed suc", res.length)
-        const mediaId = addMedia(res, noteId)
+    reader.onloadend = async function () {
+      const uncompressedReaderRes = reader.result
+      const compressedRes = await getCompressed(uncompressedReaderRes, file.type)
+
+      if (compressedRes) {
+        const mediaId = addMedia(compressedRes, noteId)
         Array.isArray(mediaList) ? mediaList.push(mediaId) : (mediaList = [mediaId])
         setNoteMedia(mediaList)
-      } else {
-        console.error("readed unsuc", res.length)
       }
+
       e.target.value = null
     }
 
@@ -67,13 +91,7 @@ function Media({ setNoteMedia, mediaList = [], style, className, disabled, noteI
   return (
     <React.Fragment>
       {/**Кнопка вызова media */}
-      <button
-        disabled={disabled}
-        className={`btn ${className}`}
-        style={style}
-        type="button"
-        onClick={open}
-      >
+      <button disabled={disabled} className={`btn ${className}`} style={style} type="button" onClick={open} >
         <i className="bi bi-image" ></i>
       </button>
 
@@ -102,21 +120,18 @@ function Media({ setNoteMedia, mediaList = [], style, className, disabled, noteI
             )}
           </div>
 
-          <div className="form-group container d-flex flex-wrap justify-content-between mb-0">
-            <div className="custom-file mb-0 m-1" style={{ maxWidth: "14em" }}>
-              <input disabled={limited} onChange={encodeImageFileAsURLAndPost} type="file" className="custom-file-input" id="noteImgFile" accept=".jpg, .jpeg, .png" />
-              <label className="custom-file-label" htmlFor="noteImgFile">{"Img - 100Kb max"}</label>
+          <div className="form-group container row mb-0">
+            <div className="custom-file p-0 col m-1" style={{ minWidth: "7.6em" }}>
+              <input style={{ cursor: "pointer" }} disabled={limited} onChange={encodeImageFileAsURLAndPost} type="file" className="custom-file-input" id="noteImgFile" accept=".jpg, .jpeg, .png" />
+              <label style={{ boxShadow: "none", border: "lightgray 1px solid" }} className="custom-file-label" htmlFor="noteImgFile">{"Img"}</label>
             </div>
-            <button
-              className="btn btn-light m-1"
-              style={{ boxShadow: "none" }}
-              onClick={close}
-            >Close</button>
+            <button className="btn btn-light col-3 col-sm-2 m-1 ml-auto" style={{ boxShadow: "none", minWidth: "4em" }} onClick={close} >
+              Close
+            </button>
           </div>
 
         </div>
       </Modal>
-
     </React.Fragment>
   );
 }
