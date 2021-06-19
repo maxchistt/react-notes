@@ -19,10 +19,11 @@ function fixLineBreaks(mdStr) {
  */
 function NoteItem({ note }) {
     /**Подключение контекста */
-    const { setEditNoteId, editNoteOrder } = useContext(NotesContext)
+    const { setEditNoteId, editNoteOrder, getMediaById } = useContext(NotesContext)
 
     const lineClip = 12
-    const bgColor = note.color
+    const bgColor = note.color || "#f8f9fa"
+    const mediaList = note.media ? note.media || [] : []
 
     const footerBtn = {
         className: `btn btn-light p-0 text-secondary item-footer-btn`,
@@ -37,6 +38,14 @@ function NoteItem({ note }) {
     return (
         <div className="p-1" >
             <div className="card" style={{ backgroundColor: bgColor }} >
+                {/**Изображение заметки*/}
+                {Array.isArray(mediaList) ? (mediaList.map((imgId) => {
+                    const media = getMediaById(imgId)
+                    const src = typeof media === "object" && media && media.data
+                    return src && (
+                        <img key={imgId} onClick={() => setEditNoteId(note.id)} className="card-img-top" src={src} alt="note img"></img>
+                    )
+                })) : null}
                 {/**Заголовок и текст заметки с обработчиками отображения markdown*/}
                 <div className="card-body" onClick={() => setEditNoteId(note.id)} >
                     <div

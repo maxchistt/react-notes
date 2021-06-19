@@ -27,7 +27,7 @@ function NotesPage() {
     const auth = React.useContext(AuthContext)
 
     /** Подключение хука для обращения к бд с заметками */
-    const { loading, fetchNotes, error, clearError } = useFetchNotes(auth.token)
+    const { loading, fetchNotes, fetchMedia, error, clearError } = useFetchNotes(auth.token)
 
     /**хук сообщений от сервера */
     const [message, setMessage] = React.useState(null)
@@ -51,12 +51,20 @@ function NotesPage() {
 
     /**Массив заметок */
     const [notesArr, setNotesArr] = useNotesArr(null)
+    const [mediaArr, setMediaArr] = React.useState([])
 
     /**очистка старых данных */
     React.useEffect(() => !auth.isAuthenticated && setNotesArr(null), [auth.isAuthenticated]) // eslint-disable-line react-hooks/exhaustive-deps
 
     /** подключение контроллера обновления данных */
-    const [updateData] = useDataLoadingController(loadDataFromServer, setLoadedNotes, auth, 60)
+    const [updateNotes] = useDataLoadingController(loadNotesFromServer, setLoadedNotes, auth, 60)
+    const [updateMedia] = useDataLoadingController(loadMediaFromServer, setLoadedMedia, auth, 60)
+    function updateData() {
+        updateNotes()
+        updateMedia()
+    }
+    //console.log("mediaArr", mediaArr);
+    //console.log("notesArr", notesArr);
 
     /** подключение сокета обновления данных */
     const [sendUpdateMsg] = useUpdaterSocket(updateData, auth)
@@ -66,7 +74,102 @@ function NotesPage() {
     /**
      * получение данных с сервера
      */
-    function loadDataFromServer(setterClb = () => { }) {
+    function loadMediaFromServer(setterClb = () => { }) {
+        fetchMedia("", "GET", null, setterClb)
+    }
+
+    /**
+     * Загрузка данных на сервер
+     * @param {{}} media 
+     * @param {string} target 
+     */
+    function loadMediaToServer(media = {}, target = 'set') {
+        fetchMedia(target, "POST", { media }, sendUpdateMsg)
+    }
+
+
+    ///////////
+
+    /**
+     * Внесение в полученных данных в массив
+     * @param {Array<{}>} notes 
+     */
+    function setLoadedMedia(mediaArr) {
+        setMediaArr(mediaArr || [])
+    }
+
+    /**
+     * удаление карточки
+     * @param {string} id 
+     */
+    function removeMedia(id) {
+        const index = getMediaIndexById(id)
+        if (index === null) return 0
+        const toDelete = mediaArr.splice(index, 1)[0]
+        setMediaArr([...mediaArr])
+        toDelete && loadMediaToServer({ id: toDelete.id }, "delete")
+    }
+
+    /**
+     * добавление карточки
+     * @param {{}} noteData 
+     */
+    function addMedia(data, noteId) {
+        const newId = btoa(String(auth.email) + String(Date.now()) + String(Math.random()))
+        const newMedia = {
+            id: newId,
+            data: data,
+            note: noteId
+        }
+        setMediaArr(
+            (mediaArr != null) ? mediaArr.concat([newMedia]) : [newMedia]
+        )
+        loadMediaToServer(newMedia, "set")
+        return newId
+    }
+
+    ///////////
+
+    /**
+     * функция получения медиа по id 
+     * @param {string} id 
+     */
+    function getMediaById(id) {
+        const byId = () => {
+            let mediaRes = null
+            if (Array.isArray(mediaArr)) {
+                mediaArr.forEach((val, index) => {
+                    if (val.id === id) mediaRes = val
+                })
+            }
+            return mediaRes
+        }
+        return id !== null ? byId() : null
+    }
+
+    /**
+     * функция получения индекса медиа по id 
+     * @param {string} id 
+     */
+    function getMediaIndexById(id) {
+        const byId = () => {
+            let index = null
+            if (Array.isArray(mediaArr)) {
+                mediaArr.forEach((val, ind) => {
+                    if (val.id === id) index = ind
+                })
+            }
+            return index
+        }
+        return id !== null ? byId() : null
+    }
+
+    ///////////
+
+    /**
+     * получение данных с сервера
+     */
+    function loadNotesFromServer(setterClb = () => { }) {
         fetchNotes("", "GET", null, setterClb)
     }
 
@@ -75,7 +178,7 @@ function NotesPage() {
      * @param {Note} note 
      * @param {string} target 
      */
-    function loadDataToServer(note = new Note(), target = 'set') {
+    function loadNotesToServer(note = new Note(), target = 'set') {
         fetchNotes(target, "POST", { note }, sendUpdateMsg)
     }
 
@@ -97,7 +200,7 @@ function NotesPage() {
         const index = getNoteIndexById(id)
         const toDelete = notesArr.splice(index, 1)[0]
         setNotesArr([...notesArr])
-        loadDataToServer(toDelete, "delete")
+        loadNotesToServer(toDelete, "delete")
     }
 
     /**
@@ -105,7 +208,7 @@ function NotesPage() {
      * @param {{}} noteData 
      */
     function addNote(noteData = {}) {
-        const newId = String(auth.email) + String(Date.now()) + String(Math.random())
+        const newId = btoa(String(auth.email) + String(Date.now()) + String(Math.random()))
         const newNote = new Note({
             id: newId,
             name: noteData.name,
@@ -116,8 +219,9 @@ function NotesPage() {
         setNotesArr(
             (notesArr != null) ? notesArr.concat([newNote]) : [newNote]
         )
-        loadDataToServer(newNote, "set")
+        loadNotesToServer(newNote, "set")
         setEditNoteId(newId)
+        return newId
     }
 
     /**
@@ -127,9 +231,10 @@ function NotesPage() {
      */
     function changeNoteColor(id, color) {
         const index = getNoteIndexById(id)
+        if (index === null) return 0
         notesArr[index].color = color
         setNotesArr([...notesArr])
-        loadDataToServer(notesArr[index], "set")
+        loadNotesToServer(notesArr[index], "set")
     }
 
     /**
@@ -140,14 +245,26 @@ function NotesPage() {
      */
     function editNoteContent(id, name, text) {
         const index = getNoteIndexById(id)
-        if (index !== null) {
-            let note = new Note(notesArr[index])
-            note.name = name
-            note.text = text
-            notesArr[index] = note
-        }
+        if (index === null) return 0
+        let note = new Note(notesArr[index])
+        note.name = name
+        note.text = text
+        notesArr[index] = note
         setNotesArr([...notesArr])
-        loadDataToServer(notesArr[index], "set")
+        loadNotesToServer(notesArr[index], "set")
+    }
+
+    /**
+     * Изменение цвета карточки
+     * @param {string} id  
+     * @param {{}} media 
+     */
+    function editNoteMedia(id, media = []) {
+        const index = getNoteIndexById(id)
+        if (index === null) return 0
+        notesArr[index].media = media
+        setNotesArr([...notesArr])
+        loadNotesToServer(notesArr[index], "set")
     }
 
     /**
@@ -157,14 +274,13 @@ function NotesPage() {
      */
     function editNoteOrder(id, orderOperationFlag) {
         const index = getNoteIndexById(id)
-        if (index !== null) {
-            notesArr[index].order += orderOperationFlag ? 1 : -1
-            let fixedArr = fixOrders(notesArr)
-            setNotesArr(fixedArr)
-            fixedArr.forEach((note) => {
-                loadDataToServer(note, "set")
-            })
-        }
+        if (index === null) return 0
+        notesArr[index].order += orderOperationFlag ? 1 : -1
+        let fixedArr = fixOrders(notesArr)
+        setNotesArr(fixedArr)
+        fixedArr.forEach((note) => {
+            loadNotesToServer(note, "set")
+        })
     }
 
     ///////////
@@ -224,7 +340,7 @@ function NotesPage() {
     /**рендер */
     return (
         /**Здесь отрисовываются меню добавления и редактирования заметок и сам перечнь заметок в виде динамичной отзывчивой сетки */
-        <NotesContext.Provider value={{ addNote, removeNote, changeNoteColor, editNoteContent, editNoteOrder, setEditNoteId, unsetEditNoteId, editNoteId, getNoteById }}>
+        <NotesContext.Provider value={{ addMedia, removeMedia, editNoteMedia, getMediaById, addNote, removeNote, changeNoteColor, editNoteContent, editNoteOrder, setEditNoteId, unsetEditNoteId, editNoteId, getNoteById }}>
             <div className="NotesPage">
                 <main className="p-1 pb-3 mb-3">
                     {/**Компонент добавления карточки и модальное окно редактирования */}

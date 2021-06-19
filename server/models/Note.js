@@ -11,7 +11,7 @@ const schema = new Schema({
   name: { type: String },
   text: { type: String },
   color: { type: String },
-  image: { type: String },
+  media: { type: Array },
   order: { type: Number },
   owner: { type: Types.ObjectId, ref: 'User', required: true }
 })

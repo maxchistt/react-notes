@@ -9,16 +9,18 @@ export const PropTypeNote = PropTypes.shape({
     name: PropTypes.string,
     color: PropTypes.string,
     text: PropTypes.string,
+    media: PropTypes.arrayOf(PropTypes.string),
     order: PropTypes.number,
 })
 
 /**валидация заметки */
 export function checkNote(note) {
     return (
-        (typeof note.id === "string") &&
-        typeof note.name === "string" &&
-        typeof note.color === "string" &&
-        typeof note.text === "string" &&
+        typeof note.id === "string" &&
+        (typeof note.name === "string" || typeof note.name === "undefined") &&
+        (typeof note.color === "string" || typeof note.color === "undefined") &&
+        (typeof note.text === "string" || typeof note.text === "undefined") &&
+        (typeof note.media === "object" || typeof note.media === "undefined") &&
         (typeof note.order === "number" || typeof note.order === "undefined")
     )
 }
@@ -39,11 +41,12 @@ export function checkNotesArr(notesArr) {
 
 /**класс заметки */
 export class Note {
-    constructor({ id, name, color, text, order }) {
+    constructor({ id, name, color, text, media, order }) {
         this.id = String(id)
         this.name = String(name)
         this.color = String(color)
         this.text = String(text)
+        this.media = Array.isArray(media) ? [...media] : []
         this.order = Number(order)
     }
 }
