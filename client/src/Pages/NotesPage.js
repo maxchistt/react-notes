@@ -104,8 +104,8 @@ function NotesPage() {
      */
     function removeMedia(id) {
         const index = getMediaIndexById(id)
+        if (index === null) return 0
         const toDelete = mediaArr.splice(index, 1)[0]
-
         setMediaArr([...mediaArr])
         toDelete && loadMediaToServer({ id: toDelete.id }, "delete")
     }
@@ -231,6 +231,7 @@ function NotesPage() {
      */
     function changeNoteColor(id, color) {
         const index = getNoteIndexById(id)
+        if (index === null) return 0
         notesArr[index].color = color
         setNotesArr([...notesArr])
         loadNotesToServer(notesArr[index], "set")
@@ -244,12 +245,11 @@ function NotesPage() {
      */
     function editNoteContent(id, name, text) {
         const index = getNoteIndexById(id)
-        if (index !== null) {
-            let note = new Note(notesArr[index])
-            note.name = name
-            note.text = text
-            notesArr[index] = note
-        }
+        if (index === null) return 0
+        let note = new Note(notesArr[index])
+        note.name = name
+        note.text = text
+        notesArr[index] = note
         setNotesArr([...notesArr])
         loadNotesToServer(notesArr[index], "set")
     }
@@ -261,6 +261,7 @@ function NotesPage() {
      */
     function editNoteMedia(id, media = []) {
         const index = getNoteIndexById(id)
+        if (index === null) return 0
         notesArr[index].media = media
         setNotesArr([...notesArr])
         loadNotesToServer(notesArr[index], "set")
@@ -273,14 +274,13 @@ function NotesPage() {
      */
     function editNoteOrder(id, orderOperationFlag) {
         const index = getNoteIndexById(id)
-        if (index !== null) {
-            notesArr[index].order += orderOperationFlag ? 1 : -1
-            let fixedArr = fixOrders(notesArr)
-            setNotesArr(fixedArr)
-            fixedArr.forEach((note) => {
-                loadNotesToServer(note, "set")
-            })
-        }
+        if (index === null) return 0
+        notesArr[index].order += orderOperationFlag ? 1 : -1
+        let fixedArr = fixOrders(notesArr)
+        setNotesArr(fixedArr)
+        fixedArr.forEach((note) => {
+            loadNotesToServer(note, "set")
+        })
     }
 
     ///////////
