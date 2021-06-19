@@ -41,7 +41,7 @@ async function getCompressed(uncompressed, type) {
 function Media({ setNoteMedia, mediaList = [], style, className, disabled, noteId, sizeData }) {
   const { addMedia, removeMedia, getMediaById, getNoteById } = useContext(NotesContext)
 
-  const limited = getNoteById(noteId).media.length >= 3
+  const limited = getNoteById(noteId).media.length >= 1
 
   /**хук состояния формы */
   const [showForm, setShowForm] = React.useState(false)
@@ -105,7 +105,7 @@ function Media({ setNoteMedia, mediaList = [], style, className, disabled, noteI
               const src = typeof media === "object" && media && media.data
               return (
                 <div className="card p-1 m-1" key={imgId} style={{ position: "relative" }}>
-                  <img style={{ maxWidth: "13em", maxHeight: "13em" }} src={src} alt="note img"></img>
+                  <img className="img-fluid"  style={{ maxWidth: "35em", maxHeight: "15em" }} src={src} alt="note img"></img>
                   <button
                     style={{ position: "absolute", bottom: "0", right: "0", lineHeight: "1em", padding: "0.05em" }}
                     className={`btn btn-danger m-1`}
