@@ -99,7 +99,7 @@ function Media({ setNoteMedia, mediaList = [], style, className, disabled, noteI
       <Modal {...modalProps.bind()} >
         <div style={{ minHeight: `${sizeData.current ? sizeData.current.parentElement.clientHeight : 100}px` }} className="p-1 d-flex flex-wrap align-content-between align-items-center justify-content-center">
 
-          <div className="form-group container d-flex flex-row flex-wrap align-items-start mb-0">
+          <div className="form-group container d-flex flex-row flex-wrap align-items-start justify-content-around mb-0">
             {Array.isArray(mediaList) && mediaList.length ? (mediaList.map((imgId, index) => {
               const media = getMediaById(imgId)
               const src = typeof media === "object" && media && media.data

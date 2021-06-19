@@ -38,7 +38,6 @@ function NoteItem({ note }) {
     return (
         <div className="p-1" >
             <div className="card" style={{ backgroundColor: bgColor }} >
-
                 {/**Изображение заметки*/}
                 {Array.isArray(mediaList) ? (mediaList.map((imgId) => {
                     const media = getMediaById(imgId)
