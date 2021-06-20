@@ -6,13 +6,14 @@ const { Router } = require('express')
 const Media = require('../models/Media')
 const Note = require('../models/Note')
 const auth = require('../middleware/auth.middleware')
+const storage = require('../middleware/storage.middleware')
 const router = Router()
 
 /**
  * Добавление и редактирование media
  * /api/media/set
  */
-router.post('/set', auth, async (req, res) => {
+router.post('/set', auth, storage, async (req, res) => {
     try {
         /**получение данных о media и запись в бд */
         const media = tryParce(req.body.media)

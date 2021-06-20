@@ -6,6 +6,7 @@ const { Router } = require('express')
 const Note = require('../models/Note')
 const Media = require('../models/Media')
 const auth = require('../middleware/auth.middleware')
+const storage = require('../middleware/storage.middleware')
 const router = Router()
 
 const { checkNote } = require('../validation/NoteCheck')
@@ -14,7 +15,7 @@ const { checkNote } = require('../validation/NoteCheck')
  * Добавление и редактирование заметки
  * /api/notes/set
  */
-router.post('/set', auth, async (req, res) => {
+router.post('/set', auth, storage, async (req, res) => {
     try {
         /**получение данных о заметке и запись в бд */
         const note = tryParce(req.body.note)
