@@ -8,7 +8,7 @@ import NotesContext from "../../Context/NotesContext"
 import Modal, { ModalProps } from "../../Shared/Components/Modal/Modal"
 import { downscaleImage } from "../../Shared/downscaleImage"
 
-const MAX_PAYLOAD_SIZE = 100 * 1024
+const MAX_PAYLOAD_SIZE = 1000000
 
 /**
  * Сжатие url изображения c проверкой размера
@@ -16,10 +16,9 @@ const MAX_PAYLOAD_SIZE = 100 * 1024
  * @param {String} type 
  */
 async function getCompressed(uncompressed, type) {
-  if (uncompressed.length < MAX_PAYLOAD_SIZE) return uncompressed
-  const smallcompressedRes = await downscaleImage(uncompressed, type, 480)
+  const smallcompressedRes = await downscaleImage(uncompressed, type, 720)
   if (smallcompressedRes.length < MAX_PAYLOAD_SIZE) return smallcompressedRes
-  const mediumcompressedRes = await downscaleImage(uncompressed, type, 360)
+  const mediumcompressedRes = await downscaleImage(uncompressed, type, 480)
   if (mediumcompressedRes.length < MAX_PAYLOAD_SIZE) return mediumcompressedRes
   const extracompressedRes = await downscaleImage(uncompressed, type, 240)
   if (extracompressedRes.length < MAX_PAYLOAD_SIZE) return extracompressedRes
@@ -105,7 +104,7 @@ function Media({ setNoteMedia, mediaList = [], style, className, disabled, noteI
               const src = typeof media === "object" && media && media.data
               return (
                 <div className="card p-1 m-1" key={imgId} style={{ position: "relative" }}>
-                  <img className="img-fluid"  style={{ maxWidth: "35em", maxHeight: "15em" }} src={src} alt="note img"></img>
+                  <img className="img-fluid" style={{ maxWidth: "35em", maxHeight: "15em" }} src={src} alt="note img"></img>
                   <button
                     style={{ position: "absolute", bottom: "0", right: "0", lineHeight: "1em", padding: "0.05em" }}
                     className={`btn btn-danger m-1`}

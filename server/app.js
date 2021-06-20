@@ -20,7 +20,7 @@ const WS_PORT = process.env.WS_PORT || 3030
 
 const app = express()
 
-app.use(express.json({ extended: true }))
+app.use(express.json({ extended: true, limit: "1mb" }))
 
 app.get('/getSocketAddress', (req, res) => {
     getIp()
