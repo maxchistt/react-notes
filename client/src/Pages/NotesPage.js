@@ -34,7 +34,10 @@ function NotesPage() {
 
     /** очистка ошибок хука запросов и запись ошибки в сообщение*/
     React.useEffect(() => {
-        if (error) setMessage(error)
+        if (error) {
+            setMessage(error)
+            unsetEditNoteId()
+        }
         /**Выйти в случае неавторизации */
         if (error === 'Нет авторизации') auth.logout()
         clearError()
@@ -346,23 +349,29 @@ function NotesPage() {
                     {/**Компонент добавления карточки и модальное окно редактирования */}
                     <AddNote />
                     <ModalNoteEdit />
+                    {/**Вывод ошибок */}
+                    {message &&
+                        /**Ошибка загрузки данных */
+                        <div className="container text-center">
+                            <p className="m-3 p-3 h5 text-muted">
+                                {!(notesArr && notesArr.length) && "Data not loaded"}
+                                <br />
+                                {message}
+                            </p>
+                        </div>
+                    }
                     {/**Вариативное отображение контента (заметок) */}
-                    {notesArr && notesArr.length ? (
+                    {notesArr && notesArr.length ?
                         /**Список карточек */
                         <NoteList notes={notesArr} />
-                    ) : (loading) ? null : !message ? (
+                        : !loading && !message &&
                         /**Сообщение об отсутствии карточек */
                         <div className="container text-center">
                             <p className="m-3 p-3 h5 text-muted">No Notes. You can add a new one!</p>
                         </div>
-                    ) : (
-                        /**Ошибка загрузки данных */
-                        <div className="container text-center">
-                            <p className="m-3 p-3 h5 text-muted">Data not loaded<br />{message}</p>
-                        </div>
-                    )}
+                    }
                     {/**Колесико загрузки */}
-                    {(loading && !notesArr && editNoteId === null) &&
+                    {loading && !notesArr && editNoteId === null &&
                         <div className="container display-4 text-center p-3" >
                             <Loader />
                         </div>

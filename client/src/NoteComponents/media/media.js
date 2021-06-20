@@ -40,7 +40,7 @@ async function getCompressed(uncompressed, type) {
 function Media({ setNoteMedia, mediaList = [], style, className, disabled, noteId, sizeData }) {
   const { addMedia, removeMedia, getMediaById, getNoteById } = useContext(NotesContext)
 
-  const limited = getNoteById(noteId).media.length >= 1
+  const limited = noteId ? getNoteById(noteId).media.length >= 1 : false
 
   /**хук состояния формы */
   const [showForm, setShowForm] = React.useState(false)
