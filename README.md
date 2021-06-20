@@ -1,10 +1,24 @@
 # React Notes App
 
+This is a MERN-based notes web-app with authorisation, live synchronization and functional user interface. Here you can edit notes text content, add some markdown elements, upload images for cards.
+
+![Screenshot](https://i.postimg.cc/VN07rkNx/11.png)
+
+## About
+
+Project has "cliend and server" structure. You can find it in the corresponding subfolders.
+
+The server with REST API was built with Node.js platform and Express library. It has three main API routes, additional route for WS addres check and default route for static client build. I used MongoDB and Mongoose lib to store and manage data. There are three entity types in database - Users, Notes and Media (images). For authorization, I used the JsonWebToken and Bcrypt libraries. I also used WebSocket to connect client and server for real-time synchronization.
+
+The client was made with React framework. It was styled with Bootstrap 4. I used React Router DOM extension to route client pages - authorisation, main notes page and about page. I also used some libs to make interface more useful and pretty. The main one - React Stack Grid, used to conveniently arrange note cards on the screen. There are many custom hooks here to manage authorization, interface elements, user data, and their synchronization. Client was built with Progressiwe Web App technology. So it can be partially cached for offline use, or rather for faster loading.
+
+I also tried to make unit tests and documentation based on code comments. You can see it below in this document.
+
 ## See demo
 
 Open [mern-notesapp](https://mern-notesapp.herokuapp.com/) (here synchronization disabled) or [react-notes](http://react-notes.std-1033.ist.mospolytech.ru/) (here PWA disabled) to view working demo in the browser.
 
-![Screenshot](https://i.postimg.cc/HkCP7MgV/6.png)
+![Screenshot](https://i.postimg.cc/2jtfgVZW/10.png)
 
 ## Development
 
@@ -67,6 +81,8 @@ Local `mongoUri` will be `"mongodb://localhost:27017/mydb"`
 
 ### Mongo installation on Ubuntu 20.04
 
+Be careful, it's correct relative path in your commands
+
 1. To prepare and setup mongo
 
    - run next in bash:
@@ -119,6 +135,8 @@ module.exports = {
 };
 ```
 
+Be careful - bash start folder on your server may be located differently
+
 ## Deployment on Heroku
 
 - Create Heroku app
@@ -135,8 +153,8 @@ module.exports = {
 
 ### `npm run doc`
 
-use to generate documentation
+use to generate docs
 
 ### [react-notes-docs](http://react-notes-docs.std-1033.ist.mospolytech.ru)
 
-see exiting docs
+see exiting documentation
