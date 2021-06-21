@@ -11,6 +11,7 @@ import { AuthContext } from './Context/AuthContext'
 import { PageContext } from './Context/PageContext'
 import Header from './Pages/SharedComponents/Header'
 
+/**Рендер приложения */
 function App() {
   /**подключение хука авторизации */
   const { token, login, logout, userId, email, ready } = useAuth()
@@ -21,14 +22,6 @@ function App() {
 
   /**хук обновления навбара */
   const [nav, setNav] = React.useState()
-
-  if (!ready) {
-    return (
-      <div className="container display-4 text-center p-5" >
-        <Loader />
-      </div>
-    )
-  }
 
   /**рендер */
   return (
@@ -42,9 +35,15 @@ function App() {
       <PageContext.Provider value={{ setNav }}>
         <Router>
           <Header>{nav}</Header>
-          <div className="App pb-3 mb-3">
-            {routes}
-          </div>
+          {ready ?
+            <div className="App pb-3 mb-3">
+              {routes}
+            </div>
+            :
+            <div className="container display-4 text-center p-5" >
+              <Loader />
+            </div>
+          }
         </Router>
       </PageContext.Provider>
     </AuthContext.Provider>
