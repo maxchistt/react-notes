@@ -16,11 +16,16 @@
 }
 
 .lds-animation {
-  display: inline-block;
   animation: lds-dual-ring-90 1.2s linear infinite;
 }
 
+.bi-fix-align {
+  display: inline-block;
+  line-height: 1em;
+}
+
 .bi-fix-align::before {
+  display: inline;
   vertical-align: -0.09rem !important;
 }
 

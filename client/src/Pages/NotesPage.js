@@ -331,7 +331,7 @@ function NotesPage() {
         /**Установка кнопок обновления контента и возврата к странице авторизации */
         <React.Fragment>
             <button className="btn btn-light m-1" onClick={updateData}>
-                <i style={{ verticalAlign: "top" }} className={`bi bi-fix-align bi-arrow-${!loading ? "clockwise" : "repeat"} px-1 ${loading && "lds-animation"}`}></i>
+                <i className={`bi bi-fix-align bi-arrow-${!loading ? "clockwise" : "repeat"} px-1 ${loading && "lds-animation"}`}></i>
             </button>
             <NavLink to="/auth" className="btn btn-light m-1">
                 <span><i className="bi bi-person"></i> {auth.email}</span>
