@@ -9,7 +9,8 @@ import { useRoutes } from './routes'
 import { useAuth } from './Hooks/auth.hook'
 import { AuthContext } from './Context/AuthContext'
 import { PageContext } from './Context/PageContext'
-import Header from './Pages/SharedComponents/Header'
+
+const Header = React.lazy(() => import('./Pages/SharedComponents/Header'))
 
 /**Рендер приложения */
 function App() {
@@ -21,7 +22,7 @@ function App() {
   const routes = useRoutes(isAuthenticated)
 
   /**хук обновления навбара */
-  const [nav, setNav] = React.useState()
+  const [nav, setNav] = React.useState(<span className="d-inline" style={{ width: "70px", height: "46px" }}></span>)
 
   /**рендер */
   return (
@@ -33,18 +34,20 @@ function App() {
       token, login, logout, userId, email, isAuthenticated
     }}>
       <PageContext.Provider value={{ setNav }}>
-        <Router>
-          <Header>{nav}</Header>
-          {ready ?
-            <div className="App pb-3 mb-3">
-              {routes}
-            </div>
-            :
-            <div className="container display-4 text-center p-5" >
-              <Loader />
-            </div>
-          }
-        </Router>
+        <React.Suspense fallback={<div className="container display-4 text-center p-5" > <Loader /> </div>}>
+          <Router>
+            <Header>{nav}</Header>
+            {ready ?
+              <div className="App pb-3 mb-3">
+                {routes}
+              </div>
+              :
+              <div className="container display-4 text-center p-5" >
+                <Loader />
+              </div>
+            }
+          </Router>
+        </React.Suspense>
       </PageContext.Provider>
     </AuthContext.Provider>
   )
