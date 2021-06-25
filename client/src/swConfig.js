@@ -13,15 +13,11 @@ export default swConfig
  * @param {*} registration 
  */
 function updater(registration) {
-    if (registration && registration.waiting) {
-        registration.waiting.addEventListener("statechange", event => {
-            if (event.target.state === "activated") {
-                alert('New version available! Ready to update?')
-                window.location.reload(true)
-                console.info('service worker updated')
-            }
-        })
-        registration.waiting.postMessage({ type: "SKIP_WAITING" })
+    if (registration && registration.unregister) {
+        registration.unregister()
+        alert('New version available! Ready to update?')
+        window.location.reload(true)
+        console.info('service worker updated')
     }
 }
 
