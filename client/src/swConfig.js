@@ -16,8 +16,8 @@ function updater(registration) {
     if (registration && registration.waiting) {
         registration.waiting.addEventListener("statechange", event => {
             if (event.target.state === "activated") {
-                alert('New version available!  Ready to update?')
-                window.location.reload()
+                alert('New version available! Ready to update?')
+                window.location.reload(true)
                 console.info('service worker updated')
             }
         })
