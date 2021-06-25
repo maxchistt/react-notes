@@ -74,29 +74,13 @@ Local `mongoUri` will be `"mongodb://localhost:27017/mydb"`
    - set `MongoDb_ExePath` - path to mongod.exe
    - set `MongoDb_DataFolderPath` - path to db folder
 
-3. To start Mongo database
-
-   - run `mongo_win_install.bat` file
-   - or run `npm run mongo-windows:start` command with npm
+3. To start Mongo database use `npm run mongo-windows:start`
 
 ### Mongo installation on Ubuntu 20.04
 
-Be careful, it's correct relative path in your commands
+1. To prepare and setup mongo use `npm run mongo-ubuntu:full-setup`
 
-1. To prepare and setup mongo
-
-   - run next in bash:
-
-     - `sudo apt update && sudo apt upgrade`
-     - `cd && cd react-notes/mongo/Ubuntu && chmod +x mongo_ubuntu_setup.sh && chmod +x mongo_ubuntu_install.sh && cd`
-     - `cd && ./react-notes/mongo/Ubuntu/mongo_ubuntu_setup.sh`
-
-   - or run next with npm: `npm run mongo-ubuntu:full-setup`
-
-2. To start Mongo database
-
-   - run next in bash: `cd && ./react-notes/mongo/Ubuntu/mongo_ubuntu_install.sh`
-   - or run next with npm: `npm run mongo-ubuntu:start`
+2. To start Mongo database use `npm run mongo-ubuntu:start`
 
 ### Cloud Mongo connection
 
