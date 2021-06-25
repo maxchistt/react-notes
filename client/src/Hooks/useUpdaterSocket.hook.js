@@ -7,7 +7,7 @@ import { useHttp } from "./http.hook"
 /**
  * Хук веб-сокета обновления данных
  * @param {void} updateData 
- * @param {*} auth 
+ * @param {{}} auth 
  */
 function useUpdaterSocket(updateData, auth) {
     const { request } = useHttp()
@@ -27,18 +27,18 @@ function useUpdaterSocket(updateData, auth) {
 
     /**опции обработки событий сокета */
     const socketOptions = {
-        onOpen: (e) => {
+        onOpen: e => {
             sendRegisterMsg()
-            console.log("ws open")
+            console.info("ws open")
         },
-        onClose: (e) => {
-            console.log("ws close")
+        onClose: e => {
+            console.info("ws close")
         },
-        onMessage: (e) => {
+        onMessage: e => {
             console.log("ws update message")
             debouncedUpdate()
         },
-        onError: (e) => {
+        onError: e => {
             console.error("ws error", e)
         },
     }
