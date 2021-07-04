@@ -6,6 +6,7 @@
       "server/routes",
       "server/models",
       "server/middleware",
+      "server/database",
       "server/socket",
       "client",
       "client/src",

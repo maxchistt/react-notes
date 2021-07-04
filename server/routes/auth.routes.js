@@ -6,7 +6,7 @@ const bcrypt = require('bcryptjs')
 require('dotenv').config()
 const jwt = require('jsonwebtoken')
 const { check, validationResult } = require('express-validator')
-const User = require('../models/User')
+const db = require('../database/mongoOperations')
 const router = Router()
 
 /**
@@ -35,22 +35,22 @@ router.post(
       const { email, password } = req.body
 
       /**Проверка существования пользователя */
-      const candidate = await User.findOne({ email })
+      const candidate = await db.findUserByEmail(email)
       if (candidate) {
         return res.status(400).json({ message: 'Такой пользователь уже существует' })
       }
 
       /**Хеширование пароля и сохранение пользователя */
       const hashedPassword = await bcrypt.hash(password, 12)
-      const user = new User({ email, password: hashedPassword })
-      await user.save()
+      const user = await db.addUser(email, hashedPassword)
 
-      res.status(201).json({ message: 'Пользователь создан' })
+      res.status(201).json({ message: `Пользователь ${user.email} создан` })
 
     } catch (e) {
       res.status(500).json({ message: 'Что-то пошло не так, попробуйте снова' })
     }
-  })
+  }
+)
 
 /**
  * Вход
@@ -77,7 +77,7 @@ router.post(
       const { email, password } = req.body
 
       /**Поиск пользователя в бд */
-      const user = await User.findOne({ email })
+      const user = await db.findUserByEmail(email)
       if (!user) {
         return res.status(400).json({ message: 'Пользователь не найден' })
       }
@@ -102,7 +102,7 @@ router.post(
     } catch (e) {
       res.status(500).json({ message: 'Что-то пошло не так, попробуйте снова' })
     }
-  })
-
+  }
+)
 
 module.exports = router
